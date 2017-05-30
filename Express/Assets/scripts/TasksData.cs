@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TasksData : MonoBehaviour {
-
+    public List<Task> TasksList = new List<Task>();
 	// Use this for initialization
 	void Start () {
 		

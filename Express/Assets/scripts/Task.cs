@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Task : MonoBehaviour {
     public int deadline;
+    public int profit;
+    public string destination;
+    public Item _item;
 	// Use this for initialization
 	void Start () {
 		
