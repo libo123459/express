@@ -6,10 +6,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler{
-    public Item _item;
-    
-    public bool OutOfSlot = true;
-
+    Item _item;
+    public Slot _slot;
     bool IfAllIn
     {
         get
@@ -34,9 +32,9 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             {
                 return false;
             }
-
         }
     }
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         
@@ -49,19 +47,41 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        
         LayerMask mask = 1 << LayerMask.NameToLayer("slot");
         RaycastHit2D hit = Physics2D.Raycast(Input.mousePosition, Vector3.forward,100,mask.value);
         if (hit.collider != null)
         {
-            print(hit.collider.gameObject.name);
-            if (hit.collider.gameObject.tag == "slot" && IfAllIn == true)
+            
+            if (IfAllIn == true)
             {
                 this.transform.position = hit.collider.transform.position;
-            }         
-        }       
+               
+            }
+        }
+        bool a = CheckOverlay();
+        print(a.ToString());
     }
 
-    
+    bool CheckOverlay()
+    {
+        int num = 0;
+        for (int i = 0; i < _item.BlockList.Count; i++)
+        {
+            if (_item.BlockList[i].inItem == true)
+            {
+                num++;
+            }
+        }
+
+        if (num == 0)
+        {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
 
     // Use this for initialization
     void Start()

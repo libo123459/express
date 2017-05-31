@@ -8,6 +8,7 @@ public class Item : MonoBehaviour {
     public int BlockNum; //块的数量
     public string Property; //物品特征
     public bool allIn; //所有块都在车库
+    public Vector3 startPos;
 	// Use this for initialization
 	void Start ()
     {
@@ -17,6 +18,8 @@ public class Item : MonoBehaviour {
             GameObject block = this.transform.GetChild(i).gameObject;
             BlockList.Add(block.GetComponent<Block> ());
         }
+        startPos = this.transform.position;
+        
 	}
 	
 	// Update is called once per frame
