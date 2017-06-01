@@ -7,8 +7,8 @@ public class Item : MonoBehaviour {
     public List<Block> BlockList = new List<Block>(); //物品分几块的list
     public int BlockNum; //块的数量
     public string Property; //物品特征
-    public bool allIn; //所有块都在车库
-    public Vector3 startPos;
+    public Vector3 SlotPos;
+       
 	// Use this for initialization
 	void Start ()
     {
@@ -18,12 +18,24 @@ public class Item : MonoBehaviour {
             GameObject block = this.transform.GetChild(i).gameObject;
             BlockList.Add(block.GetComponent<Block> ());
         }
-        startPos = this.transform.position;
-        
-	}
-	
-	// Update is called once per frame
-	void Update () {
+   	}
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "slot")
+        {
+            SlotPos = collision.transform.position;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "slot")
+        {
+            SlotPos = collision.transform.position;
+        }
+    }
+    // Update is called once per frame
+    void Update () {
 		
 	}
 }

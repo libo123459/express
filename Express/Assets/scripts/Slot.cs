@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour {
     public bool isSelected;
+   
 	// Use this for initialization
 	void Start () {
 		
@@ -19,7 +20,6 @@ public class Slot : MonoBehaviour {
         if (collision.gameObject.tag == "item")
         {
             this.GetComponent<Image>().color = new Color(0, 0, 0, 1);
-            
         }
     }
     private void OnTriggerStay2D(Collider2D collision)

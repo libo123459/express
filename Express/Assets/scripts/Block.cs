@@ -4,32 +4,22 @@ using UnityEngine;
 
 public class Block : MonoBehaviour {
     public bool inSlot = false;
-    public bool inItem = false;
     public Slot _slot;
     // Use this for initialization
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "slot")
         {
-            _slot = collision.GetComponent<Slot>();
             inSlot = true;
-        }
-        if (collision.gameObject.tag == "item")
-        {
-            inItem = true;
+            _slot = collision.GetComponent<Slot>();
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "slot")
         {
-            _slot = collision.GetComponent<Slot>();
             inSlot = true;
-        }
-
-        if (collision.gameObject.tag == "item")
-        {
-            inItem = true;
+            _slot = collision.GetComponent<Slot>();
         }
     }
 
@@ -39,11 +29,6 @@ public class Block : MonoBehaviour {
         {
             _slot = null;
             inSlot = false;
-        }
-
-        if (collision.gameObject.tag == "item")
-        {
-            inItem = false;
         }
     }
     void Start () {
