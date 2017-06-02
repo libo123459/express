@@ -9,7 +9,9 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     
     Item _item;
     Vector3 startPos;
-    
+
+    CardsManage _cardManage;
+
     bool IfAllIn
     {
         get
@@ -85,6 +87,9 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     void Start()
     {
         _item = this.GetComponent<Item>();
+        GameObject cardManage = GameObject.Find("Manage");
+        _cardManage = cardManage.GetComponent<CardsManage>();
+        print(cardManage.name);
     }
 
     // Update is called once per frame
