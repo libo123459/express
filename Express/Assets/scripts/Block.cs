@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class Block : MonoBehaviour {
@@ -15,26 +16,24 @@ public class Block : MonoBehaviour {
         if (collision.gameObject.tag == "slot")
         {
             inSlot = true;
-            _collision = collision;
-            Slot _slot = collision.GetComponent<Slot>();
-            if (_slot.isSelected == true)
-            {
-                overlap = true;
-            }
-            //_slot = collision.GetComponent<Slot>();
+            
         }
+        if (collision.gameObject.tag == "item")
+        {
+            overlap = true;
+        }
+
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "slot")
         {
             inSlot = true;
-            Slot _slot = collision.GetComponent<Slot>();
-            if (_slot.isSelected == true)
-            {
-                overlap = true;
-            }
-            //_slot = collision.GetComponent<Slot>();
+            
+        }
+        if (collision.gameObject.tag == "item")
+        {
+            overlap = true;
         }
     }
 
@@ -42,10 +41,12 @@ public class Block : MonoBehaviour {
     {
         if (collision.gameObject.tag == "slot")
         {
-            _collision = null;
-            overlap = false;
-            //_slot = null;
             inSlot = false;
+            
+        }
+        if (collision.gameObject.tag == "item")
+        {
+            overlap = false;
         }
     }
     void Start () {

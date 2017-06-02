@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler{
-    public SlotData _slotData;
+    
     Item _item;
     Vector3 startPos;
     
@@ -39,9 +39,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     
     public void OnBeginDrag(PointerEventData eventData)
     {
-        
         startPos = this.transform.position;
-        
     }
         
     public void OnDrag(PointerEventData eventData)
@@ -52,45 +50,31 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (IfAllIn == true)
+        if (IfAllIn == true && CheckOverlap() == false)
         {
-            
-            if (Overlap() == false)
-            {
-                this.transform.position = _item.SlotPos;
-                
-            }
-            else {
-                this.transform.position = startPos;
-                
-            }
+            this.transform.position = _item.SlotPos;
         }
-        
+        else {
+            this.transform.position = startPos;
+        }
     }
     // Use this for initialization
-    void MakeSlotSelected()
-    {
-        for (int i = 0; i < _slotData.SlotsList.Count; i++)
-        {
-            if (_slotData.SlotsList[i].currentUsed == true)
-            {
-                _slotData.SlotsList[i].isSelected = true;
-            }
-        }
-    }
 
-    bool Overlap()
+    bool CheckOverlap()
     {
-        int num = 0;
+        int OverNum = 0;
         for (int i = 0; i < _item.BlockList.Count; i++)
         {
-            if (_item.BlockList[i]._collision != null)
+            if (_item.BlockList[i].overlap == true)
             {
-                num++;
+                OverNum++;
+            }
+            else {
+                continue;
             }
         }
 
-        if (num == 0)
+        if (OverNum == 0)
         {
             return false;
         }
@@ -98,7 +82,6 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             return true;
         }
     }
-
     void Start()
     {
         _item = this.GetComponent<Item>();

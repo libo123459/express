@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 
 public class Slot : MonoBehaviour {
-    public bool isSelected;
-    public bool currentUsed;
-    public Collider2D _collision;
+    public bool filled = false;
+    
+    public Block _block;
    
 	// Use this for initialization
 	void Start () {
@@ -20,40 +20,24 @@ public class Slot : MonoBehaviour {
 	}
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (this.isSelected != true)
+        if (collision.gameObject.tag == "block")
         {
-            if (collision.gameObject.tag == "item")
-            {
-                this.GetComponent<Image>().color = new Color(0, 0, 0, 1);
-                currentUsed = true;
-                _collision = collision;
-            }
+            this.GetComponent<Image>().color = new Color(0, 0, 0, 1);
         }
         
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (this.isSelected != true)
+        if (collision.gameObject.tag == "block")
         {
-            if (collision.gameObject.tag == "item")
-            {
-                this.GetComponent<Image>().color = new Color(0, 0, 0, 1);
-                currentUsed = true;
-                _collision = collision;
-            }
+            this.GetComponent<Image>().color = new Color(0, 0, 0, 1);
         }
-        
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (this.isSelected != true)
+        if (collision.gameObject.tag == "block")
         {
-            if (collision.gameObject.tag == "item")
-            {
-                this.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                currentUsed = false;
-                _collision = null;
-            }
+            this.GetComponent<Image>().color = new Color(1, 1, 1, 1);
         }
     }
 

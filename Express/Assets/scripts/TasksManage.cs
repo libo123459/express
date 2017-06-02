@@ -27,7 +27,7 @@ public class TasksManage : MonoBehaviour {
             mytask.transform.localScale = new Vector3(1, 1, 1);
 
             _taskData.TasksList.Add(mytask);
-            mytask._item = _itemData.ItemsList[Random.Range(0, 5)];//临时
+            mytask._item = _itemData.ItemsList[Random.Range(0, 2)];//临时
             mytask.destination = mytask.transform.GetChild(0).GetComponent<Text>();
             mytask.destination.text = mytask._item.gameObject.name;
 
