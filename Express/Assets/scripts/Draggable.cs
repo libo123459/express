@@ -6,8 +6,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler{
+    public SlotData _slotData;
     Item _item;
     Vector3 startPos;
+    
     bool IfAllIn
     {
         get
@@ -37,8 +39,9 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     
     public void OnBeginDrag(PointerEventData eventData)
     {
-        MakeTheSlotSelected(false);
+        
         startPos = this.transform.position;
+        
     }
         
     public void OnDrag(PointerEventData eventData)
@@ -46,20 +49,53 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         this.transform.position = eventData.position;
     }
 
+
     public void OnEndDrag(PointerEventData eventData)
     {
-        this.transform.position = _item.SlotPos;
-        MakeTheSlotSelected(true);
+        if (IfAllIn == true)
+        {
+            
+            if (Overlap() == false)
+            {
+                this.transform.position = _item.SlotPos;
+                
+            }
+            else {
+                this.transform.position = startPos;
+                
+            }
+        }
+        
     }
     // Use this for initialization
-    void MakeTheSlotSelected(bool _selected)
+    void MakeSlotSelected()
     {
+        for (int i = 0; i < _slotData.SlotsList.Count; i++)
+        {
+            if (_slotData.SlotsList[i].currentUsed == true)
+            {
+                _slotData.SlotsList[i].isSelected = true;
+            }
+        }
+    }
+
+    bool Overlap()
+    {
+        int num = 0;
         for (int i = 0; i < _item.BlockList.Count; i++)
         {
-            if (_item.BlockList[i]._slot != null)
+            if (_item.BlockList[i]._collision != null)
             {
-                _item.BlockList[i]._slot.isSelected = _selected;
+                num++;
             }
+        }
+
+        if (num == 0)
+        {
+            return false;
+        }
+        else {
+            return true;
         }
     }
 

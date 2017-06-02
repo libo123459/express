@@ -1,17 +1,27 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Block : MonoBehaviour {
     public bool inSlot = false;
-    public Slot _slot;
+    public bool overlap = false;
+    public Collider2D _collision;
+    //public Slot _slot;
     // Use this for initialization
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "slot")
         {
             inSlot = true;
-            _slot = collision.GetComponent<Slot>();
+            _collision = collision;
+            Slot _slot = collision.GetComponent<Slot>();
+            if (_slot.isSelected == true)
+            {
+                overlap = true;
+            }
+            //_slot = collision.GetComponent<Slot>();
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
@@ -19,7 +29,12 @@ public class Block : MonoBehaviour {
         if (collision.gameObject.tag == "slot")
         {
             inSlot = true;
-            _slot = collision.GetComponent<Slot>();
+            Slot _slot = collision.GetComponent<Slot>();
+            if (_slot.isSelected == true)
+            {
+                overlap = true;
+            }
+            //_slot = collision.GetComponent<Slot>();
         }
     }
 
@@ -27,7 +42,9 @@ public class Block : MonoBehaviour {
     {
         if (collision.gameObject.tag == "slot")
         {
-            _slot = null;
+            _collision = null;
+            overlap = false;
+            //_slot = null;
             inSlot = false;
         }
     }
@@ -39,4 +56,5 @@ public class Block : MonoBehaviour {
 	void Update () {
 		
 	}
+
 }
