@@ -9,8 +9,10 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     
     Item _item;
     Vector3 startPos;
+    Card _card;
 
     CardsManage _cardManage;
+    OrderManage _orderManage;
 
     bool IfAllIn
     {
@@ -55,6 +57,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (IfAllIn == true && CheckOverlap() == false)
         {
             this.transform.position = _item.SlotPos;
+            _orderManage.AddTheOrder(_card);
         }
         else {
             this.transform.position = startPos;
@@ -87,11 +90,11 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     void Start()
     {
         _item = this.GetComponent<Item>();
-        GameObject cardManage = GameObject.Find("Manage");
-        _cardManage = cardManage.GetComponent<CardsManage>();
-        print(cardManage.name);
+        _cardManage = GameObject.Find("Manage").GetComponent<CardsManage>();
+        _orderManage = GameObject.Find("Manage").GetComponent<OrderManage>();
+        _card = this.transform.parent.GetComponent<Card>();
     }
-
+   
     // Update is called once per frame
     void Update()
     {
