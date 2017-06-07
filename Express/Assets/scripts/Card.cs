@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 
 public class Card : MonoBehaviour {
+    public int ID;
     public int timeCast;
     public int profit;
     
@@ -12,7 +13,8 @@ public class Card : MonoBehaviour {
     public Item _item;
 	// Use this for initialization
 	void Start () {
-		
+        destination.text = "shanghai";
+        timeCast = 10;
 	}
 	
 	// Update is called once per frame

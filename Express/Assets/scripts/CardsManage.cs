@@ -27,11 +27,13 @@ public class CardsManage : MonoBehaviour {
             mycard.transform.localScale = new Vector3(1, 1, 1);
 
             _cardData.CardsList.Add(mycard);
+
             mycard.timeCast = Random.Range(2,6);//耗时
             mycard._item = _itemData.ItemsList[Random.Range(0, 2)];//临时
             mycard._item.timeCast = Random.Range(1,3);
             mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();
             mycard.destination.text = mycard._item.gameObject.name;
+            mycard.ID = i;
 
             Item myitem = Instantiate(mycard._item);
             myitem.transform.SetParent(mycard.transform);

@@ -9,19 +9,14 @@ public class OrderManage : MonoBehaviour {
 
     public void AddTheOrder(Card _card)
     {
-        if (CheckNoThis(_order) == true) ///error!!!!!!!!!!!
-        {
-            Order myorder = Instantiate(_order);
-            myorder.transform.SetParent(orderPanel.transform);
-            myorder.transform.localPosition = new Vector3(0, 0, 0);
-            myorder.transform.localScale = new Vector3(1, 1, 1);
-
-            myorder.ShowDestination(_card.destination.text);
-            myorder.ShowTimeCast(_card.timeCast);
-            myorder.ShowConsume(_card._item.consume);
-
-            OrdersList.Add(myorder);
-        }
+        Order myorder = Instantiate(_order);
+        myorder.transform.SetParent(orderPanel.transform);
+        myorder.transform.localPosition = new Vector3(0, 0, 0);
+        myorder.transform.localScale = new Vector3(1, 1, 1);
+        myorder.ID = _card.ID;
+        myorder.InitOrder();
+        ShowDestination(myorder,_card);
+        OrdersList.Add(myorder);
         
     }
 
@@ -48,6 +43,15 @@ public class OrderManage : MonoBehaviour {
         else {
             return false;
         }
+    }
+
+    public void ShowDestination(Order theorder, Card _card)
+    {
+        theorder.destination.text = _card.destination.text;
+
+        theorder.timeCast.text = "time:" + _card.timeCast.ToString();
+
+        theorder.consume.text = "consume:" + _card._item.consume.ToString();
     }
     // Use this for initialization
     void Start () {

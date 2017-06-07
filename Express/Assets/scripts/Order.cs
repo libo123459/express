@@ -5,32 +5,26 @@ using UnityEngine.UI;
 
 
 public class Order : MonoBehaviour {
-    public Text _destination;
-    public Text _timeCast;
-    public Text _consume;
+    public Text destination;
+    public Text timeCast;
+    public Text consume;
+    public int ID;
 
 	// Use this for initialization
 	void Start ()
     {
-        this._destination = transform.Find("destination").GetComponent<Text>();
-        this._timeCast = transform.Find("time").GetComponent<Text>();
-        this._consume = transform.Find("consume").GetComponent<Text>();
+        
     }
 
-    public void ShowDestination(string address)
+    public void InitOrder()
     {
-        _destination.text = address;
+        this.destination = transform.Find("destination").GetComponent<Text>();
+        this.timeCast = transform.Find("time").GetComponent<Text>();
+        this.consume = transform.Find("consume").GetComponent<Text>();
+       
     }
 
-    public void ShowTimeCast(int time)
-    {
-        _timeCast.text = "time:" + time.ToString();
-    }
-
-    public void ShowConsume(int consume)
-    {
-        _consume.text = "consume:" + consume.ToString();
-    }
+    
 
     // Update is called once per frame
     void Update () {

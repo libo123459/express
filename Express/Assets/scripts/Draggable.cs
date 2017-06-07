@@ -7,12 +7,12 @@ using UnityEngine.UI;
 
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler{
     
-    Item _item;
+    public Item _item;
     Vector3 startPos;
-    Card _card;
+    public Card _card;
 
-    CardsManage _cardManage;
-    OrderManage _orderManage;
+    public CardsManage _cardManage;
+    public OrderManage _orderManage;
 
     bool IfAllIn
     {
@@ -58,6 +58,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         {
             this.transform.position = _item.SlotPos;
             _orderManage.AddTheOrder(_card);
+            
         }
         else {
             this.transform.position = startPos;
