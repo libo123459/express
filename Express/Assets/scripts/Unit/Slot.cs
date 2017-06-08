@@ -5,10 +5,7 @@ using UnityEngine.UI;
 
 
 public class Slot : MonoBehaviour {
-    public bool filled = false;
-    
-    public Block _block;
-   
+          
 	// Use this for initialization
 	void Start () {
 		

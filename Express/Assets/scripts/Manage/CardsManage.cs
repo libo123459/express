@@ -45,15 +45,17 @@ public class CardsManage : MonoBehaviour {
 
     public void CancelTheSendedCard()///将装配上的物件从卡池中消除
     {   
-        for (int i = 0; i < oManage.OrdersList.Count; i++)
+        for (int i = 0; i < oManage.OrdersList.Count; i++) //清除卡池中已装配的卡
         {
             int index = oManage.OrdersList[i].ID;
             _cardData.CardsList[index].Destroy();     
         }
+
         _cardData.CardsList.Clear();
+
         print(grid.transform.childCount.ToString());
         
-        for (int i = 0; i < grid.transform.childCount; i++)
+        for (int i = 0; i < grid.transform.childCount; i++)//重新排列剩余卡
         {
             Card thecard = grid.transform.GetChild(i).GetComponent<Card>();
             thecard.ID = i;
@@ -61,7 +63,7 @@ public class CardsManage : MonoBehaviour {
         }
     }
 
-    public void AddTheCard()
+    public void AddTheCard()   //抽卡
     {
         if (grid.childCount < 6) ////6为临时测试用，需要改成卡池上线的变量
         {
@@ -81,7 +83,7 @@ public class CardsManage : MonoBehaviour {
             myitem.transform.localPosition = new Vector3(0, 0, 0);
             myitem.transform.localScale = new Vector3(1, 1, 1);
         }
-        for (int i = 0; i < grid.childCount; i++)
+        for (int i = 0; i < grid.childCount; i++)         //刷新所有卡的序列号
         {
             grid.transform.GetChild(i).GetComponent<Card>().ID = i;
         }
