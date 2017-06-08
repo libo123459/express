@@ -6,18 +6,21 @@ public class OrderManage : MonoBehaviour {
     public Transform orderPanel;
     public Order _order;
     public List<Order> OrdersList = new List<Order>();
+    public Truck _truck;
 
     public void AddTheOrder(Card _card)
     {
-        Order myorder = Instantiate(_order);
-        myorder.transform.SetParent(orderPanel.transform);
-        myorder.transform.localPosition = new Vector3(0, 0, 0);
-        myorder.transform.localScale = new Vector3(1, 1, 1);
-        myorder.ID = _card.ID;
-        myorder.InitOrder();
-        ShowDestination(myorder,_card);
-        OrdersList.Add(myorder);
-        
+        if (CheckNoThis(_card) == true)
+        {
+            Order myorder = Instantiate(_order);
+            myorder.transform.SetParent(orderPanel.transform);
+            myorder.transform.localPosition = new Vector3(0, 0, 0);
+            myorder.transform.localScale = new Vector3(1, 1, 1);
+            myorder.ID = _card.ID;
+            myorder.InitOrder();
+            ShowDestination(myorder, _card);
+            OrdersList.Add(myorder);
+        }
     }
 
     public void CancelTheOrder(Card _card)
@@ -25,18 +28,18 @@ public class OrderManage : MonoBehaviour {
         
     }
 
-    bool CheckNoThis(Order theOrder)
+    bool CheckNoThis(Card thecard)
     {
-        int num = 0;
-        for (int i = 0; i < orderPanel.transform.childCount; i++)
+        int sameNum = 0;
+        for (int i = 0; i < OrdersList.Count; i++)
         {
-            if (orderPanel.transform.GetChild(i).GetComponent<Order>() != theOrder)
-            {
-                num++;
+            if (thecard.ID == OrdersList[i].ID)
+            {                
+                sameNum++;
             }
         }
 
-        if (num == orderPanel.transform.childCount)
+        if (sameNum == 0)
         {
             return true;
         }
@@ -53,6 +56,29 @@ public class OrderManage : MonoBehaviour {
 
         theorder.consume.text = "consume:" + _card._item.consume.ToString();
     }
+
+    void RrefreshTheList()
+    {
+        List<Order> _temp = new List<Order>();
+        for (int i = 0; i < OrdersList.Count; i++)
+        {
+            if (OrdersList[i] != null)
+            {
+                _temp.Add(OrdersList[i]); 
+            }
+        }
+        OrdersList.Clear();
+        for (int i = 0; i < _temp.Count; i++)
+        {
+            OrdersList.Add(_temp[i]);
+        }
+    }
+
+    void SendOrderToTruck()
+    {
+        
+    }
+
     // Use this for initialization
     void Start () {
 		

@@ -20,8 +20,7 @@ public class Order : MonoBehaviour {
     {
         this.destination = transform.Find("destination").GetComponent<Text>();
         this.timeCast = transform.Find("time").GetComponent<Text>();
-        this.consume = transform.Find("consume").GetComponent<Text>();
-       
+        this.consume = transform.Find("consume").GetComponent<Text>();       
     }
 
     
