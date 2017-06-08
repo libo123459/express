@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour {
     public int consume;//油耗
-    public int timeCast;//耗时
+    //public int timeCast;//耗时
     public List<Block> BlockList = new List<Block>(); //物品分几块的list
     public int BlockNum; //块的数量
     public string Property; //物品特征

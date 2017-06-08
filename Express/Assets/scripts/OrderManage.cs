@@ -6,8 +6,8 @@ public class OrderManage : MonoBehaviour {
     public Transform orderPanel;
     public Order _order;
     public List<Order> OrdersList = new List<Order>();
-    public Truck _truck;
-
+    TruckManage _tManage;
+    
     public void AddTheOrder(Card _card)
     {
         if (CheckNoThis(_card) == true)
@@ -53,8 +53,10 @@ public class OrderManage : MonoBehaviour {
         theorder.destination.text = _card.destination.text;
 
         theorder.timeCast.text = "time:" + _card.timeCast.ToString();
+        theorder._timecast = _card.timeCast;
 
         theorder.consume.text = "consume:" + _card._item.consume.ToString();
+        theorder._consume = _card._item.consume;
     }
 
     void RrefreshTheList()
@@ -74,15 +76,11 @@ public class OrderManage : MonoBehaviour {
         }
     }
 
-    void SendOrderToTruck()
-    {
-        
-    }
-
+    
     // Use this for initialization
     void Start () {
-		
-	}
+		_tManage = GameObject.Find("Manage").GetComponent<TruckManage>();
+    }
 	
 	// Update is called once per frame
 	void Update () {

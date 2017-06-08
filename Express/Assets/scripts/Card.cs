@@ -11,10 +11,14 @@ public class Card : MonoBehaviour {
     
     public Text destination;
     public Item _item;
-	// Use this for initialization
-	void Start () {
-        destination.text = "shanghai";
-        timeCast = 10;
+
+    public void Destroy()
+    {
+        
+        DestroyImmediate(this.gameObject);
+    }
+    // Use this for initialization
+    void Start () {        
 	}
 	
 	// Update is called once per frame

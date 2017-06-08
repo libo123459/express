@@ -8,6 +8,9 @@ public class Order : MonoBehaviour {
     public Text destination;
     public Text timeCast;
     public Text consume;
+
+    public int _timecast;
+    public int _consume;
     public int ID;
 
 	// Use this for initialization
