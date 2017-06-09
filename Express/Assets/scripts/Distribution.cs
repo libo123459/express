@@ -15,11 +15,12 @@ public class Distribution : MonoBehaviour {
     int consume;
     int timeCast;
     
-    public void distribution(int truckNum)//装配界面
+    public void distribution(int truckNum)//配送界面
     {
         Truck _truck = tManage.trucksList[truckNum];//获取车辆
         _truck.orderNum = oManage.OrdersList.Count;
-
+        _truck.state = "dist";
+        
         Image _tImage = Instantiate(truck);//显示车的图片
         _tImage.transform.SetParent(distributionPanel);
         _tImage.transform.localPosition = new Vector3(-600, 200, 0);
@@ -29,32 +30,34 @@ public class Distribution : MonoBehaviour {
         {
             _truck.timeCast.Add(oManage.OrdersList[i]._timecast);
             _truck.consume.Add(oManage.OrdersList[i]._consume);
+            _truck.remain = _truck.remain + _truck.timeCast[i];///车辆总共的回合数
             DestroyImmediate(oManage.OrdersList[i].gameObject);// 清除任务栏上的任务
         }
         
         displaySpot(truckNum);
+
         oManage.OrdersList.Clear();        
     }
     void displaySpot(int truckNum)
     {
         Truck _truck = tManage.trucksList[truckNum];//获取车辆
+
         for (int i = 0; i < _truck.orderNum; i++)
         {
             GameObject dest = Instantiate(destination, destPanel);
+
             if (i < 1)
             {
                 dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(100 + 100 * _truck.timeCast[i], 0);
-                //transform.localPosition = new Vector3(100 + 150 * _truck._ordersList[i]._timecast, 0, 0);
-                
             }
             else {
                 float Posx = destList[i - 1].GetComponent<RectTransform>().anchoredPosition.x;
+
                 dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(Posx + 150 * _truck.timeCast[i], 0);
             }
             
             dest.transform.localScale = new Vector3(1,1,1);
             destList.Add(dest);
-            print("111");
         }
     }
 

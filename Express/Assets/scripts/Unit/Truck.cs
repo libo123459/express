@@ -11,7 +11,8 @@ public class Truck : MonoBehaviour {
     public int column;
     public int ID;
     public int orderNum;
-
+    public int remain;
+    public string state;
 
     public void ClearAll()
     {

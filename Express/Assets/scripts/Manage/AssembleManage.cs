@@ -8,10 +8,8 @@ public class AssembleManage : MonoBehaviour {
     public Transform _slotPanel;
     public List<Slot> slotList = new List<Slot>();
     public Slot _slot;
-
     public int currentTruck;
     TruckManage tManage;
-
     
 	// Use this for initialization
 	void Start () {
@@ -27,6 +25,7 @@ public class AssembleManage : MonoBehaviour {
     {
         Truck _truck = tManage.trucksList[truckNum];
         currentTruck = truckNum;
+        _truck.state = "assemble";
 
         _slotPanel.GetComponent<GridLayoutGroup>().constraintCount = _truck.column;
 
