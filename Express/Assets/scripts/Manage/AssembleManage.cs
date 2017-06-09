@@ -26,6 +26,7 @@ public class AssembleManage : MonoBehaviour {
     public void Assemble(int truckNum) //装配界面
     {
         Truck _truck = tManage.trucksList[truckNum];
+        currentTruck = truckNum;
 
         _slotPanel.GetComponent<GridLayoutGroup>().constraintCount = _truck.column;
 
@@ -36,8 +37,8 @@ public class AssembleManage : MonoBehaviour {
             Slot slot = Instantiate(_slot,_slotPanel);
             slotList.Add(slot);
         }
-        currentTruck = truckNum;
-        _truck._ordersList.Clear();
+        
+        _truck.ClearAll();
     }
 
 	// Update is called once per frame

@@ -7,10 +7,13 @@ public class CardsManage : MonoBehaviour {
     public Card _card;
     
     public Transform grid;
+
     CardsData _cardData;
     ItemData _itemData;
+
     int RefreshTime;
     OrderManage oManage;
+
 	// Use this for initialization
 	void Start () {
         _cardData = this.GetComponent<CardsData>();
@@ -29,7 +32,7 @@ public class CardsManage : MonoBehaviour {
 
             _cardData.CardsList.Add(mycard);
 
-            mycard.timeCast = Random.Range(2,6);//耗时
+            mycard.timeCast = Random.Range(1,3);//耗时
             mycard._item = _itemData.ItemsList[Random.Range(0, 2)];//临时
             mycard._item.consume = Random.Range(1, 5);//油耗
             mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();
@@ -72,7 +75,7 @@ public class CardsManage : MonoBehaviour {
 
             _cardData.CardsList.Add(mycard);
 
-            mycard.timeCast = Random.Range(2, 6);//耗时
+            mycard.timeCast = Random.Range(1, 3);//耗时
             mycard._item = _itemData.ItemsList[Random.Range(0, 2)];//临时
             mycard._item.consume = Random.Range(1, 5);//油耗
             mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();

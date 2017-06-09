@@ -8,36 +8,38 @@ public class Manage : MonoBehaviour {
     public GameObject assemblepanel;
     public GameObject distributionpanel;
     public GameObject slotPanel;
+    public GameObject destpanel;
 
     CardsManage cManage;
     OrderManage oManage;
-    Distribution _distribution;
+    Distribution dManage;
     AssembleManage aManage;
     
     public void Distribute()
     {
-        cManage.CancelTheSendedCard();
+        cManage.CancelTheSendedCard();//将装配上的物件从卡池中消除
 
-        _distribution.distribution(aManage.currentTruck);
+        dManage.distribution(aManage.currentTruck);//配送
 
-        ClearTheSlot();
+        ClearTheSlot();//清除slot
 
         assemblepanel.SetActive(false);
         distributionpanel.SetActive(true);
+        destpanel.SetActive(true);
     }
 
     public void Assemble(int truckNum)
     {
         aManage.Assemble(truckNum);
+        dManage.ClearDist();
 
         assemblepanel.SetActive(true);
         distributionpanel.SetActive(false);
-        
+        destpanel.SetActive(false);
     }
 
     public void ClearTheSlot()
     {
-        
         for (int i = 0; i < aManage.slotList.Count; i++)
         {
             DestroyImmediate(aManage.slotList[i].gameObject);
@@ -46,10 +48,11 @@ public class Manage : MonoBehaviour {
     }
 
     // Use this for initialization
-	void Start () {
+	void Start ()
+    {
         cManage = this.GetComponent<CardsManage>();
         oManage = this.GetComponent<OrderManage>();
-        _distribution = this.GetComponent<Distribution>();
+        dManage = this.GetComponent<Distribution>();
         aManage = this.GetComponent<AssembleManage>();
 	}
 	

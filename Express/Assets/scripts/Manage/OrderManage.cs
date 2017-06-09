@@ -6,7 +6,7 @@ public class OrderManage : MonoBehaviour {
     public Transform orderPanel;
     public Order _order;
     public List<Order> OrdersList = new List<Order>();
-    TruckManage _tManage;
+    
     
     public void AddTheOrder(Card _card)
     {
@@ -79,7 +79,7 @@ public class OrderManage : MonoBehaviour {
     
     // Use this for initialization
     void Start () {
-		_tManage = GameObject.Find("Manage").GetComponent<TruckManage>();
+		
     }
 	
 	// Update is called once per frame
