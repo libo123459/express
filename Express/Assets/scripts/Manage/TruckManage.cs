@@ -13,7 +13,7 @@ public class TruckManage : MonoBehaviour {
         {
             Truck mytruck = Instantiate(_truck);
             mytruck.transform.SetParent(truckPanel);
-            mytruck.transform.localPosition = new Vector3(0,0,0);
+            mytruck.transform.localPosition = new Vector3(-720, 300 * i - 150, 0);
             mytruck.transform.localScale = new Vector3(1,1,1);
 
             mytruck.row = 4;

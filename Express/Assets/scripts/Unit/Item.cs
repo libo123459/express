@@ -27,14 +27,6 @@ public class Item : MonoBehaviour {
             SlotPos = collision.transform.position;
         }
     }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        /*if (collision.gameObject.tag == "slot")
-        {
-            SlotPos = collision.transform.position;
-        }*/
-    }
     // Update is called once per frame
     void Update () {
 		

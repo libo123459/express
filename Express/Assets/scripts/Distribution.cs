@@ -31,12 +31,7 @@ public class Distribution : MonoBehaviour {
         }
         else {
             _truck.state = "dist";
-        }       
-        
-        Image _tImage = Instantiate(truck);//显示车的图片
-        _tImage.transform.SetParent(distributionPanel);
-        _tImage.transform.localPosition = new Vector3(-720, 200, 0);
-        _tImage.transform.localScale = new Vector3(1, 1, 1);
+        }      
                
         displaySpot(_truck);
     }
@@ -50,7 +45,7 @@ public class Distribution : MonoBehaviour {
             if (i < 1)
             {
                 float Posx = (float)_truck.timeCast[i] / (float)_truck.remain * 1600;
-                dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(Posx, 0);
+                dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(Posx, 400 * _truck.ID -200);
             }
             else {
                 float a = 0;
@@ -60,7 +55,7 @@ public class Distribution : MonoBehaviour {
                 }
                 float Posx = ((float)_truck.timeCast[i] + (float)a) / (float)_truck.remain * 1600;
 
-                dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(Posx, 0);
+                dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(Posx, 400 * _truck.ID - 200);
             }
 
             dest.transform.localScale = new Vector3(1,1,1);
@@ -68,14 +63,14 @@ public class Distribution : MonoBehaviour {
         }
     }
 
-    public void ClearDistAndDest()
+    public void ClearDest()
     {
         for (int i = 0; i < destList.Count; i++)
         {
             DestroyImmediate(destList[i].gameObject);
         }
         destList.Clear();
-        DestroyImmediate(distributionPanel.transform.GetChild(0).gameObject);
+        
     }
 
     public void NextRound()
@@ -124,12 +119,11 @@ public class Distribution : MonoBehaviour {
     {
         if (_truck.state == "dist")
         {
-            GameObject mytruck = distributionPanel.transform.GetChild(_truck.ID).gameObject;
             float unitShift = 0;
             unitShift = 1600.0f / (float)_truck.remain;
-            float xPos = mytruck.transform.localPosition.x + unitShift;
-            float yPos = mytruck.transform.localPosition.y;
-            mytruck.transform.localPosition = new Vector3(xPos, yPos, 0);
+            float xPos = _truck.transform.localPosition.x + unitShift;
+            float yPos = _truck.transform.localPosition.y;
+            _truck.transform.localPosition = new Vector3(xPos, yPos, 0);
         }
         
     }

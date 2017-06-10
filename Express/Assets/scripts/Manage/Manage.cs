@@ -28,16 +28,18 @@ public class Manage : MonoBehaviour {
         assemblepanel.SetActive(false);
         distributionpanel.SetActive(true);
         destpanel.SetActive(true);
+        truckpanel.SetActive(true);
     }
 
     public void Assemble(int truckNum)
     {
         aManage.Assemble(truckNum);
-        dManage.ClearDistAndDest();
+        dManage.ClearDest();
 
         assemblepanel.SetActive(true);
         distributionpanel.SetActive(false);
         destpanel.SetActive(false);
+        truckpanel.SetActive(false);
     }
 
     public void ClearTheSlot()

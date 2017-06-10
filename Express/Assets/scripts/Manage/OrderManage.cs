@@ -67,24 +67,6 @@ public class OrderManage : MonoBehaviour {
         theorder.consume.text = "consume:" + _card._item.consume.ToString();
         theorder._consume = _card._item.consume;
     }
-
-    void RrefreshTheList()
-    {
-        List<Order> _temp = new List<Order>();
-        for (int i = 0; i < OrdersList.Count; i++)
-        {
-            if (OrdersList[i] != null)
-            {
-                _temp.Add(OrdersList[i]); 
-            }
-        }
-        OrdersList.Clear();
-        for (int i = 0; i < _temp.Count; i++)
-        {
-            OrdersList.Add(_temp[i]);
-        }
-    }
-
     
     // Use this for initialization
     void Start () {
