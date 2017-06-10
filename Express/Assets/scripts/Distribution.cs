@@ -7,6 +7,9 @@ public class Distribution : MonoBehaviour {
     public Transform distributionPanel;
     public Transform destPanel;
     public GameObject destination;
+    public GameObject ProfitPanel;
+
+    public Text _profit;
 
     public List<GameObject> destList = new List<GameObject>();
 
@@ -15,7 +18,7 @@ public class Distribution : MonoBehaviour {
     CardsData cData;
     TruckManage tManage;
     OrderManage oManage;
-    public Image truck;
+    
     int consume;
     int timeCast;
     
@@ -80,36 +83,32 @@ public class Distribution : MonoBehaviour {
         {
             for (int i = 0; i < tManage.trucksList.Count; i++)
             {
-                int finishedOrder = 0;///已完成订单数
                 if (tManage.trucksList[i].state == "dist")
                 {
-
-                    for (int j = 0; j < tManage.trucksList[i].timeCast.Count; j++) ////开始对第一个订单倒计时
+                    Truck _truck = tManage.trucksList[i];
+                    TruckMove(_truck);
+                    
+                    for (int j = 0; j < _truck.timeCast.Count; j++) ////开始对第一个订单倒计时
                     {
-                        if (tManage.trucksList[i].timeCast[j] != 0) ///如果为0，则开始第二个
+                        _truck.remain--;
+                        if (_truck.timeCast[j] != 0) ///如果为0，则开始第二个
                         {
-                            tManage.trucksList[i].timeCast[j]--;
+                            _truck.timeCast[j]--;                            
                             break;
                         }
                         else
                         {
-                            finishedOrder++;
-                            ProfitEachDest(tManage.trucksList[i], j);///收益函数？
+                            
+                            ProfitEachDest(_truck, j);///收益函数？
                             continue;
-                        }
+                        }                        
                     }
-                }
-                if (finishedOrder == tManage.trucksList[i].orderNum)
-                {
-                    ///执行回总站函数；
-                    //////收益函数？
-                    //花销函数？
-                    tManage.trucksList[i].state = "empty";
-                }
-                else
-                {
-                    TruckMove(tManage.trucksList[i]);
-                }
+                    if (_truck.remain == 0)
+                    {
+                        _truck.state = "finished";
+                        ProfitAtLast();
+                    }
+                }                
             }
         }
         
@@ -120,28 +119,37 @@ public class Distribution : MonoBehaviour {
         profit = profit + _truck.profit[index];
     }
 
-    void TruckMove(Truck _truck)
+    void ProfitAtLast()
     {
-        if (_truck.state == "dist")
-        {
-            float unitShift = 0;
-            unitShift = 1600.0f / (float)_truck.remain;
-            float xPos = _truck.transform.localPosition.x + unitShift;
-            float yPos = _truck.transform.localPosition.y;
-            _truck.transform.localPosition = new Vector3(xPos, yPos, 0);
-        }
-        if (_truck.state == "empty")
-        {
-            float xPos = _truck.transform.localPosition.x;
-            float yPos = _truck.transform.localPosition.y;
-            _truck.transform.localPosition = new Vector3(xPos - 1600,yPos,0);
-        }
-        
+        ProfitPanel.SetActive(true);
+        _profit.text = "总共收益金额：" + profit.ToString();
     }
 
-    void TruckMoveToStation()
+    void TruckMove(Truck _truck)
     {
+        float unitShift = 0;
+        unitShift = 1600.0f / (float)_truck.remain;
+        float xPos = _truck.transform.localPosition.x + unitShift;
+        float yPos = _truck.transform.localPosition.y;
+        _truck.transform.localPosition = new Vector3(xPos, yPos, 0);
+                
+    }
 
+    public void TruckMoveToStation()
+    {
+        for (int i = 0; i < tManage.trucksList.Count; i++)
+        {
+            Truck _truck = tManage.trucksList[i];
+            if (tManage.trucksList[i].state == "finished")
+            {
+                float xPos = _truck.transform.localPosition.x;
+                float yPos = _truck.transform.localPosition.y;
+                _truck.transform.localPosition = new Vector3(xPos - 1600, yPos, 0);
+                _truck.state = "empty";
+            }
+        }
+        _profit.text = null;
+        ProfitPanel.SetActive(false);
     }
 
     // Use this for initialization
