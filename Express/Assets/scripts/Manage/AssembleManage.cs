@@ -37,7 +37,7 @@ public class AssembleManage : MonoBehaviour {
             slotList.Add(slot);
         }
         
-        _truck.ClearAll();
+        _truck.ClearAll(); ///清除truck上已有的订单
     }
 
 	// Update is called once per frame

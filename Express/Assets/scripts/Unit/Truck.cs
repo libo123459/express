@@ -7,6 +7,8 @@ public class Truck : MonoBehaviour {
     public List<string> _destination = new List<string>();
     public List<int> timeCast = new List<int>();
     public List<int> consume = new List<int>();
+    public List<int> profit = new List<int>();
+
     public int row;
     public int column;
     public int ID;
@@ -19,6 +21,7 @@ public class Truck : MonoBehaviour {
         _destination.Clear();
         timeCast.Clear();
         consume.Clear();
+        remain = 0;
     }
 	// Use this for initialization
 	void Start () {

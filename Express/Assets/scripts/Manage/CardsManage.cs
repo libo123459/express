@@ -35,6 +35,7 @@ public class CardsManage : MonoBehaviour {
             mycard.timeCast = Random.Range(1,3);//耗时
             mycard._item = _itemData.ItemsList[Random.Range(0, 2)];//临时
             mycard._item.consume = Random.Range(1, 5);//油耗
+            mycard.profit = Random.Range(10,30);///收益
             mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();
             mycard.destination.text = _cardData.destinations[Random.Range(0, 10)];
             mycard.ID = i;

@@ -7,10 +7,6 @@ public class TruckManage : MonoBehaviour {
     public List<Truck> trucksList = new List<Truck>();
     public Transform truckPanel;
 
-    public void NextRound()
-    {
-
-    }
 	// Use this for initialization
 	void Start () {
         for (int i = 0; i < 2; i++)/////////临时

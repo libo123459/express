@@ -17,15 +17,24 @@ public class OrderManage : MonoBehaviour {
             myorder.transform.localPosition = new Vector3(0, 0, 0);
             myorder.transform.localScale = new Vector3(1, 1, 1);
             myorder.ID = _card.ID;
+            myorder.profit = _card.profit;
             myorder.InitOrder();
             ShowDestination(myorder, _card);
             OrdersList.Add(myorder);
         }
     }
 
-    public void CancelTheOrder(Card _card)
+    public void SendOrderToTruck(Truck _truck)
     {
-        
+        _truck.orderNum = OrdersList.Count;
+        for (int i = 0; i < OrdersList.Count; i++)///////把已装配的订单数据传输到当前truck上
+        {
+            _truck.timeCast.Add(OrdersList[i]._timecast);
+            _truck.consume.Add(OrdersList[i]._consume);
+            _truck.profit.Add(OrdersList[i].profit);
+            _truck.remain = _truck.remain + _truck.timeCast[i];///车辆总共的回合数
+            DestroyImmediate(OrdersList[i].gameObject);// 清除任务栏上的任务
+        }
     }
 
     bool CheckNoThis(Card thecard)

@@ -12,6 +12,7 @@ public class Order : MonoBehaviour {
     public int _timecast;
     public int _consume;
     public int ID;
+    public int profit;
 
 	// Use this for initialization
 	void Start ()

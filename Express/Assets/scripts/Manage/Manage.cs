@@ -14,6 +14,8 @@ public class Manage : MonoBehaviour {
     OrderManage oManage;
     Distribution dManage;
     AssembleManage aManage;
+
+    int money;
     
     public void Distribute()
     {
@@ -31,7 +33,7 @@ public class Manage : MonoBehaviour {
     public void Assemble(int truckNum)
     {
         aManage.Assemble(truckNum);
-        dManage.ClearDist();
+        dManage.ClearDistAndDest();
 
         assemblepanel.SetActive(true);
         distributionpanel.SetActive(false);

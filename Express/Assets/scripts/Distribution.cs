@@ -9,6 +9,9 @@ public class Distribution : MonoBehaviour {
     public GameObject destination;
 
     public List<GameObject> destList = new List<GameObject>();
+
+    public int profit;
+
     TruckManage tManage;
     OrderManage oManage;
     public Image truck;
@@ -18,50 +21,54 @@ public class Distribution : MonoBehaviour {
     public void distribution(int truckNum)//配送界面
     {
         Truck _truck = tManage.trucksList[truckNum];//获取车辆
-        _truck.orderNum = oManage.OrdersList.Count;
-        _truck.state = "dist";
+
+        oManage.SendOrderToTruck(_truck);
+        oManage.OrdersList.Clear();
+
+        if (_truck.orderNum == 0) //检测车辆是否已经装配了物品
+        {
+            _truck.state = "empty";
+        }
+        else {
+            _truck.state = "dist";
+        }       
         
         Image _tImage = Instantiate(truck);//显示车的图片
         _tImage.transform.SetParent(distributionPanel);
-        _tImage.transform.localPosition = new Vector3(-600, 200, 0);
+        _tImage.transform.localPosition = new Vector3(-720, 200, 0);
         _tImage.transform.localScale = new Vector3(1, 1, 1);
-
-        for (int i = 0; i < oManage.OrdersList.Count; i++)///////把已装配的订单数据传输到当前truck上
-        {
-            _truck.timeCast.Add(oManage.OrdersList[i]._timecast);
-            _truck.consume.Add(oManage.OrdersList[i]._consume);
-            _truck.remain = _truck.remain + _truck.timeCast[i];///车辆总共的回合数
-            DestroyImmediate(oManage.OrdersList[i].gameObject);// 清除任务栏上的任务
-        }
-        
-        displaySpot(truckNum);
-
-        oManage.OrdersList.Clear();        
+               
+        displaySpot(_truck);
     }
-    void displaySpot(int truckNum)
-    {
-        Truck _truck = tManage.trucksList[truckNum];//获取车辆
 
+    void displaySpot(Truck _truck)
+    {
         for (int i = 0; i < _truck.orderNum; i++)
         {
             GameObject dest = Instantiate(destination, destPanel);
 
             if (i < 1)
             {
-                dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(100 + 100 * _truck.timeCast[i], 0);
+                float Posx = (float)_truck.timeCast[i] / (float)_truck.remain * 1600;
+                dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(Posx, 0);
             }
             else {
-                float Posx = destList[i - 1].GetComponent<RectTransform>().anchoredPosition.x;
+                float a = 0;
+                for (int j = 0; j < destList.Count; j++)
+                {
+                    a = a + _truck.timeCast[j];
+                }
+                float Posx = ((float)_truck.timeCast[i] + (float)a) / (float)_truck.remain * 1600;
 
-                dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(Posx + 150 * _truck.timeCast[i], 0);
+                dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(Posx, 0);
             }
-            
+
             dest.transform.localScale = new Vector3(1,1,1);
             destList.Add(dest);
         }
     }
 
-    public void ClearDist()
+    public void ClearDistAndDest()
     {
         for (int i = 0; i < destList.Count; i++)
         {
@@ -71,7 +78,61 @@ public class Distribution : MonoBehaviour {
         DestroyImmediate(distributionPanel.transform.GetChild(0).gameObject);
     }
 
+    public void NextRound()
+    {
+        
+        for (int i = 0; i < tManage.trucksList.Count; i++)
+        {
+            int finishedOrder = 0;///已完成订单数
+            if (tManage.trucksList[i].state == "dist")
+            {
+                
+                for (int j = 0; j < tManage.trucksList[i].timeCast.Count; j++) ////开始对第一个订单倒计时
+                {
+                    if (tManage.trucksList[i].timeCast[j] != 0) ///如果为0，则开始第二个
+                    {
+                        tManage.trucksList[i].timeCast[j]--;
+                        break;
+                    }
+                    else
+                    {
+                        finishedOrder++;
+                        ProfitEachDest(tManage.trucksList[i],j);///收益函数？
+                        continue;
+                    }
+                }
+            }
+            if (finishedOrder == tManage.trucksList[i].orderNum)
+            {
+                ///执行回总站函数；
+                //////收益函数？
+                //花销函数？
+                tManage.trucksList[i].state = "empty";
+            }
+            else {
+                TruckMove(tManage.trucksList[i]);
+            }
+        }
+    }
 
+    void ProfitEachDest(Truck _truck,int index)
+    {
+        profit = profit + _truck.profit[index];
+    }
+
+    void TruckMove(Truck _truck)
+    {
+        if (_truck.state == "dist")
+        {
+            GameObject mytruck = distributionPanel.transform.GetChild(_truck.ID).gameObject;
+            float unitShift = 0;
+            unitShift = 1600.0f / (float)_truck.remain;
+            float xPos = mytruck.transform.localPosition.x + unitShift;
+            float yPos = mytruck.transform.localPosition.y;
+            mytruck.transform.localPosition = new Vector3(xPos, yPos, 0);
+        }
+        
+    }
 
     // Use this for initialization
     void Start () {
