@@ -12,6 +12,7 @@ public class Distribution : MonoBehaviour {
 
     public int profit;
 
+    CardsData cData;
     TruckManage tManage;
     OrderManage oManage;
     public Image truck;
@@ -75,39 +76,43 @@ public class Distribution : MonoBehaviour {
 
     public void NextRound()
     {
-        
-        for (int i = 0; i < tManage.trucksList.Count; i++)
+        if (cData.CardsList.Count < 6)///6为临时
         {
-            int finishedOrder = 0;///已完成订单数
-            if (tManage.trucksList[i].state == "dist")
+            for (int i = 0; i < tManage.trucksList.Count; i++)
             {
-                
-                for (int j = 0; j < tManage.trucksList[i].timeCast.Count; j++) ////开始对第一个订单倒计时
+                int finishedOrder = 0;///已完成订单数
+                if (tManage.trucksList[i].state == "dist")
                 {
-                    if (tManage.trucksList[i].timeCast[j] != 0) ///如果为0，则开始第二个
+
+                    for (int j = 0; j < tManage.trucksList[i].timeCast.Count; j++) ////开始对第一个订单倒计时
                     {
-                        tManage.trucksList[i].timeCast[j]--;
-                        break;
-                    }
-                    else
-                    {
-                        finishedOrder++;
-                        ProfitEachDest(tManage.trucksList[i],j);///收益函数？
-                        continue;
+                        if (tManage.trucksList[i].timeCast[j] != 0) ///如果为0，则开始第二个
+                        {
+                            tManage.trucksList[i].timeCast[j]--;
+                            break;
+                        }
+                        else
+                        {
+                            finishedOrder++;
+                            ProfitEachDest(tManage.trucksList[i], j);///收益函数？
+                            continue;
+                        }
                     }
                 }
-            }
-            if (finishedOrder == tManage.trucksList[i].orderNum)
-            {
-                ///执行回总站函数；
-                //////收益函数？
-                //花销函数？
-                tManage.trucksList[i].state = "empty";
-            }
-            else {
-                TruckMove(tManage.trucksList[i]);
+                if (finishedOrder == tManage.trucksList[i].orderNum)
+                {
+                    ///执行回总站函数；
+                    //////收益函数？
+                    //花销函数？
+                    tManage.trucksList[i].state = "empty";
+                }
+                else
+                {
+                    TruckMove(tManage.trucksList[i]);
+                }
             }
         }
+        
     }
 
     void ProfitEachDest(Truck _truck,int index)
@@ -125,13 +130,25 @@ public class Distribution : MonoBehaviour {
             float yPos = _truck.transform.localPosition.y;
             _truck.transform.localPosition = new Vector3(xPos, yPos, 0);
         }
+        if (_truck.state == "empty")
+        {
+            float xPos = _truck.transform.localPosition.x;
+            float yPos = _truck.transform.localPosition.y;
+            _truck.transform.localPosition = new Vector3(xPos - 1600,yPos,0);
+        }
         
+    }
+
+    void TruckMoveToStation()
+    {
+
     }
 
     // Use this for initialization
     void Start () {
         tManage = GameObject.Find("Manage").GetComponent<TruckManage>();
         oManage = GameObject.Find("Manage").GetComponent<OrderManage>();
+        cData = GameObject.Find("Manage").GetComponent<CardsData>();
     }
 	
 	// Update is called once per frame
