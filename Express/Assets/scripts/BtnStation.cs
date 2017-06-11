@@ -12,7 +12,7 @@ public class BtnStation : MonoBehaviour {
         manage.Assemble(this.truckNum);
     }
 	void Start () {
-		
+        manage = GameObject.Find("Manage").GetComponent<Manage>();
 	}
 	
 	// Update is called once per frame

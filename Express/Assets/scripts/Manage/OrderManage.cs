@@ -68,7 +68,37 @@ public class OrderManage : MonoBehaviour {
         theorder.consume.text = "consume:" + _card._item.consume.ToString();
         theorder._consume = _card._item.consume;
     }
-    
+
+    public void CancelOrder(int id)
+    {
+        for (int i = 0; i < OrdersList.Count; i++)
+        {
+            if (OrdersList[i].ID == id)
+            {
+                DestroyImmediate(OrdersList[i].gameObject);
+            }
+        }
+        RefreshOrder();
+    }
+
+    void RefreshOrder()
+    {
+        List<Order> tmp = new List<Order>();
+        for (int i = 0; i < OrdersList.Count; i++)
+        {
+            if (OrdersList[i] != null)
+            {
+                tmp.Add(OrdersList[i]);
+            }
+        }
+        OrdersList.Clear();
+        for (int i = 0; i < tmp.Count; i++)
+        {
+            OrdersList.Add(tmp[i]);
+        }
+
+    }
+
     // Use this for initialization
     void Start () {
 		

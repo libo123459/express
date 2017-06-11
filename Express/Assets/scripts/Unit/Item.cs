@@ -9,10 +9,13 @@ public class Item : MonoBehaviour {
     public int BlockNum; //块的数量
     public string Property; //物品特征
     public Vector3 SlotPos;
-       
-	// Use this for initialization
-	void Start ()
+    public Vector3 StartPos;
+    public new Collider2D collider = null;
+
+    // Use this for initialization
+    void Start ()
     {
+        StartPos = this.transform.position;
         BlockNum = this.transform.childCount;
         for (int i = 0; i < this.transform.childCount; i++)
         {
@@ -22,9 +25,14 @@ public class Item : MonoBehaviour {
    	}
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        collider = collision;
         if (collision.gameObject.tag == "slot")
         {
             SlotPos = collision.transform.position;
+        }
+        if (collision.gameObject.tag == "card")
+        {
+            StartPos = collision.transform.position;
         }
     }
     // Update is called once per frame

@@ -61,7 +61,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             
         }
         else {
-            this.transform.position = startPos;
+            this.transform.position = _card.transform.position;
+            _orderManage.CancelOrder(_card.ID);
         }
     }
     // Use this for initialization

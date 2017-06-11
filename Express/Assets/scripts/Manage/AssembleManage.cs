@@ -14,7 +14,8 @@ public class AssembleManage : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         tManage = this.GetComponent<TruckManage>();
-        for (int i = 0; i < 20; i++)
+        currentTruck = 0;
+        for (int i = 0; i < 12; i++)
         {
             Slot slot = Instantiate(_slot, _slotPanel);
             slotList.Add(slot);

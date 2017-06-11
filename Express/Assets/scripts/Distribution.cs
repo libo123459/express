@@ -47,44 +47,47 @@ public class Distribution : MonoBehaviour {
         {
             GameObject dPanel = Instantiate(destPanel.gameObject, distributionPanel);
             BtnStation _station = Instantiate(Station, dPanel.transform);
-            dPanel.transform.localPosition = new Vector3(0, 100 - 200 * tManage.trucksList[i].ID, 0);
+            dPanel.transform.localPosition = new Vector3(0, 400 * tManage.trucksList[i].ID, 0);
             _station.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,0,0);
+            _station.truckNum = tManage.trucksList[i].ID;
             destPanelList.Add(dPanel);
         }
     }
 
     void displaySpot(Truck _truck)
     {
+        print(_truck.orderNum.ToString());
         for (int i = 0; i < _truck.orderNum; i++)
         {
             GameObject dest = Instantiate(destination, destPanelList[_truck.ID].transform);
 
             if (i < 1)
             {
-                float Posx = (float)_truck.timeCast[i] / (float)_truck.TotalTimecast * 1600;
-                dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(Posx, 400 * _truck.ID -200);
+                float Posx = ((float)_truck.timeCast[i] / (float)_truck.TotalTimecast) * 1600;
+                dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(Posx,0);
+                
             }
             else {
                 float a = 0;
-                for (int j = 0; j < _truck.orderNum; j++)
+                for (int j = 0; j <= i; j++)
                 {
                     a = a + _truck.timeCast[j];
                 }
-                float Posx = ((float)_truck.timeCast[i] + (float)a) / (float)_truck.TotalTimecast * 1600;
+                float Posx = (a / (float)_truck.TotalTimecast) * 1600;
 
-                dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(Posx, 400 * _truck.ID - 200);
+                dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(Posx,0);
             }
-
-            dest.transform.localScale = new Vector3(1,1,1);
-            destPanelList.Add(dest);
+            dest.transform.localScale = new Vector3(1,1,1);           
         }
     }
 
     public void ClearDest(int truckNum)
     {
-        for (int i = 0; i < destPanelList[truckNum].transform.childCount; i++)
+        int num = destPanelList[truckNum].transform.childCount;
+        for (int i = 1; i < num; i++)
         {
-            DestroyImmediate(destPanelList[truckNum].transform.GetChild(i).gameObject);
+            
+            DestroyImmediate(destPanelList[truckNum].transform.GetChild(1).gameObject);
         }       
     }
 
@@ -101,21 +104,26 @@ public class Distribution : MonoBehaviour {
                     _truck.remain--;
                     for (int j = 0; j < _truck.timeCast.Count; j++) ////开始对第一个订单倒计时
                     {
-                        if (_truck.timeCast[j] != 0) ///如果为0，则开始第二个
+                        if (_truck.remain == 0)
                         {
-                            _truck.timeCast[j]--;                            
-                            break;
+                            _truck.state = "finished";
+                            ProfitEachDest(_truck, j);
+                            ProfitAtLast();
                         }
-                        else
-                        {
-                            if (_truck.remain == 0)
+                        else {
+                            if (_truck.timeCast[j] != 0) ///如果为0，则开始第二个
                             {
-                                _truck.state = "finished";
-                                ProfitAtLast();
+                                _truck.timeCast[j]--;
+
+                                break;
                             }
-                            ProfitEachDest(_truck, j);///收益函数？
-                            continue;
-                        }                        
+                            else
+                            {
+                                ProfitEachDest(_truck, j);///收益函数？
+                                continue;
+                            }
+                        }
+                                              
                     }
                     
                 }                
@@ -151,13 +159,16 @@ public class Distribution : MonoBehaviour {
             Truck _truck = tManage.trucksList[i];
             if (tManage.trucksList[i].state == "finished")
             {
+                ClearDest(tManage.trucksList[i].ID);
                 float xPos = _truck.transform.localPosition.x;
                 float yPos = _truck.transform.localPosition.y;
                 _truck.transform.localPosition = new Vector3(xPos - 1600, yPos, 0);
                 _truck.state = "empty";
+                
             }
         }
         _profit.text = null;
+        profit = 0;
         ProfitPanel.SetActive(false);
     }
 

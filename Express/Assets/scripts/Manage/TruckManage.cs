@@ -13,11 +13,11 @@ public class TruckManage : MonoBehaviour {
         {
             Truck mytruck = Instantiate(_truck);
             mytruck.transform.SetParent(truckPanel);
-            mytruck.transform.localPosition = new Vector3(-720, 300 * i - 150, 0);
+            mytruck.transform.localPosition = new Vector3(-720, 400 * i, 0);
             mytruck.transform.localScale = new Vector3(1,1,1);
 
-            mytruck.row = 4;
-            mytruck.column = 5;
+            mytruck.row = 3;
+            mytruck.column = 4;
             mytruck.ID = i;
             trucksList.Add(mytruck);
         }
