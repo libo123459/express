@@ -32,7 +32,8 @@ public class OrderManage : MonoBehaviour {
             _truck.timeCast.Add(OrdersList[i]._timecast);
             _truck.consume.Add(OrdersList[i]._consume);
             _truck.profit.Add(OrdersList[i].profit);
-            _truck.remain = _truck.remain + _truck.timeCast[i];///车辆总共的回合数
+            _truck.remain = _truck.remain + _truck.timeCast[i];///车辆剩余回合数
+            _truck.TotalTimecast = _truck.remain;
             DestroyImmediate(OrdersList[i].gameObject);// 清除任务栏上的任务
         }
     }

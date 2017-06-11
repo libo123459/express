@@ -27,18 +27,18 @@ public class Manage : MonoBehaviour {
 
         assemblepanel.SetActive(false);
         distributionpanel.SetActive(true);
-        destpanel.SetActive(true);
+        
         truckpanel.SetActive(true);
     }
 
     public void Assemble(int truckNum)
     {
         aManage.Assemble(truckNum);
-        dManage.ClearDest();
+        dManage.ClearDest(truckNum);
 
         assemblepanel.SetActive(true);
         distributionpanel.SetActive(false);
-        destpanel.SetActive(false);
+        
         truckpanel.SetActive(false);
     }
 

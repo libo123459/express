@@ -14,6 +14,7 @@ public class Truck : MonoBehaviour {
     public int ID;
     public int orderNum;
     public int remain;
+    public int TotalTimecast;
     public string state;
 
     public void ClearAll()
