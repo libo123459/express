@@ -13,6 +13,7 @@ public class Order : MonoBehaviour {
     public int _consume;
     public int ID;
     public int profit;
+    public int credit;
 
 	// Use this for initialization
 	void Start ()

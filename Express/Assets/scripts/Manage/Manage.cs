@@ -11,7 +11,7 @@ public class Manage : MonoBehaviour {
     public GameObject destpanel;
 
     CardsManage cManage;
-    OrderManage oManage;
+    //OrderManage oManage;
     Distribution dManage;
     AssembleManage aManage;
 
@@ -55,7 +55,7 @@ public class Manage : MonoBehaviour {
 	void Start ()
     {
         cManage = this.GetComponent<CardsManage>();
-        oManage = this.GetComponent<OrderManage>();
+       // oManage = this.GetComponent<OrderManage>();
         dManage = this.GetComponent<Distribution>();
         aManage = this.GetComponent<AssembleManage>();
 	}

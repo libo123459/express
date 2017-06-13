@@ -8,16 +8,19 @@ public class CardsManage : MonoBehaviour {
     
     public Transform grid;
 
+    public GameObject eventPanel;
+    public Text _event;
+
     CardsData _cardData;
+    EventData _eData;
     ItemData _itemData;
     Distribution dManage;
-
-    int RefreshTime;
     OrderManage oManage;
 
 	// Use this for initialization
 	void Start () {
         _cardData = this.GetComponent<CardsData>();
+        _eData = this.GetComponent<EventData>();
         _itemData = this.GetComponent<ItemData>();
         dManage = this.GetComponent<Distribution>();
         oManage = this.GetComponent<OrderManage>();
@@ -27,25 +30,17 @@ public class CardsManage : MonoBehaviour {
     {
         for (int i = 0; i < 6; i++)
         {
-            Card mycard = Instantiate(_card);
-            mycard.transform.SetParent(grid.transform);
-            //mycard.transform.localPosition = new Vector3(0, 0, 0);
-            //mycard.transform.localScale = new Vector3(1, 1, 1);
+            Card_normal();
+        }
 
-            _cardData.CardsList.Add(mycard);
+        RefreshID();
+    }
 
-            mycard.timeCast = Random.Range(1,3);//耗时
-            mycard._item = _itemData.ItemsList[Random.Range(0, 3)];//临时
-            mycard._item.consume = Random.Range(1, 5);//油耗
-            mycard.profit = Random.Range(10,30);///收益
-            mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();
-            mycard.destination.text = _cardData.destinations[Random.Range(0, 10)];
-            mycard.ID = i;
-            
-            Item myitem = Instantiate(mycard._item);
-            myitem.transform.SetParent(mycard.transform);
-            myitem.transform.localPosition = new Vector3(-100,100,0);
-            myitem.transform.localScale = new Vector3(1,1,1);
+    void RefreshID()
+    {
+        for (int i = 0; i < grid.transform.childCount; i++)         //刷新所有卡的序列号
+        {
+            grid.transform.GetChild(i).GetComponent<Card>().ID = i;
         }
     }
 
@@ -58,8 +53,6 @@ public class CardsManage : MonoBehaviour {
         }
 
         _cardData.CardsList.Clear();
-
-        print(grid.transform.childCount.ToString());
         
         for (int i = 0; i < grid.transform.childCount; i++)//重新排列剩余卡
         {
@@ -73,31 +66,65 @@ public class CardsManage : MonoBehaviour {
     {
         if (grid.childCount < 6) ////6为临时测试用，需要改成卡池上线的变量
         {
-            Card mycard = Instantiate(_card);
-            mycard.transform.SetParent(grid.transform);
-
-            _cardData.CardsList.Add(mycard);
-
-            mycard.timeCast = Random.Range(1, 3);//耗时
-            mycard._item = _itemData.ItemsList[Random.Range(0, 3)];//临时
-            mycard._item.consume = Random.Range(1, 5);//油耗
-            mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();
-            mycard.destination.text = _cardData.destinations[Random.Range(0, 10)];
-
-            Item myitem = Instantiate(mycard._item);
-            myitem.transform.SetParent(mycard.transform);
-            myitem.transform.localPosition = new Vector3(-100, 100, 0);
-            myitem.transform.localScale = new Vector3(1, 1, 1);
+            SelectCardType();
         }
-        for (int i = 0; i < grid.childCount; i++)         //刷新所有卡的序列号
-        {
-            grid.transform.GetChild(i).GetComponent<Card>().ID = i;
-        }
+
+        RefreshID();
     }
 
-    public void cancelTheCard(Card _card)
+    void SelectCardType()
     {
-        _card.Destroy();
+        int chance = Random.Range(0,100);
+        if (chance >= 50)
+        {
+            Card_normal();
+        }
+        else {
+            Card_event();
+        }
+    }
+    
+    void Card_normal()///普通卡
+    {
+        Card mycard = Instantiate(_card);
+        mycard.transform.SetParent(grid.transform);
+
+        _cardData.CardsList.Add(mycard);
+
+        mycard.timeCast = Random.Range(1, 3);//耗时
+        mycard._item = _itemData.ItemsList[Random.Range(0, 3)];//临时
+        mycard._item.consume = Random.Range(1, 5);//油耗
+        mycard.profit = Random.Range(10, 30);///收益
+        mycard.credit = 10;//信誉
+        mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();
+        mycard.destination.text = _cardData.destinations[Random.Range(0, _cardData.destinations.Count)];
+
+        Item myitem = Instantiate(mycard._item);
+        myitem.transform.SetParent(mycard.transform);
+        myitem.transform.localPosition = new Vector3(-100, 100, 0);
+        myitem.transform.localScale = new Vector3(1, 1, 1);
+    }
+
+    void Card_event()//事件卡
+    {
+        eventPanel.SetActive(true);
+        string _name = _eData.namelist[Random.Range(0, _eData.namelist.Count)];
+        _eData.influnce(_name);
+
+        _event.text = "事件：" + _name;        
+    }
+
+    public void confirmEvent()
+    {
+        eventPanel.SetActive(false);       
+    }
+
+    public void cancelTheCard(Card _card)///退订卡片
+    {
+        int punish = 30;///退订的惩罚
+        dManage.credit = dManage.credit - punish; 
+        _card.Destroy();//删除该卡
+
         List<Card> _tmp = new List<Card>();
         for (int i = 0; i < _cardData.CardsList.Count; i++)
         {
@@ -113,10 +140,25 @@ public class CardsManage : MonoBehaviour {
         }
         
     }
-
-
 	// Update is called once per frame
 	void Update () {
 		
 	}
+    /* Card mycard = Instantiate(_card);
+             mycard.transform.SetParent(grid.transform);
+
+             _cardData.CardsList.Add(mycard);
+
+             mycard.timeCast = Random.Range(1,3);//耗时
+             mycard._item = _itemData.ItemsList[Random.Range(0, 3)];//临时
+             mycard._item.consume = Random.Range(1, 5);//油耗
+             mycard.profit = Random.Range(10,30);///收益
+             mycard.credit = Random.Range(10,30);//信誉
+             mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();
+             mycard.destination.text = _cardData.destinations[Random.Range(0, 10)];
+
+             Item myitem = Instantiate(mycard._item);
+             myitem.transform.SetParent(mycard.transform);
+             myitem.transform.localPosition = new Vector3(-100,100,0);
+             myitem.transform.localScale = new Vector3(1,1,1);*/
 }

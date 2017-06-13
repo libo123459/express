@@ -15,6 +15,7 @@ public class Distribution : MonoBehaviour {
     public List<GameObject> destPanelList = new List<GameObject>();
 
     public int profit;
+    public int credit;
 
     CardsData cData;
     TruckManage tManage;
@@ -56,7 +57,6 @@ public class Distribution : MonoBehaviour {
 
     void displaySpot(Truck _truck)
     {
-        print(_truck.orderNum.ToString());
         for (int i = 0; i < _truck.orderNum; i++)
         {
             GameObject dest = Instantiate(destination, destPanelList[_truck.ID].transform);
@@ -122,25 +122,23 @@ public class Distribution : MonoBehaviour {
                                 ProfitEachDest(_truck, j);///收益函数？
                                 continue;
                             }
-                        }
-                                              
-                    }
-                    
+                        }                                              
+                    }                    
                 }                
             }
-        }
-        
+        }        
     }
 
     void ProfitEachDest(Truck _truck,int index)
     {
         profit = profit + _truck.profit[index];
+        credit = credit + _truck.credit[index];
     }
 
     void ProfitAtLast()
     {
         ProfitPanel.SetActive(true);
-        _profit.text = "总共收益金额：" + profit.ToString();
+        _profit.text = "总共收益金额：" + profit.ToString() +"\n" + "信誉度：" + credit.ToString();
     }
 
     void TruckMove(Truck _truck)
@@ -164,11 +162,14 @@ public class Distribution : MonoBehaviour {
                 float yPos = _truck.transform.localPosition.y;
                 _truck.transform.localPosition = new Vector3(xPos - 1600, yPos, 0);
                 _truck.state = "empty";
-                
+                _truck.profit.Clear();
+                _truck.credit.Clear();
             }
         }
+
         _profit.text = null;
         profit = 0;
+        credit = 0;
         ProfitPanel.SetActive(false);
     }
 

@@ -18,6 +18,7 @@ public class OrderManage : MonoBehaviour {
             myorder.transform.localScale = new Vector3(1, 1, 1);
             myorder.ID = _card.ID;
             myorder.profit = _card.profit;
+            myorder.credit = _card.credit;
             myorder.InitOrder();
             ShowDestination(myorder, _card);
             OrdersList.Add(myorder);
@@ -32,6 +33,7 @@ public class OrderManage : MonoBehaviour {
             _truck.timeCast.Add(OrdersList[i]._timecast);
             _truck.consume.Add(OrdersList[i]._consume);
             _truck.profit.Add(OrdersList[i].profit);
+            _truck.credit.Add(OrdersList[i].credit);
             _truck.remain = _truck.remain + _truck.timeCast[i];///车辆剩余回合数
             _truck.TotalTimecast = _truck.remain;
             DestroyImmediate(OrdersList[i].gameObject);// 清除任务栏上的任务

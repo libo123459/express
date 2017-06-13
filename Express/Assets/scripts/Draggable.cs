@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler{
     
     public Item _item;
-    Vector3 startPos;
+    
     public Card _card;
 
     public CardsManage _cardManage;
@@ -43,7 +43,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     
     public void OnBeginDrag(PointerEventData eventData)
     {
-        startPos = this.transform.position;
+        
     }
         
     public void OnDrag(PointerEventData eventData)
