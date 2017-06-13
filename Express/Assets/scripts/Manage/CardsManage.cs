@@ -91,13 +91,17 @@ public class CardsManage : MonoBehaviour {
 
         _cardData.CardsList.Add(mycard);
 
-        mycard.timeCast = Random.Range(1, 3);//耗时
-        mycard._item = _itemData.ItemsList[Random.Range(0, 3)];//临时
+        int random = Random.Range(1,_cardData.Array.Length);
+        mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();        
+        mycard.timeCast = int.Parse(_cardData.GetTimeCast(random));//耗时
+        mycard.destination.text = _cardData.GetDestination(random) + "耗时" + mycard.timeCast;
+
+        mycard._item = _itemData.ItemsList[Random.Range(0, 3)];//临时 那个物件
         mycard._item.consume = Random.Range(1, 5);//油耗
         mycard.profit = Random.Range(10, 30);///收益
         mycard.credit = 10;//信誉
-        mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();
-        mycard.destination.text = _cardData.destinations[Random.Range(0, _cardData.destinations.Count)];
+        
+        //mycard.destination.text = _cardData.destinations[Random.Range(0, _cardData.destinations.Count)];
 
         Item myitem = Instantiate(mycard._item);
         myitem.transform.SetParent(mycard.transform);
@@ -137,6 +141,7 @@ public class CardsManage : MonoBehaviour {
         for (int i = 0; i < _tmp.Count; i++)
         {
             _cardData.CardsList.Add(_tmp[i]);
+            _cardData.CardsList[i].ID = i;
         }
         
     }
