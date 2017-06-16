@@ -17,7 +17,7 @@ public class TruckManage : MonoBehaviour {
             mytruck.transform.localScale = new Vector3(1,1,1);
 
             mytruck.row = 3;
-            mytruck.column = 4;
+            mytruck.column = 3;
             mytruck.ID = i;
             trucksList.Add(mytruck);
         }

@@ -11,11 +11,15 @@ public class Distribution : MonoBehaviour {
     public BtnStation Station;
 
     public Text _profit;
+    public Text text_credit;
 
     public List<GameObject> destPanelList = new List<GameObject>();
 
     public int profit;
     public int credit;
+    public int totalCredit;
+
+    int MaxCredit = 10;
 
     CardsData cData;
     TruckManage tManage;
@@ -42,13 +46,13 @@ public class Distribution : MonoBehaviour {
         displaySpot(_truck);
     }
 
-    void displayDestPanel()
+    void displayDestPanel() //目的地panel的实例化
     {
         for (int i = 0; i < tManage.trucksList.Count; i++)
         {
             GameObject dPanel = Instantiate(destPanel.gameObject, distributionPanel);
             BtnStation _station = Instantiate(Station, dPanel.transform);
-            dPanel.transform.localPosition = new Vector3(0, 400 * tManage.trucksList[i].ID, 0);
+            dPanel.transform.localPosition = new Vector3(-130, 400 * tManage.trucksList[i].ID, 0);
             _station.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,0,0);
             _station.truckNum = tManage.trucksList[i].ID;
             destPanelList.Add(dPanel);
@@ -63,7 +67,7 @@ public class Distribution : MonoBehaviour {
 
             if (i < 1)
             {
-                float Posx = ((float)_truck.timeCast[i] / (float)_truck.TotalTimecast) * 1600;
+                float Posx = ((float)_truck.timeCast[i] / (float)_truck.TotalTimecast) * 1300;
                 dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(Posx,0);
                 
             }
@@ -73,7 +77,7 @@ public class Distribution : MonoBehaviour {
                 {
                     a = a + _truck.timeCast[j];
                 }
-                float Posx = (a / (float)_truck.TotalTimecast) * 1600;
+                float Posx = (a / (float)_truck.TotalTimecast) * 1300;
 
                 dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(Posx,0);
             }
@@ -108,7 +112,9 @@ public class Distribution : MonoBehaviour {
                         {
                             _truck.state = "finished";
                             ProfitEachDest(_truck, j);
+                            CreditLast(_truck);
                             ProfitAtLast();
+                            break;
                         }
                         else {
                             if (_truck.timeCast[j] != 0) ///如果为0，则开始第二个
@@ -129,10 +135,9 @@ public class Distribution : MonoBehaviour {
         }        
     }
 
-    void ProfitEachDest(Truck _truck,int index)
+    void ProfitEachDest(Truck _truck,int index)///卡车的编号,index为第几个订单的索引号
     {
-        profit = profit + _truck.profit[index];
-        credit = credit + _truck.credit[index];
+        profit = profit + _truck.profit[index];        
     }
 
     void ProfitAtLast()
@@ -141,10 +146,42 @@ public class Distribution : MonoBehaviour {
         _profit.text = "总共收益金额：" + profit.ToString() +"\n" + "信誉度：" + credit.ToString();
     }
 
+    void CreditLast(Truck _truck)
+    {
+        int n = 0;
+
+        if (_truck.orderNum == 1)
+        {
+            credit = _truck.orderNum;
+        }
+        else
+        {
+            for (int i = 0; i < _truck.orderNum; i++)
+            {
+                n = n + i + 1;
+            }
+
+            credit = n;
+        }
+        //credit = _truck.orderNum;
+
+        if (credit + totalCredit > MaxCredit)
+        {
+            totalCredit = MaxCredit;
+        }
+        else {
+            totalCredit = totalCredit + credit;
+        }
+        text_credit.text = totalCredit.ToString();
+        print("ordernum" + _truck.orderNum.ToString());
+        print("加成" + n.ToString());
+        print("credit" + credit.ToString());
+    }
+
     void TruckMove(Truck _truck)
     {
         float unitShift = 0;
-        unitShift = 1600.0f / (float)_truck.TotalTimecast;
+        unitShift = 1300.0f / (float)_truck.TotalTimecast;
         float xPos = _truck.transform.localPosition.x + unitShift;
         float yPos = _truck.transform.localPosition.y;
         _truck.transform.localPosition = new Vector3(xPos, yPos, 0);                
@@ -160,7 +197,7 @@ public class Distribution : MonoBehaviour {
                 ClearDest(tManage.trucksList[i].ID);
                 float xPos = _truck.transform.localPosition.x;
                 float yPos = _truck.transform.localPosition.y;
-                _truck.transform.localPosition = new Vector3(xPos - 1600, yPos, 0);
+                _truck.transform.localPosition = new Vector3(xPos - 1300, yPos, 0);
                 _truck.state = "empty";
                 _truck.profit.Clear();
                 _truck.credit.Clear();
@@ -180,6 +217,9 @@ public class Distribution : MonoBehaviour {
         cData = GameObject.Find("Manage").GetComponent<CardsData>();
 
         displayDestPanel();
+
+        totalCredit = MaxCredit;///初始信誉
+        text_credit.text = totalCredit.ToString();
     }
 	
 	// Update is called once per frame

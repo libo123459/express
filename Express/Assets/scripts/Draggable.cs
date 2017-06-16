@@ -57,8 +57,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         if (IfAllIn == true && CheckOverlap() == false)
         {
             this.transform.position = _item.SlotPos;
-            _orderManage.AddTheOrder(_card);
-            
+            _orderManage.AddTheOrder(_card);            
         }
         else {
             this.transform.position = _card.transform.position;

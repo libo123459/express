@@ -80,7 +80,8 @@ public class CardsManage : MonoBehaviour {
             Card_normal();
         }
         else {
-            Card_event();
+            //Card_event();///
+            Card_normal();
         }
     }
     
@@ -91,21 +92,23 @@ public class CardsManage : MonoBehaviour {
 
         _cardData.CardsList.Add(mycard);
 
-        int random = Random.Range(1,_cardData.Array.Length);
+        int random = Random.Range(1,_cardData.Array.Length);//从文件获取
         mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();        
-        mycard.timeCast = int.Parse(_cardData.GetTimeCast(random));//耗时
+        mycard.timeCast = Random.Range(2,5);//耗时
         mycard.destination.text = _cardData.GetDestination(random) + "耗时" + mycard.timeCast;
 
-        mycard._item = _itemData.ItemsList[Random.Range(0, 3)];//临时 那个物件
+        
+        mycard._item = _itemData.ItemsList[Random.Range(0, _itemData.ItemsList.Count)];//临时 那个物件
+        int blockNum = mycard._item.transform.childCount;
         mycard._item.consume = Random.Range(1, 5);//油耗
-        mycard.profit = Random.Range(10, 30);///收益
-        mycard.credit = 10;//信誉
+        mycard.profit = blockNum * mycard.timeCast;///收益
+        mycard.credit = 1;//信誉
         
         //mycard.destination.text = _cardData.destinations[Random.Range(0, _cardData.destinations.Count)];
 
         Item myitem = Instantiate(mycard._item);
         myitem.transform.SetParent(mycard.transform);
-        myitem.transform.localPosition = new Vector3(-100, 100, 0);
+        myitem.transform.localPosition = new Vector3(-50, 100, 0);
         myitem.transform.localScale = new Vector3(1, 1, 1);
     }
 
@@ -125,8 +128,9 @@ public class CardsManage : MonoBehaviour {
 
     public void cancelTheCard(Card _card)///退订卡片
     {
-        int punish = 30;///退订的惩罚
-        dManage.credit = dManage.credit - punish; 
+        int punish = 1;///退订的惩罚
+        dManage.totalCredit = dManage.totalCredit - punish;
+        dManage.text_credit.text = dManage.totalCredit.ToString();
         _card.Destroy();//删除该卡
 
         List<Card> _tmp = new List<Card>();

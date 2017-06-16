@@ -15,11 +15,12 @@ public class AssembleManage : MonoBehaviour {
 	void Start () {
         tManage = this.GetComponent<TruckManage>();
         currentTruck = 0;
-        for (int i = 0; i < 12; i++)
+        /*for (int i = 0; i < 12; i++)
         {
             Slot slot = Instantiate(_slot, _slotPanel);
             slotList.Add(slot);
-        }
+        }*/
+        Assemble(0);
     }
 
     public void Assemble(int truckNum) //装配界面
