@@ -7,8 +7,11 @@ public class Driver : MonoBehaviour {
     public int coe_timecast;
     public int coe_profit;
     public string coe_property;
-	// Use this for initialization
-	void Start () {
+
+    public int id;
+    public new string name;
+    // Use this for initialization
+    void Start () {
 		
 	}
 	

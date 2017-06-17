@@ -9,7 +9,6 @@ public class Truck : MonoBehaviour {
     public List<int> consume = new List<int>();
     public List<int> profit = new List<int>();
     public List<int> credit = new List<int>();
-    
 
     public int row;
     public int column;
