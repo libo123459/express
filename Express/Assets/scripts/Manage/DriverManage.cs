@@ -11,15 +11,20 @@ public class DriverManage : MonoBehaviour {
     private int _driverNum;///司机数量（临时）
     private bool opened;
 
+    void InstanceDriver()
+    {
+        for (int i = 0; i < _driverNum; i++)
+        {
+            GameObject myDriver = Instantiate(_driver.gameObject, DriverList.transform);
+        }
+    }
+
     public void OpenDriverList()//展开司机列表
     {
         if (opened == false)
         {
             DriverList.SetActive(true);
-            for (int i = 0; i < _driverNum; i++)
-            {
-                GameObject myDriver = Instantiate(_driver.gameObject, DriverList.transform);
-            }
+            
             opened = true;
         }        
     }
