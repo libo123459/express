@@ -94,7 +94,7 @@ public class CardsManage : MonoBehaviour {
 
         int random = Random.Range(1,_cardData.Array.Length);//从文件获取
         mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();        
-        mycard.timeCast = Random.Range(2,5);//耗时
+        mycard.timeCast = Random.Range(4,7);//耗时
         mycard.destination.text = _cardData.GetDestination(random) + "耗时" + mycard.timeCast;
 
         
@@ -128,7 +128,7 @@ public class CardsManage : MonoBehaviour {
 
     public void cancelTheCard(Card _card)///退订卡片
     {
-        int punish = 1;///退订的惩罚
+        int punish = 2;///退订的惩罚
         dManage.totalCredit = dManage.totalCredit - punish;
         dManage.text_credit.text = dManage.totalCredit.ToString();
         _card.Destroy();//删除该卡

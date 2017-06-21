@@ -52,9 +52,14 @@ public class Block : MonoBehaviour {
     void Start () {
 		
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    private void Awake()
+    {
+        //this.GetComponent<Image>().color = new Color(0,0,0,1);
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 

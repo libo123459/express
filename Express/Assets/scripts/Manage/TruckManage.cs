@@ -9,11 +9,11 @@ public class TruckManage : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        for (int i = 0; i < 2; i++)/////////临时
+        for (int i = 0; i < 3; i++)/////////临时
         {
             Truck mytruck = Instantiate(_truck);
             mytruck.transform.SetParent(truckPanel);
-            mytruck.transform.localPosition = new Vector3(-720, 400 * i, 0);
+            mytruck.transform.localPosition = new Vector3(-720, 200 * i, 0);
             mytruck.transform.localScale = new Vector3(1,1,1);
 
             mytruck.row = 3;

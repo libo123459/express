@@ -8,10 +8,10 @@ public class DriverData : MonoBehaviour {
     public List<string> nameList = new List<string>();
     private string[] names = new string[] {"Tom","John","Smith","Peter","Bob","Alex","Obama","Lee" };
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         for (int i = 0; i < names.Length; i++)
         {
-            nameList.Add(names[0]);
+            nameList.Add(names[i]);
         }
 	}
 	

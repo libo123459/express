@@ -18,6 +18,8 @@ public class Truck : MonoBehaviour {
     public int TotalTimecast;
     public string state;
 
+    public int driverID;
+
     public void ClearAll()
     {
         _destination.Clear();

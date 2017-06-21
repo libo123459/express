@@ -24,6 +24,7 @@ public class Distribution : MonoBehaviour {
     CardsData cData;
     TruckManage tManage;
     OrderManage oManage;
+    DriverManage dManage;
     
     int consume;
     int timeCast;
@@ -52,7 +53,7 @@ public class Distribution : MonoBehaviour {
         {
             GameObject dPanel = Instantiate(destPanel.gameObject, distributionPanel);
             BtnStation _station = Instantiate(Station, dPanel.transform);
-            dPanel.transform.localPosition = new Vector3(-130, 400 * tManage.trucksList[i].ID, 0);
+            dPanel.transform.localPosition = new Vector3(-130, 200 * tManage.trucksList[i].ID, 0);
             _station.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,0,0);
             _station.truckNum = tManage.trucksList[i].ID;
             destPanelList.Add(dPanel);
@@ -148,20 +149,13 @@ public class Distribution : MonoBehaviour {
 
     void CreditLast(Truck _truck)
     {
-        int n = 0;
-
-        if (_truck.orderNum == 1)
+        if (_truck.orderNum < 3)
         {
             credit = _truck.orderNum;
         }
         else
         {
-            for (int i = 0; i < _truck.orderNum; i++)
-            {
-                n = n + i + 1;
-            }
-
-            credit = n;
+            credit = _truck.orderNum + 1;
         }
         //credit = _truck.orderNum;
 
@@ -174,7 +168,7 @@ public class Distribution : MonoBehaviour {
         }
         text_credit.text = totalCredit.ToString();
         print("ordernum" + _truck.orderNum.ToString());
-        print("加成" + n.ToString());
+       // print("加成" + n.ToString());
         print("credit" + credit.ToString());
     }
 
@@ -215,6 +209,7 @@ public class Distribution : MonoBehaviour {
         tManage = GameObject.Find("Manage").GetComponent<TruckManage>();
         oManage = GameObject.Find("Manage").GetComponent<OrderManage>();
         cData = GameObject.Find("Manage").GetComponent<CardsData>();
+        dManage = GameObject.Find("Manage").GetComponent<DriverManage>();
 
         displayDestPanel();
 
