@@ -174,11 +174,17 @@ public class Distribution : MonoBehaviour {
 
     void TruckMove(Truck _truck)
     {
-        float unitShift = 0;
-        unitShift = 1300.0f / (float)_truck.TotalTimecast;
-        float xPos = _truck.transform.localPosition.x + unitShift;
-        float yPos = _truck.transform.localPosition.y;
-        _truck.transform.localPosition = new Vector3(xPos, yPos, 0);                
+        if (_truck.stopTime == 0)
+        {
+            float unitShift = 0;
+            unitShift = 1300.0f / (float)_truck.TotalTimecast;
+            float xPos = _truck.transform.localPosition.x + unitShift;
+            float yPos = _truck.transform.localPosition.y;
+            _truck.transform.localPosition = new Vector3(xPos, yPos, 0);
+        }
+        else {
+            _truck.stopTime--;
+        }                      
     }
 
     public void TruckMoveToStation()

@@ -16,6 +16,7 @@ public class CardsManage : MonoBehaviour {
     ItemData _itemData;
     Distribution dManage;
     OrderManage oManage;
+    EventManage eManage;
 
 	// Use this for initialization
 	void Start () {
@@ -24,8 +25,10 @@ public class CardsManage : MonoBehaviour {
         _itemData = this.GetComponent<ItemData>();
         dManage = this.GetComponent<Distribution>();
         oManage = this.GetComponent<OrderManage>();
+        eManage = this.GetComponent<EventManage>();
         RefreshTask();
 	}
+
     void RefreshTask()
     {
         for (int i = 0; i < 6; i++)
@@ -85,7 +88,7 @@ public class CardsManage : MonoBehaviour {
         }
     }
     
-    void Card_normal()///普通卡
+    public void Card_normal()///普通卡
     {
         Card mycard = Instantiate(_card);
         mycard.transform.SetParent(grid.transform);
@@ -103,6 +106,7 @@ public class CardsManage : MonoBehaviour {
         mycard._item.consume = Random.Range(1, 5);//油耗
         mycard.profit = blockNum * mycard.timeCast;///收益
         mycard.credit = 1;//信誉
+        mycard.punish = 2;//惩罚
         
         //mycard.destination.text = _cardData.destinations[Random.Range(0, _cardData.destinations.Count)];
 
@@ -115,10 +119,12 @@ public class CardsManage : MonoBehaviour {
     void Card_event()//事件卡
     {
         eventPanel.SetActive(true);
-        string _name = _eData.namelist[Random.Range(0, _eData.namelist.Count)];
-        _eData.influnce(_name);
+        int index = Random.Range(0, _eData.namelist.Count);
+        eManage.influnce(index);
 
-        _event.text = "事件：" + _name;        
+        string name = _eData.namelist[index];
+
+        _event.text = "事件：" + name;        
     }
 
     public void confirmEvent()
@@ -128,8 +134,7 @@ public class CardsManage : MonoBehaviour {
 
     public void cancelTheCard(Card _card)///退订卡片
     {
-        int punish = 2;///退订的惩罚
-        dManage.totalCredit = dManage.totalCredit - punish;
+        dManage.totalCredit = dManage.totalCredit - _card.punish;
         dManage.text_credit.text = dManage.totalCredit.ToString();
         _card.Destroy();//删除该卡
 
@@ -146,28 +151,13 @@ public class CardsManage : MonoBehaviour {
         {
             _cardData.CardsList.Add(_tmp[i]);
             _cardData.CardsList[i].ID = i;
-        }
-        
+        }        
     }
+
+    
 	// Update is called once per frame
 	void Update () {
 		
 	}
-    /* Card mycard = Instantiate(_card);
-             mycard.transform.SetParent(grid.transform);
-
-             _cardData.CardsList.Add(mycard);
-
-             mycard.timeCast = Random.Range(1,3);//耗时
-             mycard._item = _itemData.ItemsList[Random.Range(0, 3)];//临时
-             mycard._item.consume = Random.Range(1, 5);//油耗
-             mycard.profit = Random.Range(10,30);///收益
-             mycard.credit = Random.Range(10,30);//信誉
-             mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();
-             mycard.destination.text = _cardData.destinations[Random.Range(0, 10)];
-
-             Item myitem = Instantiate(mycard._item);
-             myitem.transform.SetParent(mycard.transform);
-             myitem.transform.localPosition = new Vector3(-100,100,0);
-             myitem.transform.localScale = new Vector3(1,1,1);*/
+   
 }

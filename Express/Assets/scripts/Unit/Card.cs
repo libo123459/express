@@ -9,6 +9,7 @@ public class Card : MonoBehaviour {
     public int timeCast;
     public int profit;
     public int credit;
+    public int punish;
     
     public Text destination;
     public Item _item;

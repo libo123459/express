@@ -15,6 +15,7 @@ public class Truck : MonoBehaviour {
     public int ID;
     public int orderNum;
     public int remain;
+    public int stopTime;
     public int TotalTimecast;
     public string state;
 
