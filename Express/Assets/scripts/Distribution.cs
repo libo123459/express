@@ -19,12 +19,15 @@ public class Distribution : MonoBehaviour {
     public int credit;
     public int totalCredit;
 
-    int MaxCredit = 10;
+    public int MaxCredit = 10;
 
     CardsData cData;
+	EventData eData;
     TruckManage tManage;
     OrderManage oManage;
     DriverManage dManage;
+	EventManage eManage;
+	CardsManage cManage;
     
     int consume;
     int timeCast;
@@ -100,21 +103,22 @@ public class Distribution : MonoBehaviour {
     {
         if (cData.CardsList.Count < 6)///6为临时
         {
-            for (int i = 0; i < tManage.trucksList.Count; i++)
+			
+			for (int i = 0; i < tManage.trucksList.Count; i++)
             {
                 if (tManage.trucksList[i].state == "dist")
                 {
                     Truck _truck = tManage.trucksList[i];
                     TruckMove(_truck);
-                    _truck.remain--;
+                    
                     for (int j = 0; j < _truck.timeCast.Count; j++) ////开始对第一个订单倒计时
                     {
                         if (_truck.remain == 0)
                         {
                             _truck.state = "finished";
-                            ProfitEachDest(_truck, j);
+                            
                             CreditLast(_truck);
-                            ProfitAtLast();
+                            ProfitAtLast(_truck);
                             break;
                         }
                         else {
@@ -124,30 +128,25 @@ public class Distribution : MonoBehaviour {
 
                                 break;
                             }
-                            else
-                            {
-                                ProfitEachDest(_truck, j);///收益函数？
-                                continue;
-                            }
                         }                                              
                     }                    
                 }                
             }
+			CountDown();
         }        
     }
 
-    void ProfitEachDest(Truck _truck,int index)///卡车的编号,index为第几个订单的索引号
+	public void ProfitAtLast(Truck _truck)
     {
-        profit = profit + _truck.profit[index];        
-    }
-
-    void ProfitAtLast()
-    {
-        ProfitPanel.SetActive(true);
+		for(int i = 0;i<_truck.profit.Count;i++)
+		{
+			profit = profit + _truck.profit[i];
+		}
+		ProfitPanel.SetActive(true);
         _profit.text = "总共收益金额：" + profit.ToString() +"\n" + "信誉度：" + credit.ToString();
     }
 
-    void CreditLast(Truck _truck)
+    public void CreditLast(Truck _truck)
     {
         if (_truck.orderNum < 3)
         {
@@ -167,16 +166,17 @@ public class Distribution : MonoBehaviour {
             totalCredit = totalCredit + credit;
         }
         text_credit.text = totalCredit.ToString();
-        print("ordernum" + _truck.orderNum.ToString());
+        
        // print("加成" + n.ToString());
-        print("credit" + credit.ToString());
+        
     }
 
     void TruckMove(Truck _truck)
     {
         if (_truck.stopTime == 0)
         {
-            float unitShift = 0;
+			_truck.remain--;
+			float unitShift = 0;
             unitShift = 1300.0f / (float)_truck.TotalTimecast;
             float xPos = _truck.transform.localPosition.x + unitShift;
             float yPos = _truck.transform.localPosition.y;
@@ -184,7 +184,8 @@ public class Distribution : MonoBehaviour {
         }
         else {
             _truck.stopTime--;
-        }                      
+        }
+
     }
 
     public void TruckMoveToStation()
@@ -209,6 +210,34 @@ public class Distribution : MonoBehaviour {
         credit = 0;
         ProfitPanel.SetActive(false);
     }
+	void CountDown()
+	{
+		for(int i = 0;i < cData.CardsList.Count;i++)
+		{
+			if(cData.CardsList[i].GetComponent<Card_event>()!=null)
+			{
+				Card_event eCard = cData.CardsList[i].GetComponent<Card_event>();
+				if(eCard.type == "delayed1" || eCard.type == "delayed2")
+				{
+					if(eCard.CountDown >0)
+					{
+						eCard.CountDown--;
+						eCard.destination.text = eCard.name + "CountDown" + eCard.CountDown.ToString();
+					} else {
+						if(eCard.type == "delayed1")
+						{
+							eManage.undoEvent01();
+						} else {
+							eManage.CheckEvent03(eCard.eventID);
+						}
+
+						cManage.DestoryTheCard(eCard);
+					}
+				}
+			}
+		}
+	}
+
 
     // Use this for initialization
     void Start () {
@@ -216,6 +245,8 @@ public class Distribution : MonoBehaviour {
         oManage = GameObject.Find("Manage").GetComponent<OrderManage>();
         cData = GameObject.Find("Manage").GetComponent<CardsData>();
         dManage = GameObject.Find("Manage").GetComponent<DriverManage>();
+		cManage = GameObject.Find("Manage").GetComponent<CardsManage>();
+		eManage = GameObject.Find("Manage").GetComponent<EventManage>();
 
         displayDestPanel();
 

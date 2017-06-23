@@ -11,6 +11,8 @@ public class CardsManage : MonoBehaviour {
     public GameObject eventPanel;
     public Text _event;
 
+	public int punish = 2;
+
     CardsData _cardData;
     EventData _eData;
     ItemData _itemData;
@@ -80,11 +82,12 @@ public class CardsManage : MonoBehaviour {
         int chance = Random.Range(0,100);
         if (chance >= 50)
         {
-            Card_normal();
+			Card_event();
+			//Card_normal();
         }
         else {
-            //Card_event();///
-            Card_normal();
+            Card_event();///
+            //Card_normal();
         }
     }
     
@@ -99,14 +102,13 @@ public class CardsManage : MonoBehaviour {
         mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();        
         mycard.timeCast = Random.Range(4,7);//耗时
         mycard.destination.text = _cardData.GetDestination(random) + "耗时" + mycard.timeCast;
-
-        
+		      
         mycard._item = _itemData.ItemsList[Random.Range(0, _itemData.ItemsList.Count)];//临时 那个物件
         int blockNum = mycard._item.transform.childCount;
         mycard._item.consume = Random.Range(1, 5);//油耗
         mycard.profit = blockNum * mycard.timeCast;///收益
         mycard.credit = 1;//信誉
-        mycard.punish = 2;//惩罚
+       
         
         //mycard.destination.text = _cardData.destinations[Random.Range(0, _cardData.destinations.Count)];
 
@@ -119,12 +121,15 @@ public class CardsManage : MonoBehaviour {
     void Card_event()//事件卡
     {
         eventPanel.SetActive(true);
-        int index = Random.Range(0, _eData.namelist.Count);
-        eManage.influnce(index);
+        //int index = Random.Range(0, _eData.namelist.Count);
+		int myindex = TheIndex();
 
-        string name = _eData.namelist[index];
+		eManage.influnce(myindex);
 
-        _event.text = "事件：" + name;        
+        string name = _eData.namelist[myindex];
+
+        _event.text = "事件：" + name;
+
     }
 
     public void confirmEvent()
@@ -134,26 +139,71 @@ public class CardsManage : MonoBehaviour {
 
     public void cancelTheCard(Card _card)///退订卡片
     {
-        dManage.totalCredit = dManage.totalCredit - _card.punish;
+        dManage.totalCredit = dManage.totalCredit - punish;
         dManage.text_credit.text = dManage.totalCredit.ToString();
-        _card.Destroy();//删除该卡
-
-        List<Card> _tmp = new List<Card>();
-        for (int i = 0; i < _cardData.CardsList.Count; i++)
-        {
-            if (_cardData.CardsList[i] != null)
-            {
-                _tmp.Add(_cardData.CardsList[i]);
-            }
-        }
-        _cardData.CardsList.Clear();
-        for (int i = 0; i < _tmp.Count; i++)
-        {
-            _cardData.CardsList.Add(_tmp[i]);
-            _cardData.CardsList[i].ID = i;
-        }        
+		DestoryTheCard(_card);
     }
+	public void DestoryTheCard(Card _card)
+	{
+		_card.Destroy();//删除该卡
 
+		List<Card> _tmp = new List<Card>();
+		for (int i = 0; i < _cardData.CardsList.Count; i++)
+		{
+			if (_cardData.CardsList[i] != null)
+			{
+				_tmp.Add(_cardData.CardsList[i]);
+			}
+		}
+		_cardData.CardsList.Clear();
+		for (int i = 0; i < _tmp.Count; i++)
+		{
+			_cardData.CardsList.Add(_tmp[i]);
+			_cardData.CardsList[i].ID = i;
+		}        
+	}
+
+	int TheIndex()
+	{
+		List<int> sameNum = new List<int>();
+		List<int> diffNum = new List<int>();
+		List<int> namelist_copy = new List<int> ();
+		for(int i = 0;i< 6 /*_eData.namelist.Count*/;i++)
+		{
+			namelist_copy.Add(i);
+		}
+
+		for(int i = 0;i<_cardData.CardsList.Count;i++)
+		{
+			if(_cardData.CardsList[i].GetComponent<Card_event>() != null)
+			{
+				sameNum.Add(_cardData.CardsList[i].GetComponent<Card_event>().eventID);
+			}
+		}
+
+		for(int i = 0;i<sameNum.Count;i++)
+		{
+			for(int j = 0;j<namelist_copy.Count;j++)
+			{
+				if(namelist_copy[j] == sameNum[i])
+				{
+					namelist_copy.RemoveAt(j);
+				}
+			}
+		}
+		for(int i = 0;i<namelist_copy.Count;i++)
+		{
+			if(namelist_copy[i] != null)
+			{
+				diffNum.Add(namelist_copy[i]);
+			}
+		}
+		print("sameNum count" + sameNum.Count);
+		print("namelist count" + namelist_copy.Count);
+		print("diffNum count" + diffNum.Count);
+		int n = Random.Range(0,diffNum.Count);
+		return diffNum[n];
+	}
     
 	// Update is called once per frame
 	void Update () {

@@ -23,10 +23,8 @@ public class DriverManage : MonoBehaviour {
         for (int i = 0; i < _driverNum; i++)
         {
             CreateDriverIndex();
-            print("index" + driver_id[i]);
+            
         }
-        
-        print(driver_id.Count);
         for (int i = 0; i < _driverNum; i++)
         {
             int index = driver_id[i];

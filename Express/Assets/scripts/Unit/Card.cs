@@ -9,13 +9,13 @@ public class Card : MonoBehaviour {
     public int timeCast;
     public int profit;
     public int credit;
-    public int punish;
+    
     
     public Text destination;
     public Item _item;
     public Button _cancel;
 
-    CardsManage cManage;
+    protected CardsManage cManage;
     
     public void Destroy()
     {        
@@ -23,10 +23,10 @@ public class Card : MonoBehaviour {
     }
     
     // Use this for initialization
-    void Start () {
+    void Awake () {
         _cancel = this.transform.Find("cancel").GetComponent<Button>();
         cManage = GameObject.Find("Manage").GetComponent<CardsManage>();
-        
+		destination = this.transform.GetChild(0).GetComponent<Text>();
         _cancel.onClick.AddListener(() => cManage.cancelTheCard(this));
     }
 	
