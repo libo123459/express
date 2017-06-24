@@ -82,8 +82,8 @@ public class CardsManage : MonoBehaviour {
         int chance = Random.Range(0,100);
         if (chance >= 50)
         {
-			Card_event();
-			//Card_normal();
+			
+			Card_normal();
         }
         else {
             Card_event();///
@@ -122,7 +122,7 @@ public class CardsManage : MonoBehaviour {
     {
         eventPanel.SetActive(true);
         //int index = Random.Range(0, _eData.namelist.Count);
-		int myindex = TheIndex();
+        int myindex = TheIndex();
 
 		eManage.influnce(myindex);
 
@@ -139,7 +139,7 @@ public class CardsManage : MonoBehaviour {
 
     public void cancelTheCard(Card _card)///退订卡片
     {
-        dManage.totalCredit = dManage.totalCredit - punish;
+        dManage.totalCredit = dManage.totalCredit - punish - eManage.punish_inc - eManage.punish_dec;
         dManage.text_credit.text = dManage.totalCredit.ToString();
 		DestoryTheCard(_card);
     }
@@ -168,7 +168,7 @@ public class CardsManage : MonoBehaviour {
 		List<int> sameNum = new List<int>();
 		List<int> diffNum = new List<int>();
 		List<int> namelist_copy = new List<int> ();
-		for(int i = 0;i< 6 /*_eData.namelist.Count*/;i++)
+		for(int i = 0;i< 8 /*_eData.namelist.Count*/;i++)
 		{
 			namelist_copy.Add(i);
 		}
@@ -198,9 +198,9 @@ public class CardsManage : MonoBehaviour {
 				diffNum.Add(namelist_copy[i]);
 			}
 		}
-		print("sameNum count" + sameNum.Count);
-		print("namelist count" + namelist_copy.Count);
-		print("diffNum count" + diffNum.Count);
+		//print("sameNum count" + sameNum.Count);
+		//print("namelist count" + namelist_copy.Count);
+		//print("diffNum count" + diffNum.Count);
 		int n = Random.Range(0,diffNum.Count);
 		return diffNum[n];
 	}

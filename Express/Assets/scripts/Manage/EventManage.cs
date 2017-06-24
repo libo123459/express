@@ -6,8 +6,10 @@ using UnityEngine.UI;
 public class EventManage : MonoBehaviour {
     public Card_event eCard;
     public Transform grid;
-	public Button _truckChoose;
-	public int punish_event = 0;
+	public BTN_truckChoose _truckChoose;
+    public GameObject _truckChoosePanel;
+	public int punish_inc = 0;
+    public int punish_dec = 0;
 
     CardsData _cardData;
     EventData _eData;
@@ -57,11 +59,14 @@ public class EventManage : MonoBehaviour {
     void doEvent00_0()//购物狂欢节
     {
 		int n = 6 - _cardData.CardsList.Count;
-
-		for (int i = 0; i < n; i++)
+        if (n != 0)
         {
-            cManage.Card_normal();
+            for (int i = 0; i < n; i++)
+            {
+                cManage.Card_normal();
+            }
         }
+		
     }
 
     void doEvent00_1()//大雪
@@ -82,16 +87,17 @@ public class EventManage : MonoBehaviour {
         mycard.eventID = index;
 		mycard.name = _eData.namelist[index];
 		mycard.type = "delayed1";
-
+        mycard.use.gameObject.SetActive(false);
+        mycard._cancel.gameObject.SetActive(false);
         switch (index)
         {
             case 2:
-                mycard.CountDown = 7;
+                mycard.CountDown = 6;
                 doEvent01_0();
 				
                 break;
             case 3:
-                mycard.CountDown = 5;
+                mycard.CountDown = 4;
                 doEvent01_1();
 				
                 break;
@@ -100,34 +106,42 @@ public class EventManage : MonoBehaviour {
 		_cardData.CardsList.Add(mycard);
     }    
 
-    void doEvent01_0()
+    void doEvent01_0()///信用严打
     {
-		cManage.punish = 4;
+		punish_inc = 2;
     }
 
-	public void undoEvent01()
+	public void undoEvent01(int index)///恢复
 	{
-		cManage.punish = 2;
+        switch (index)
+        {
+            case 2:
+                punish_inc = 0;
+                break;
+            case 3:
+                punish_dec = 0;
+                break;
+        }
 	}
 
-    void doEvent01_1()
+    void doEvent01_1()///这货不能送
     {
-		cManage.punish = 0;
+        punish_dec = -2; ;
     }
 		
-    public void Event_02(int index)
+    public void Event_02(int index)///时间类型——使用卡
     {
 		Card_event mycard = Instantiate(eCard);
 		mycard.transform.SetParent(grid.transform);
 		mycard.eventID = index;
 		mycard.name = _eData.namelist[index];
-
-		mycard.destination.text = mycard.name;
+        mycard.destination.text = mycard.name;
+        mycard._cancel.gameObject.SetActive(false);
 
 		_cardData.CardsList.Add(mycard);
     }
 
-	public void CheckEvent02(int index)
+	public void CheckEvent02(int index)////分支器
 	{
 		switch(index)
 		{
@@ -140,7 +154,7 @@ public class EventManage : MonoBehaviour {
 		}
 	}
 
-	public void doEvent02_0()
+	public void doEvent02_0()///信用锦旗
 	{
 		int n = dManage.totalCredit + 5;
 		if(n >= dManage.MaxCredit)
@@ -152,56 +166,70 @@ public class EventManage : MonoBehaviour {
 		dManage.text_credit.text = dManage.totalCredit.ToString();
 	}
 
-	public void doEvent02_1()
+	public void doEvent02_1()///光速驾驶
 	{
-		for(int i = 0;i<tManage.trucksList.Count;i++)
+        int distTruck = 0;        
+        
+        for (int i = tManage.trucksList.Count - 1; i>=0;i--)
 		{
-			Button Btn = tManage.trucksList[i].GetComponent<Button>();
-			if(tManage.trucksList[i].state == "dist")
-			{
-				Btn.enabled = true;
-				Btn.onClick.AddListener(()=>ChooseTruck_Event02_1(i));
-			}else{
-				Btn.enabled = false;
-			}
+            if (tManage.trucksList[i].state == "dist")
+            {
+                BTN_truckChoose Btn = Instantiate(_truckChoose, _truckChoosePanel.transform);
+                Btn.eManage = this;
+                Btn.id = i;
+                Text text = Btn.transform.GetChild(0).GetComponent<Text>();
+                text.text = "truck" + i;
+                distTruck++;
+            }            
 		}
+        if (distTruck != 0)
+        {
+            _truckChoosePanel.SetActive(true);
+        }
 	}
 
-	public void ChooseTruck_Event02_1(int truckNum)
+	public void ChooseTruck_Event02_1(int truckNum) ///选择回归车辆
 	{
-		print(truckNum.ToString());
-		/*Truck _truck = tManage.trucksList[truckNum];
-		print(truckNum);
-		_truck.state = "finished";
+		Truck _truck = tManage.trucksList[truckNum];
+		
+		//_truck.state = "finished";
 		dManage.CreditLast(_truck);
-		dManage.ProfitAtLast(_truck);
-		dManage.TruckMoveToStation();
-		for(int i = 0;i<tManage.trucksList.Count;i++)
-		{
-			Button Btn = tManage.trucksList[i].GetComponent<Button>();
-			Btn.enabled = false;
-		}*/
-	}
+        dManage.ProfitAtLast(_truck);
+        dManage.ClearDest(_truck.ID);
+        _truck.transform.position = _truck.StartPos;
+        _truck.state = "empty";
+        _truck.profit.Clear();
+        _truck.credit.Clear();
+         for (int i = 0; i < _truckChoosePanel.transform.childCount; i++)
+        {
+             Destroy(_truckChoosePanel.transform.GetChild(i).gameObject);
+        }
+        _truckChoosePanel.SetActive(false);
+    }
 
-    public void Event_03(int index)
+    public void Event_03(int index) ///事件类型——延迟结算
     {
         Card_event mycard = Instantiate(eCard);
         mycard.transform.SetParent(grid.transform);
 		mycard.eventID = index;
 		mycard.type = "delayed2";
 		mycard.name = _eData.namelist[index];
-		mycard.destination.text = mycard.name + "CountDown" + mycard.CountDown.ToString();
-		switch (index)
+		
+        mycard.use.gameObject.SetActive(false);
+        mycard._cancel.gameObject.SetActive(false);
+
+        switch (index)
 		{
 		case 6:
-			mycard.CountDown = 5;
+			mycard.CountDown = 4;
 
 			break;
 		case 7:
-			mycard.CountDown = 7;
+			mycard.CountDown = 6;
 
 			break;
 		}
+        mycard.destination.text = mycard.name + "CountDown" + mycard.CountDown.ToString();
         _cardData.CardsList.Add(mycard);
     }
 
@@ -220,23 +248,28 @@ public class EventManage : MonoBehaviour {
 		}
 	}
 
-    void doEvent03_0()
+    void doEvent03_0() //交通堵塞
     {
 		for (int i = 0; i < tManage.trucksList.Count; i++)
 		{
 			if (tManage.trucksList[i].state == "dist")
 			{
-				tManage.trucksList[i].stopTime = 1;
+				tManage.trucksList[i].stopTime = tManage.trucksList[i].stopTime + 1;
 			}
 		}
     }
 
-	void doEvent03_1()
+	void doEvent03_1() //下周大狂欢
 	{
-		for (int i = 0; i < 6 - _cardData.CardsList.Count; i++)
-		{
-			cManage.Card_normal();
-		}
+        int n = 6 - _cardData.CardsList.Count;
+        if (n != 0)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                cManage.Card_normal();
+            }
+        }
+        
 	}
 
     public void Event_04(int index)

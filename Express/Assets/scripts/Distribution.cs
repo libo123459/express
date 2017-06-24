@@ -138,11 +138,12 @@ public class Distribution : MonoBehaviour {
 
 	public void ProfitAtLast(Truck _truck)
     {
-		for(int i = 0;i<_truck.profit.Count;i++)
+        ProfitPanel.SetActive(true);
+        for (int i = 0;i<_truck.profit.Count;i++)
 		{
 			profit = profit + _truck.profit[i];
 		}
-		ProfitPanel.SetActive(true);
+		
         _profit.text = "总共收益金额：" + profit.ToString() +"\n" + "信誉度：" + credit.ToString();
     }
 
@@ -196,9 +197,10 @@ public class Distribution : MonoBehaviour {
             if (tManage.trucksList[i].state == "finished")
             {
                 ClearDest(tManage.trucksList[i].ID);
-                float xPos = _truck.transform.localPosition.x;
+                /*float xPos = _truck.transform.localPosition.x;
                 float yPos = _truck.transform.localPosition.y;
-                _truck.transform.localPosition = new Vector3(xPos - 1300, yPos, 0);
+                _truck.transform.localPosition = new Vector3(xPos - 1300, yPos, 0);*/
+                _truck.transform.position = _truck.StartPos;
                 _truck.state = "empty";
                 _truck.profit.Clear();
                 _truck.credit.Clear();
@@ -226,9 +228,10 @@ public class Distribution : MonoBehaviour {
 					} else {
 						if(eCard.type == "delayed1")
 						{
-							eManage.undoEvent01();
+							eManage.undoEvent01(eCard.eventID);
 						} else {
-							eManage.CheckEvent03(eCard.eventID);
+                            
+                            eManage.CheckEvent03(eCard.eventID);
 						}
 
 						cManage.DestoryTheCard(eCard);

@@ -16,6 +16,7 @@ public class Card_event : Card {
 	void Awake () {
 		cManage = GameObject.Find("Manage").GetComponent<CardsManage>();
 		eManage = GameObject.Find("Manage").GetComponent<EventManage>();
+
 		use = this.transform.Find("use").GetComponent<Button>();
 		use.onClick.AddListener(()=> eManage.CheckEvent02(eventID));
 		use.onClick.AddListener(()=> cManage.DestoryTheCard(this));
@@ -23,7 +24,6 @@ public class Card_event : Card {
 
 		destination = this.transform.GetChild(0).GetComponent<Text>();
 		_cancel = this.transform.Find("cancel").GetComponent<Button>();
-
 		_cancel.onClick.AddListener(() => cManage.cancelTheCard(this));
 
 	}
