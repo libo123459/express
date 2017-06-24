@@ -186,7 +186,6 @@ public class Distribution : MonoBehaviour {
         else {
             _truck.stopTime--;
         }
-
     }
 
     public void TruckMoveToStation()
@@ -194,16 +193,15 @@ public class Distribution : MonoBehaviour {
         for (int i = 0; i < tManage.trucksList.Count; i++)
         {
             Truck _truck = tManage.trucksList[i];
-            if (tManage.trucksList[i].state == "finished")
+            if (_truck.state == "finished")
             {
-                ClearDest(tManage.trucksList[i].ID);
-                /*float xPos = _truck.transform.localPosition.x;
-                float yPos = _truck.transform.localPosition.y;
-                _truck.transform.localPosition = new Vector3(xPos - 1300, yPos, 0);*/
+                ClearDest(_truck.ID);
+                
                 _truck.transform.position = _truck.StartPos;
                 _truck.state = "empty";
                 _truck.profit.Clear();
                 _truck.credit.Clear();
+                _truck.stopTime = 0;
             }
         }
 

@@ -7,9 +7,9 @@ public class Card_event : Card {
     public int CountDown;
     public int eventID;
 	public string type;
-	public string name;
+    public new string name;
 
-	public Button use;
+    public Button use;
 
 	public EventManage eManage;
 	// Use this for initialization

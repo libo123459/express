@@ -274,6 +274,39 @@ public class EventManage : MonoBehaviour {
 
     public void Event_04(int index)
     {
+        Card_event mycard = Instantiate(eCard);
+        mycard.transform.SetParent(grid.transform);
+        mycard.eventID = index;
+        mycard.name = _eData.namelist[index];
+        mycard.destination.text = mycard.name;
+        mycard._cancel.gameObject.SetActive(false);
+        switch (index)
+        {
+            case 8:
+                doEvent04_0();
+                break;
+            case 9:
+                doEvent04_1();
+                break;
+            case 10:
+                doEvent04_2();
+                break;
+        }
+        _cardData.CardsList.Add(mycard);
+    }
+
+    void doEvent04_0()
+    {
+
+    }
+
+    void doEvent04_1()
+    {
+
+    }
+
+    void doEvent04_2()
+    {
 
     }
     // Use this for initialization
