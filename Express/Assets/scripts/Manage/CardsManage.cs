@@ -80,9 +80,8 @@ public class CardsManage : MonoBehaviour {
     void SelectCardType()
     {
         int chance = Random.Range(0,100);
-        if (chance >= 50)
+        if (chance >= 30)
         {
-			
 			Card_normal();
         }
         else {
