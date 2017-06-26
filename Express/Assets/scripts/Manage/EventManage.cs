@@ -93,16 +93,20 @@ public class EventManage : MonoBehaviour {
         {
             case 2:
                 mycard.CountDown = 6;
+                mycard.destination.text = mycard.name + "CountDown" 
+                    + (mycard.CountDown + 1).ToString() + "\n" + "7回合内拒单损失4点信用";
                 doEvent01_0();
 				
                 break;
             case 3:
                 mycard.CountDown = 4;
+                mycard.destination.text = mycard.name + "CountDown"
+                    + (mycard.CountDown + 1).ToString() + "\n" + "5回合内据单不损失信用";
                 doEvent01_1();
 				
                 break;
         }
-		mycard.destination.text = mycard.name + "CountDown" + mycard.CountDown.ToString();
+		
 		_cardData.CardsList.Add(mycard);
     }    
 
@@ -137,8 +141,17 @@ public class EventManage : MonoBehaviour {
 		mycard.name = _eData.namelist[index];
         mycard.destination.text = mycard.name;
         mycard._cancel.gameObject.SetActive(false);
+        switch (index)
+        {
+            case 4:
+                mycard.destination.text = mycard.name + "\n" + "恢复5点信用值";
+                break;
+            case 5:
+                mycard.destination.text = mycard.name + "\n" + "选择一名司机立即返回并结算配送奖励";
+                break;
+        }
 
-		_cardData.CardsList.Add(mycard);
+        _cardData.CardsList.Add(mycard);
     }
 
 	public void CheckEvent02(int index)////分支器
@@ -222,14 +235,16 @@ public class EventManage : MonoBehaviour {
 		{
 		case 6:
 			mycard.CountDown = 4;
-
-			break;
+                mycard.destination.text = mycard.name 
+                    + "CountDown" + (mycard.CountDown + 1).ToString() + "\n" + "5回合后所有配送中车辆增加一回合";
+                break;
 		case 7:
 			mycard.CountDown = 6;
-
-			break;
+                mycard.destination.text = mycard.name 
+                    + "CountDown" + (mycard.CountDown + 1).ToString() + "\n"+ "7回合后执行“购物狂欢节";
+                break;
 		}
-        mycard.destination.text = mycard.name + "CountDown" + mycard.CountDown.ToString();
+        
         _cardData.CardsList.Add(mycard);
     }
 
