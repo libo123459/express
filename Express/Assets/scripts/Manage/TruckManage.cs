@@ -15,7 +15,7 @@ public class TruckManage : MonoBehaviour {
             mytruck.transform.SetParent(truckPanel);
             mytruck.transform.localPosition = new Vector3(-720, 200 * i - 25, 0);
             mytruck.transform.localScale = new Vector3(1,1,1);
-            
+            mytruck.consume = 1;//临时设定的油耗数值
             mytruck.row = 3;
             mytruck.column = 3;
             mytruck.ID = i;

@@ -12,12 +12,14 @@ public class Distribution : MonoBehaviour {
 
     public Text _profit;
     public Text text_credit;
+    public Text text_profit;
 
     public List<GameObject> destPanelList = new List<GameObject>();
 
     public int profit;
     public int credit;
     public int totalCredit;
+    public int totalProfit;
 
     public int MaxCredit = 10;
 
@@ -31,6 +33,7 @@ public class Distribution : MonoBehaviour {
     
     int consume;
     int timeCast;
+    
     
     public void distribution(int truckNum)//配送界面
     {
@@ -119,6 +122,7 @@ public class Distribution : MonoBehaviour {
                             
                             CreditLast(_truck);
                             ProfitAtLast(_truck);
+                            TruckConsume(_truck);
                             break;
                         }
                         else {
@@ -139,12 +143,22 @@ public class Distribution : MonoBehaviour {
 	public void ProfitAtLast(Truck _truck)
     {
         ProfitPanel.SetActive(true);
+
+        TruckConsume(_truck);
+
         for (int i = 0;i<_truck.profit.Count;i++)
 		{
 			profit = profit + _truck.profit[i];
 		}
 		
-        _profit.text = "总共收益金额：" + profit.ToString() +"\n" + "信誉度：" + credit.ToString();
+        _profit.text = "收益金额：" + profit.ToString() 
+            +"\n" + "汽油消耗" + consume.ToString()
+            + "\n" + "总计收益" + (profit - consume).ToString()
+            + "\n" + "信誉度：" + credit.ToString();
+
+        totalProfit = totalProfit + profit - consume;
+
+        text_profit.text = "金币" + totalProfit.ToString();
     }
 
     public void CreditLast(Truck _truck)
@@ -166,7 +180,7 @@ public class Distribution : MonoBehaviour {
         else {
             totalCredit = totalCredit + credit;
         }
-        text_credit.text = totalCredit.ToString();
+        text_credit.text = "信誉" + totalCredit.ToString();
         
        // print("加成" + n.ToString());
         
@@ -210,6 +224,12 @@ public class Distribution : MonoBehaviour {
         credit = 0;
         ProfitPanel.SetActive(false);
     }
+    
+    void TruckConsume (Truck _truck)
+    {
+        consume = _truck.TotalTimecast * _truck.consume;        
+    }
+
 	void CountDown()
 	{
 		for(int i = 0;i < cData.CardsList.Count;i++)
@@ -252,11 +272,11 @@ public class Distribution : MonoBehaviour {
         displayDestPanel();
 
         totalCredit = MaxCredit;///初始信誉
-        text_credit.text = totalCredit.ToString();
+        text_credit.text = "信誉" + totalCredit.ToString();
+        text_profit.text = "金币" + totalProfit.ToString();
     }
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+    }
 }

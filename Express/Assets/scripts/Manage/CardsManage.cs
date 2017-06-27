@@ -9,7 +9,9 @@ public class CardsManage : MonoBehaviour {
     public Transform grid;
 
     public GameObject eventPanel;
+    public GameObject gameoverPanel;
     public Text _event;
+    public Text _useMoney;
 
 	public int punish = 2;
 
@@ -19,6 +21,8 @@ public class CardsManage : MonoBehaviour {
     Distribution dManage;
     OrderManage oManage;
     EventManage eManage;
+
+    int coe_die = 1;
 
 	// Use this for initialization
 	void Start () {
@@ -113,7 +117,7 @@ public class CardsManage : MonoBehaviour {
 
         Item myitem = Instantiate(mycard._item);
         myitem.transform.SetParent(mycard.transform);
-        myitem.transform.localPosition = new Vector3(-50, 100, 0);
+        myitem.transform.localPosition = -myitem.CenterPos;
         myitem.transform.localScale = new Vector3(1, 1, 1);
     }
 
@@ -138,10 +142,38 @@ public class CardsManage : MonoBehaviour {
 
     public void cancelTheCard(Card _card)///退订卡片
     {
-        dManage.totalCredit = dManage.totalCredit - punish - eManage.punish_inc - eManage.punish_dec;
-        dManage.text_credit.text = dManage.totalCredit.ToString();
-		DestoryTheCard(_card);
+        if (dManage.totalCredit - punish - eManage.punish_inc - eManage.punish_dec <= 0)
+        {
+            GameOver();
+        }
+        else {
+            dManage.totalCredit = dManage.totalCredit - punish - eManage.punish_inc - eManage.punish_dec;
+            dManage.text_credit.text = dManage.totalCredit.ToString();            
+        }
+        DestoryTheCard(_card);
     }
+
+    void useMoney()
+    {
+        gameoverPanel.SetActive(false);
+       
+        int n = dManage.totalProfit - (coe_die * 100);
+        dManage.totalProfit = n;
+        
+        dManage.text_profit.text = "金币" + dManage.totalProfit.ToString();
+        Button btn = gameoverPanel.transform.GetChild(0).GetComponent<Button>();
+        btn.onClick.RemoveAllListeners();
+        coe_die = coe_die + 1;
+    }
+
+    void GameOver()
+    {
+        gameoverPanel.SetActive(true);
+        _useMoney.text = "使用" + (coe_die * 100).ToString() + "金币避免死亡";
+        Button btn = gameoverPanel.transform.GetChild(0).GetComponent<Button>();
+        btn.onClick.AddListener(useMoney);
+    }
+
 	public void DestoryTheCard(Card _card)
 	{
 		_card.Destroy();//删除该卡

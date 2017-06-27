@@ -31,7 +31,7 @@ public class OrderManage : MonoBehaviour {
         for (int i = 0; i < OrdersList.Count; i++)///////把已装配的订单数据传输到当前truck上
         {
             _truck.timeCast.Add(OrdersList[i]._timecast);
-            _truck.consume.Add(OrdersList[i]._consume);
+            
             _truck.profit.Add(OrdersList[i].profit);
             _truck.credit.Add(OrdersList[i].credit);
             _truck.remain = _truck.remain + _truck.timeCast[i];///车辆剩余回合数

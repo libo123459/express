@@ -10,6 +10,7 @@ public class Item : MonoBehaviour {
     public string Property; //物品特征
     public Vector3 SlotPos;
     public Vector3 StartPos;
+    public Vector3 CenterPos;
     public new Collider2D collider = null;
 
     // Use this for initialization

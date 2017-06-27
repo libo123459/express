@@ -60,7 +60,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             _orderManage.AddTheOrder(_card);            
         }
         else {
-            this.transform.position = _card.transform.position;
+            this.transform.localPosition = -_card._item.CenterPos;
             _orderManage.CancelOrder(_card.ID);
         }
     }
