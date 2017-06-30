@@ -14,8 +14,7 @@ public class OrderManage : MonoBehaviour {
         {
             Order myorder = Instantiate(_order);
             myorder.transform.SetParent(orderPanel.transform);
-            myorder.transform.localPosition = new Vector3(0, 0, 0);
-            myorder.transform.localScale = new Vector3(1, 1, 1);
+            
             myorder.ID = _card.ID;
             myorder.profit = _card.profit;
             myorder.credit = _card.credit;
