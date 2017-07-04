@@ -10,6 +10,9 @@ public class Driver : MonoBehaviour {
     public string coe_property;
 
     public int id;
+    public int price;
+    public int salary;
+    public int skillID;
     public Text text;
     public new string name;
 

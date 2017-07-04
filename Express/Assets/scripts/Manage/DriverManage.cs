@@ -29,14 +29,17 @@ public class DriverManage : MonoBehaviour {
         {
             int index = driver_id[i];
             Driver myDriver = Instantiate(_driver, DriverList.transform);            
-            myDriver.name = _driverData.nameList[index];
+            myDriver.name = _driverData.GetName(index);
+            myDriver.price = _driverData.GetPrice(index);
+            myDriver.salary = _driverData.GetSalary(index);
+            myDriver.skillID = _driverData.GetSkillID(index);
             actived_drivers.Add(myDriver);
         }
     }
     void CreateDriverIndex()
     {
         int SameNum = 0;
-        int n = Random.Range(0,_driverData.nameList.Count);
+        int n = Random.Range(1,5);
         if (driver_id.Count == 0)
         {
             driver_id.Add(n);

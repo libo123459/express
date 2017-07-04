@@ -56,6 +56,7 @@ public class Block : MonoBehaviour {
     private void Awake()
     {
         //this.GetComponent<Image>().color = new Color(0,0,0,1);
+        this.GetComponent<Image>().sprite = Resources.Load<Sprite>("block");
     }
 
     // Update is called once per frame

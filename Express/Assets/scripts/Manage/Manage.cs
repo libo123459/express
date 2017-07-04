@@ -56,6 +56,7 @@ public class Manage : MonoBehaviour {
     public void OpenShop()
     {
         shopPanel.SetActive(true);
+        tManage.DisplayTruckInShopPanel(shopPanel.transform);
     }
 
     public void OpenRecruit()

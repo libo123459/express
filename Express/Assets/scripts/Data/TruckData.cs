@@ -22,8 +22,6 @@ public class TruckData : MonoBehaviour {
         {
             Array[_i] = lineArray[_i].Split(',');
         }
-        
-        
     }
 
     public int GetWidth(int nRow)
