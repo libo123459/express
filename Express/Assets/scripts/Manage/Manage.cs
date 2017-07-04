@@ -8,12 +8,14 @@ public class Manage : MonoBehaviour {
     public GameObject assemblepanel;
     public GameObject distributionpanel;
     public GameObject slotPanel;
-    public GameObject destpanel;
+    public GameObject shopPanel;
+    public GameObject recruitPanel;
 
     CardsManage cManage;
     //OrderManage oManage;
     Distribution dManage;
     AssembleManage aManage;
+    TruckManage tManage;
 
     int money;
     
@@ -51,13 +53,24 @@ public class Manage : MonoBehaviour {
         aManage.slotList.Clear();
     }
 
+    public void OpenShop()
+    {
+        shopPanel.SetActive(true);
+    }
+
+    public void OpenRecruit()
+    {
+        
+    }
+
     // Use this for initialization
-	void Start ()
+    void Start ()
     {
         cManage = this.GetComponent<CardsManage>();
        // oManage = this.GetComponent<OrderManage>();
         dManage = this.GetComponent<Distribution>();
         aManage = this.GetComponent<AssembleManage>();
+        tManage = this.GetComponent<TruckManage>();
 	}
 	
 	// Update is called once per frame

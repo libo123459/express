@@ -59,7 +59,7 @@ public class Distribution : MonoBehaviour {
         {
             GameObject dPanel = Instantiate(destPanel.gameObject, distributionPanel);
             BtnStation _station = Instantiate(Station, dPanel.transform);
-            dPanel.transform.localPosition = new Vector3(-130, 200 * tManage.trucksList[i].ID, 0);
+            dPanel.transform.localPosition = new Vector3(-130, 200 * i, 0);
             _station.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,0,0);
             _station.truckNum = tManage.trucksList[i].ID;
             destPanelList.Add(dPanel);

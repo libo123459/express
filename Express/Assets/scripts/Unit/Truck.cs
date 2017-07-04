@@ -15,6 +15,7 @@ public class Truck : MonoBehaviour {
     public int row;
     public int column;
     public int ID;
+    public int price;
     public int orderNum;
     public int remain;
     public int stopTime;
