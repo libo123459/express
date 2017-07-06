@@ -5,10 +5,10 @@ using UnityEngine;
 public class DriverData : MonoBehaviour {
     
     public List<Driver> driverList = new List<Driver>();
-    
+    public static int length;
 	// Use this for initialization
 	
-    public string[][] Array;
+    public static string[][] Array;
     // Use this for initialization
     private void Awake()
     {
@@ -26,29 +26,28 @@ public class DriverData : MonoBehaviour {
         {
             Array[_i] = lineArray[_i].Split(',');
         }
-
-
+        length = lineArray.Length;
     }
 
-    public string GetName(int nRow)
+    public static string GetName(int nRow)
     {
         //if (Array.Length <= 0 || nRow >= Array.Length)
         //   return "";
-
+        print(Array[nRow][1]);
         return Array[nRow][1];
     }
 
-    public int GetPrice(int nRow)
+    public static int GetPrice(int nRow)
     {
         return int.Parse(Array[nRow][2]);
     }
 
-    public int GetSalary(int nRow)
+    public static int GetSalary(int nRow)
     {
         return int.Parse(Array[nRow][3]);
     }
 
-    public int GetSkillID(int nRow)
+    public static int GetSkillID(int nRow)
     {
         return int.Parse(Array[nRow][4]);
     }

@@ -14,7 +14,7 @@ public class Truck : MonoBehaviour {
     public int consume;
     public int row;
     public int column;
-    public int ID;
+    public int ID;///truck种类序列号
     public int price;
     public int orderNum;
     public int remain;
@@ -22,7 +22,7 @@ public class Truck : MonoBehaviour {
     public int TotalTimecast;
     public string state;
 
-    public int driverID;
+    public Driver driver;
 
     public Vector3 StartPos;
 

@@ -142,13 +142,13 @@ public class CardsManage : MonoBehaviour {
 
     public void cancelTheCard(Card _card)///退订卡片
     {
-        if (dManage.totalCredit - punish - eManage.punish_inc - eManage.punish_dec <= 0)
+        if (Distribution.totalCredit - punish - eManage.punish_inc - eManage.punish_dec <= 0)
         {
             GameOver();
         }
         else {
-            dManage.totalCredit = dManage.totalCredit - punish - eManage.punish_inc - eManage.punish_dec;
-            dManage.text_credit.text = dManage.totalCredit.ToString();            
+            Distribution.totalCredit = Distribution.totalCredit - punish - eManage.punish_inc - eManage.punish_dec;
+            dManage.text_credit.text = Distribution.totalCredit.ToString();            
         }
         DestoryTheCard(_card);
     }
@@ -157,10 +157,10 @@ public class CardsManage : MonoBehaviour {
     {
         gameoverPanel.SetActive(false);
        
-        int n = dManage.totalProfit - (coe_die * 100);
-        dManage.totalProfit = n;
+        int n = Distribution.totalProfit - (coe_die * 100);
+        Distribution.totalProfit = n;
         
-        dManage.text_profit.text = "金币" + dManage.totalProfit.ToString();
+        dManage.text_profit.text = "金币" + Distribution.totalProfit.ToString();
         Button btn = gameoverPanel.transform.GetChild(0).GetComponent<Button>();
         btn.onClick.RemoveAllListeners();
         coe_die = coe_die + 1;

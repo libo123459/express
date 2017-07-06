@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class TruckManage : MonoBehaviour {
     public Truck _truck;
     //public GameObject truck_image;
-    public List<Truck> trucksList = new List<Truck>();
-    public List<Truck> trucksGarage = new List<Truck>();
+    public static List<Truck> trucksList = new List<Truck>();
+    public static List<Truck> trucksGarage = new List<Truck>();
     public Transform truckPanel;
     public Transform garage;
     public GameObject truck_display_inshop;
@@ -51,6 +51,7 @@ public class TruckManage : MonoBehaviour {
         GiveTheTruckPara(mytruck,mytruck.ID);
         trucksGarage.Add(mytruck);
         GetTruckFromGarage(0);
+        Distribution.totalProfit -= mytruck.price;
     }
 
     public void GetTruckFromGarage(int index)

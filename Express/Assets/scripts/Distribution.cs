@@ -16,16 +16,15 @@ public class Distribution : MonoBehaviour {
 
     public List<GameObject> destPanelList = new List<GameObject>();
 
-    public int profit;
-    public int credit;
-    public int totalCredit;
-    public int totalProfit;
+    public static int profit;
+    public static int credit;
+    public static int totalCredit;
+    public static int totalProfit;
 
     public int MaxCredit = 10;
 
     CardsData cData;
 	EventData eData;
-    TruckManage tManage;
     OrderManage oManage;
     DriverManage dManage;
 	EventManage eManage;
@@ -37,7 +36,7 @@ public class Distribution : MonoBehaviour {
     
     public void distribution(int truckNum)//配送界面
     {
-        Truck _truck = tManage.trucksList[truckNum];//获取车辆
+        Truck _truck = TruckManage.trucksList[truckNum];//获取车辆
 
         oManage.SendOrderToTruck(_truck);
         oManage.OrdersList.Clear();
@@ -55,13 +54,13 @@ public class Distribution : MonoBehaviour {
 
     void displayDestPanel() //目的地panel的实例化
     {
-        for (int i = 0; i < tManage.trucksList.Count; i++)
+        for (int i = 0; i < TruckManage.trucksList.Count; i++)
         {
             GameObject dPanel = Instantiate(destPanel.gameObject, distributionPanel);
             BtnStation _station = Instantiate(Station, dPanel.transform);
             dPanel.transform.localPosition = new Vector3(-130, 200 * i, 0);
             _station.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,0,0);
-            _station.truckNum = tManage.trucksList[i].ID;
+            _station.truckNum = TruckManage.trucksList[i].ID;
             destPanelList.Add(dPanel);
         }
     }
@@ -107,11 +106,11 @@ public class Distribution : MonoBehaviour {
         if (cData.CardsList.Count < 6)///6为临时
         {
 			
-			for (int i = 0; i < tManage.trucksList.Count; i++)
+			for (int i = 0; i < TruckManage.trucksList.Count; i++)
             {
-                if (tManage.trucksList[i].state == "dist")
+                if (TruckManage.trucksList[i].state == "dist")
                 {
-                    Truck _truck = tManage.trucksList[i];
+                    Truck _truck = TruckManage.trucksList[i];
                     TruckMove(_truck);
                     
                     for (int j = 0; j < _truck.timeCast.Count; j++) ////开始对第一个订单倒计时
@@ -204,9 +203,9 @@ public class Distribution : MonoBehaviour {
 
     public void TruckMoveToStation()
     {
-        for (int i = 0; i < tManage.trucksList.Count; i++)
+        for (int i = 0; i < TruckManage.trucksList.Count; i++)
         {
-            Truck _truck = tManage.trucksList[i];
+            Truck _truck = TruckManage.trucksList[i];
             if (_truck.state == "finished")
             {
                 ClearDest(_truck.ID);
@@ -262,7 +261,7 @@ public class Distribution : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        tManage = GameObject.Find("Manage").GetComponent<TruckManage>();
+        
         oManage = GameObject.Find("Manage").GetComponent<OrderManage>();
         cData = GameObject.Find("Manage").GetComponent<CardsData>();
         dManage = GameObject.Find("Manage").GetComponent<DriverManage>();

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class BtnStation : MonoBehaviour {
     public int truckNum;
     public Manage manage;
-    private TruckManage tManage;
     // Use this for initialization
 
     public void onclick()
@@ -14,13 +13,12 @@ public class BtnStation : MonoBehaviour {
         manage.Assemble(this.truckNum);
     }
 	void Start () {
-        manage = GameObject.Find("Manage").GetComponent<Manage>();
-        tManage = manage.GetComponent<TruckManage>();
+        manage = GameObject.Find("Manage").GetComponent<Manage>();        
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (tManage.trucksList[truckNum].state == "dist")
+        if (TruckManage.trucksList[truckNum].state == "dist")
         {
             this.GetComponent<Button>().interactable = false;
         }

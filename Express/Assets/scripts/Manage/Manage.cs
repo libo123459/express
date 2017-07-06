@@ -12,8 +12,8 @@ public class Manage : MonoBehaviour {
     public GameObject recruitPanel;
 
     CardsManage cManage;
-    //OrderManage oManage;
     Distribution dManage;
+    DriverManage driverManage;
     AssembleManage aManage;
     TruckManage tManage;
 
@@ -23,7 +23,7 @@ public class Manage : MonoBehaviour {
     {
         cManage.CancelTheSendedCard();//将装配上的物件从卡池中消除
 
-        dManage.distribution(aManage.currentTruck);//配送
+        dManage.distribution(AssembleManage.currentTruck);//配送
 
         ClearTheSlot();//清除slot
 
@@ -46,11 +46,11 @@ public class Manage : MonoBehaviour {
 
     public void ClearTheSlot()
     {
-        for (int i = 0; i < aManage.slotList.Count; i++)
+        for (int i = 0; i < AssembleManage.slotList.Count; i++)
         {
-            DestroyImmediate(aManage.slotList[i].gameObject);
+            DestroyImmediate(AssembleManage.slotList[i].gameObject);
         }
-        aManage.slotList.Clear();
+        AssembleManage.slotList.Clear();
     }
 
     public void OpenShop()
@@ -59,18 +59,29 @@ public class Manage : MonoBehaviour {
         tManage.DisplayTruckInShopPanel(shopPanel.transform);
     }
 
+    public void CloseShop()
+    {
+        shopPanel.SetActive(false);
+    }
+
     public void OpenRecruit()
     {
-        
+        recruitPanel.SetActive(true);
+        driverManage.DisplayDriverInRecruitPanel(recruitPanel.transform);
+    }
+
+    public void CloseRecruit()
+    {
+        recruitPanel.SetActive(false);
     }
 
     // Use this for initialization
     void Start ()
     {
         cManage = this.GetComponent<CardsManage>();
-       // oManage = this.GetComponent<OrderManage>();
-        dManage = this.GetComponent<Distribution>();
         aManage = this.GetComponent<AssembleManage>();
+        dManage = this.GetComponent<Distribution>();
+        driverManage = this.GetComponent<DriverManage>();
         tManage = this.GetComponent<TruckManage>();
 	}
 	

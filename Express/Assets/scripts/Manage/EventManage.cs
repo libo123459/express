@@ -15,7 +15,6 @@ public class EventManage : MonoBehaviour {
     EventData _eData;
 
     CardsManage cManage;
-    TruckManage tManage;
 	Distribution dManage;
 
 
@@ -71,11 +70,11 @@ public class EventManage : MonoBehaviour {
 
     void doEvent00_1()//大雪
     {
-        for (int i = 0; i < tManage.trucksList.Count; i++)
+        for (int i = 0; i < TruckManage.trucksList.Count; i++)
         {
-            if (tManage.trucksList[i].state == "dist")
+            if (TruckManage.trucksList[i].state == "dist")
             {
-                tManage.trucksList[i].stopTime = 2;
+                TruckManage.trucksList[i].stopTime = 2;
             }
         }
     }
@@ -169,23 +168,23 @@ public class EventManage : MonoBehaviour {
 
 	public void doEvent02_0()///信用锦旗
 	{
-		int n = dManage.totalCredit + 5;
+		int n = Distribution.totalCredit + 5;
 		if(n >= dManage.MaxCredit)
 		{
-			dManage.totalCredit = 10;
+            Distribution.totalCredit = 10;
 		} else {
-			dManage.totalCredit = n;
+            Distribution.totalCredit = n;
 		}
-		dManage.text_credit.text = dManage.totalCredit.ToString();
+		dManage.text_credit.text = Distribution.totalCredit.ToString();
 	}
 
 	public void doEvent02_1()///光速驾驶
 	{
         int distTruck = 0;        
         
-        for (int i = tManage.trucksList.Count - 1; i>=0;i--)
+        for (int i = TruckManage.trucksList.Count - 1; i>=0;i--)
 		{
-            if (tManage.trucksList[i].state == "dist")
+            if (TruckManage.trucksList[i].state == "dist")
             {
                 BTN_truckChoose Btn = Instantiate(_truckChoose, _truckChoosePanel.transform);
                 Btn.eManage = this;
@@ -203,7 +202,7 @@ public class EventManage : MonoBehaviour {
 
 	public void ChooseTruck_Event02_1(int truckNum) ///选择回归车辆
 	{
-		Truck _truck = tManage.trucksList[truckNum];
+		Truck _truck = TruckManage.trucksList[truckNum];
 		
 		//_truck.state = "finished";
 		dManage.CreditLast(_truck);
@@ -265,11 +264,11 @@ public class EventManage : MonoBehaviour {
 
     void doEvent03_0() //交通堵塞
     {
-		for (int i = 0; i < tManage.trucksList.Count; i++)
+		for (int i = 0; i < TruckManage.trucksList.Count; i++)
 		{
-			if (tManage.trucksList[i].state == "dist")
+			if (TruckManage.trucksList[i].state == "dist")
 			{
-				tManage.trucksList[i].stopTime = tManage.trucksList[i].stopTime + 1;
+                TruckManage.trucksList[i].stopTime = TruckManage.trucksList[i].stopTime + 1;
 			}
 		}
     }
@@ -327,7 +326,6 @@ public class EventManage : MonoBehaviour {
     // Use this for initialization
     void Start () {
         cManage = this.GetComponent<CardsManage>();
-        tManage = this.GetComponent<TruckManage>();
 		dManage = this.GetComponent<Distribution>();
         _eData = this.GetComponent<EventData>();
         _cardData = this.GetComponent<CardsData>();
