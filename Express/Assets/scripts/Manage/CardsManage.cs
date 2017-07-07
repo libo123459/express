@@ -157,7 +157,7 @@ public class CardsManage : MonoBehaviour {
     {
         gameoverPanel.SetActive(false);
        
-        int n = Distribution.totalProfit - (coe_die * 100);
+        float n = Distribution.totalProfit - (coe_die * 100);
         Distribution.totalProfit = n;
         
         dManage.text_profit.text = "金币" + Distribution.totalProfit.ToString();

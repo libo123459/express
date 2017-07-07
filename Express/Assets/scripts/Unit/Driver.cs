@@ -13,8 +13,10 @@ public class Driver : MonoBehaviour {
     public int price;
     public int salary;
     public int skillID;
+    public bool used = false;
     public Text text;
     public new string name;
+    public Truck truck;
 
     private DriverManage dManage;
     private Button confirm;

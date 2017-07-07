@@ -40,7 +40,7 @@ public class DriverManage : MonoBehaviour {
     {
         
         int SameNum = 0;
-        int n = Random.Range(1,5);
+        int n = Random.Range(6,10);
         if (driver_id.Count == 0)
         {
             driver_id.Add(n);
@@ -98,6 +98,19 @@ public class DriverManage : MonoBehaviour {
     public void SendDriverToTruck(Driver theDriver)
     {
         TruckManage.trucksList[AssembleManage.currentTruck].driver = theDriver;
+        theDriver.truck = TruckManage.trucksList[AssembleManage.currentTruck];
+
+        for (int i = 0; i < actived_drivers.Count; i++)
+        {
+            actived_drivers[i].GetComponent<Button>().interactable = true;
+        }
+        for (int i = 0; i < TruckManage.trucksList.Count; i++)
+        {
+            if (TruckManage.trucksList[i].driver != null)
+            {
+                TruckManage.trucksList[i].driver.GetComponent<Button>().interactable = false;
+            }
+        }        
     }
 
     public void DisplayDriverInRecruitPanel(Transform recruitPanel)
@@ -151,7 +164,81 @@ public class DriverManage : MonoBehaviour {
         _driver.price = DriverData.GetPrice(_driver.id);
         _driver.salary = DriverData.GetSalary(_driver.id);
         _driver.skillID = DriverData.GetSkillID(_driver.id);
-    }   
+    }
+
+    public static void DriverSkill(Driver _driver)
+    {
+        int index = _driver.id;
+        if (index >= 6)
+        {
+            switch (index)
+            {
+                case 6:
+                    Skill01(_driver.truck);
+                    break;
+                case 7:
+                    Skill02(_driver.truck);
+                    break;
+                case 8:
+                    Skill03(_driver.truck);
+                    break;
+                case 9:
+                    Skill04(_driver.truck);
+                    break;
+            }
+        }        
+    }
+
+    static void Skill01(Truck truck)
+    {
+        if (truck.orderNum >= 3)
+        {
+            for (int i = 0; i < truck.timeCast.Count; i++)
+            {
+                truck.timeCast[i] -= 1;
+            }
+            truck.remain -= 3;
+            truck.TotalTimecast -= 3;
+        }
+    }
+
+    static void Skill02(Truck truck)
+    {
+        for (int i = 0; i < truck.credit.Count; i++)
+        {
+            truck.credit[i] += 1;
+        }
+    }
+
+    static void Skill03(Truck truck)
+    {
+        for (int i = 0; i < truck.orderNum; i++)
+        {
+            truck.timeCast[i] = 1;
+            truck.profit[i] = (int)(truck.profit[i] * 0.1f);
+        }
+        truck.remain = truck.timeCast.Count;
+        truck.TotalTimecast = truck.remain;
+    }
+
+    static void Skill04(Truck truck)
+    {
+        if (truck.blockNum > truck.orderNum)
+        {
+            for (int i = 0; i < truck.orderNum; i++)
+            {
+                truck.profit[i] += truck.profit[i] * 0.2f;
+                truck.credit[i] += truck.credit[i] * 0.2f;
+            }
+        }
+        else {
+            for (int i = 0; i < truck.orderNum; i++)
+            {
+                truck.profit[i] -= truck.profit[i] * 0.2f;
+                truck.credit[i] -= truck.credit[i] * 0.2f;
+            }
+        }
+    }
 
     private void Awake()
     {

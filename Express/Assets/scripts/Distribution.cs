@@ -16,10 +16,10 @@ public class Distribution : MonoBehaviour {
 
     public List<GameObject> destPanelList = new List<GameObject>();
 
-    public static int profit;
-    public static int credit;
-    public static int totalCredit;
-    public static int totalProfit;
+    public static float profit;
+    public static float credit;
+    public static float totalCredit;
+    public static float totalProfit;
 
     public int MaxCredit = 10;
 
@@ -31,13 +31,11 @@ public class Distribution : MonoBehaviour {
 	CardsManage cManage;
     
     int consume;
-    int timeCast;
-    
+    int timeCast;    
     
     public void distribution(int truckNum)//配送界面
     {
         Truck _truck = TruckManage.trucksList[truckNum];//获取车辆
-
         oManage.SendOrderToTruck(_truck);
         oManage.OrdersList.Clear();
 
@@ -47,8 +45,12 @@ public class Distribution : MonoBehaviour {
         }
         else {
             _truck.state = "dist";
-        }      
-               
+        }
+        if (_truck.driver != null)
+        {
+            DriverManage.DriverSkill(_truck.driver);
+        }
+        
         displaySpot(_truck);
     }
 
@@ -162,15 +164,14 @@ public class Distribution : MonoBehaviour {
 
     public void CreditLast(Truck _truck)
     {
-        if (_truck.orderNum < 3)
+        for (int i = 0; i < _truck.orderNum; i++)
         {
-            credit = _truck.orderNum;
+            credit += _truck.credit[i];
         }
-        else
+        if (_truck.orderNum >= 3)
         {
-            credit = _truck.orderNum + 1;
+            credit += 1;
         }
-        //credit = _truck.orderNum;
 
         if (credit + totalCredit > MaxCredit)
         {

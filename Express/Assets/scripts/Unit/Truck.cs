@@ -8,8 +8,8 @@ public class Truck : MonoBehaviour {
     public List<string> _destination = new List<string>();
     public List<int> timeCast = new List<int>();
    
-    public List<int> profit = new List<int>();
-    public List<int> credit = new List<int>();
+    public List<float> profit = new List<float>();
+    public List<float> credit = new List<float>();
 
     public int consume;
     public int row;
@@ -17,6 +17,7 @@ public class Truck : MonoBehaviour {
     public int ID;///truck种类序列号
     public int price;
     public int orderNum;
+    public int blockNum;
     public int remain;
     public int stopTime;
     public int TotalTimecast;

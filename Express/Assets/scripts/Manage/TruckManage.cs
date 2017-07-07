@@ -29,6 +29,7 @@ public class TruckManage : MonoBehaviour {
             GiveTheTruckPara(mytruck,1);
             trucksList.Add(mytruck);            
         }
+        print("trucknum" + trucksList.Count);
 	}
 
     public void DisplayTruckInShopPanel(Transform shopPanel)

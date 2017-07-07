@@ -14,6 +14,7 @@ public class Order : MonoBehaviour {
     public int ID;
     public int profit;
     public int credit;
+    public int blockNum;
 
 	// Use this for initialization
 	void Start ()

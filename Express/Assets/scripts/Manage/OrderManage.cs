@@ -5,8 +5,7 @@ using UnityEngine;
 public class OrderManage : MonoBehaviour {
     public Transform orderPanel;
     public Order _order;
-    public List<Order> OrdersList = new List<Order>();
-    
+    public List<Order> OrdersList = new List<Order>();    
     
     public void AddTheOrder(Card _card)
     {
@@ -18,6 +17,7 @@ public class OrderManage : MonoBehaviour {
             myorder.ID = _card.ID;
             myorder.profit = _card.profit;
             myorder.credit = _card.credit;
+            myorder.blockNum = _card._item.BlockNum;
             myorder.InitOrder();
             ShowDestination(myorder, _card);
             OrdersList.Add(myorder);
@@ -35,6 +35,7 @@ public class OrderManage : MonoBehaviour {
             _truck.credit.Add(OrdersList[i].credit);
             _truck.remain = _truck.remain + _truck.timeCast[i];///车辆剩余回合数
             _truck.TotalTimecast = _truck.remain;
+            _truck.blockNum += OrdersList[i].blockNum;
             DestroyImmediate(OrdersList[i].gameObject);// 清除任务栏上的任务
         }
     }
