@@ -9,8 +9,14 @@ public class TruckManage : MonoBehaviour {
     public static List<Truck> trucksList = new List<Truck>();
     public static List<int> trucksGarage = new List<int>();
     public Transform truckPanel;
-    public Transform garage;
+    public Transform changePanel;
+    public Transform garagePanel;
+    public Transform gridInGarage;
     public GameObject truck_display_inshop;
+    public truckInGarage truck_display_ingarage;
+   
+    public int preTruckNum;
+
     TruckData tData;
     int truckNumMax = 3;
 
@@ -25,9 +31,9 @@ public class TruckManage : MonoBehaviour {
             mytruck.transform.SetParent(truckPanel);
             mytruck.transform.localPosition = new Vector3(-720, 200 * i - 25, 0);
             mytruck.transform.localScale = new Vector3(1,1,1);
-            mytruck.ID = i;
-            GiveTheTruckPara(mytruck,1);
-            trucksList.Add(mytruck);            
+            mytruck.ID = 1;
+            GiveTheTruckPara(mytruck,mytruck.ID);
+            trucksList.Add(mytruck);
         }
         print("trucknum" + trucksList.Count);
 	}
@@ -36,46 +42,23 @@ public class TruckManage : MonoBehaviour {
     {
         if (shopPanel.GetChild(0).transform.childCount == 0)
         {
-            for (int i = 0; i < 11; i++)//前11个车
+            for (int i = 2; i < 11; i++)//前11个车
             {
                 GameObject _truckInshop = Instantiate(truck_display_inshop, shopPanel.GetChild(0).transform);
+                _truckInshop.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = TruckData.GetName(i);
             }
         }        
     }
 
     public void buyTheTruck(GameObject butBtn)
     {
-        Truck mytruck = Instantiate(_truck);
-        mytruck.transform.SetParent(garage);
-     
-        mytruck.ID = butBtn.transform.GetSiblingIndex() + 1;
-        GiveTheTruckPara(mytruck,mytruck.ID);
-        trucksGarage.Add(mytruck.ID);
+        int ID = butBtn.transform.GetSiblingIndex() + 1;
+        truckInGarage tIng = Instantiate(truck_display_ingarage,gridInGarage);
+        tIng.id = ID;
         //GetTruckFromGarage(0);
-        Distribution.totalProfit -= mytruck.price;
-    }
-
-    public void GetTruckFromGarage(int index)
-    {
-        if (trucksList.Count >= truckNumMax)
-        {
-            trucksList.Add(GetTruck(trucksGarage[index]));
-        }
-
-        List<int> tmp = new List<int>();
-        for (int i = 0; i < trucksGarage.Count; i++)
-        {
-            if (trucksGarage[i] != 0)
-            {
-                tmp.Add(trucksGarage[i]);
-            }
-        }
-        trucksGarage.Clear();
-        for (int i = 0; i < tmp.Count; i++)
-        {
-            trucksGarage.Add(tmp[i]);
-        }
-    }
+        Distribution.totalProfit -= TruckData.GetPrice(ID);
+        
+    }    
 
     void GiveTheTruckPara(Truck _truck,int id)
     {
@@ -128,6 +111,7 @@ public class TruckManage : MonoBehaviour {
 
     static void Skill03(Truck _truck)
     {
+        
 
     }
 
@@ -156,20 +140,40 @@ public class TruckManage : MonoBehaviour {
             {
                 _truck.stopTime += 1;
             }
-        }       
+        }
     }
+    
 
-    Truck GetTruck(int id)
+    public void openChangePanel()
     {
-        Truck truck = new Truck();
-        truck.consume = TruckData.GetConsume(id);
-        truck.column = TruckData.GetWidth(id);
-        truck.row = TruckData.GetHeight(id);
-        truck.price = TruckData.GetPrice(id);
-        truck.skillID = TruckData.GetSkillId(id);
-        return truck;
+        garagePanel.gameObject.SetActive(true);
+        for (int i = 0; i < gridInGarage.childCount; i++)
+        {
+            int id = gridInGarage.GetChild(i).GetComponent<truckInGarage>().id;
+            gridInGarage.GetChild(i).GetChild(0).GetComponent<Text>().text = TruckData.GetName(id);
+        }        
     }
 
+    public void pressTruck(Truck truck)
+    {
+       preTruckNum = truck.transform.GetSiblingIndex();
+    }
+
+    public void closeChangePanel()
+    {
+        garagePanel.gameObject.SetActive(false);
+    }
+
+    public void changeTheTruck(truckInGarage truckInGarage)
+    {
+        Truck truck = trucksList[preTruckNum];
+        int id = truck.ID;
+        truck.ID = truckInGarage.id;
+        truckInGarage.id = id;
+        GiveTheTruckPara(truck, truck.ID);        
+        closeChangePanel();
+    }
+    
     // Update is called once per frame
     void Update () {
 		

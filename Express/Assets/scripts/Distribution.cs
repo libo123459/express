@@ -21,7 +21,7 @@ public class Distribution : MonoBehaviour {
     public static float totalCredit;
     public static float totalProfit;
 
-    public int MaxCredit = 10;
+    public int MaxCredit = 10000;
 
     CardsData cData;
 	EventData eData;
@@ -62,7 +62,7 @@ public class Distribution : MonoBehaviour {
             BtnStation _station = Instantiate(Station, dPanel.transform);
             dPanel.transform.localPosition = new Vector3(-130, 200 * i, 0);
             _station.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,0,0);
-            _station.truckNum = TruckManage.trucksList[i].ID;
+            _station.truckNum = i;
             destPanelList.Add(dPanel);
         }
     }
@@ -71,7 +71,7 @@ public class Distribution : MonoBehaviour {
     {
         for (int i = 0; i < _truck.orderNum; i++)
         {
-            GameObject dest = Instantiate(destination, destPanelList[_truck.ID].transform);
+            GameObject dest = Instantiate(destination, destPanelList[_truck.transform.GetSiblingIndex()].transform);
 
             if (i < 1)
             {
@@ -209,7 +209,7 @@ public class Distribution : MonoBehaviour {
             Truck _truck = TruckManage.trucksList[i];
             if (_truck.state == "finished")
             {
-                ClearDest(_truck.ID);
+                ClearDest(_truck.transform.GetSiblingIndex());
                 
                 _truck.transform.position = _truck.StartPos;
                 _truck.state = "empty";

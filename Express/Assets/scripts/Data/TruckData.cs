@@ -52,6 +52,11 @@ public class TruckData : MonoBehaviour {
         return int.Parse(Array[nRow][5]);
     }
 
+    public static string GetName(int nRow)
+    {
+        return Array[nRow][7];
+    }
+
     void Start () {
        
     }

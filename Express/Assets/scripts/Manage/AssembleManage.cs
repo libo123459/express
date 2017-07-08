@@ -9,6 +9,7 @@ public class AssembleManage : MonoBehaviour {
     public static List<Slot> slotList = new List<Slot>();
     public Slot _slot;
     public static int currentTruck;
+    public Button changeDriver;
     
 	// Use this for initialization
 	void Start () {
@@ -38,6 +39,7 @@ public class AssembleManage : MonoBehaviour {
         else {
             DriverManage.clearTheDriverName();
         }
+        checkTruckSkill8();
     }
 
     void creatCapicity(Truck _truck)
@@ -51,8 +53,20 @@ public class AssembleManage : MonoBehaviour {
         }
     }
 
-	// Update is called once per frame
-	void Update () {
+    void checkTruckSkill8()
+    {
+        if (TruckManage.trucksList[AssembleManage.currentTruck].ID == 8)
+        {
+            changeDriver.GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            changeDriver.GetComponent<Button>().interactable = true;
+        }
+    }
+        
+// Update is called once per frame
+void Update () {
 		
 	}
 }

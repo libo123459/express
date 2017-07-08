@@ -110,7 +110,7 @@ public class DriverManage : MonoBehaviour {
             {
                 TruckManage.trucksList[i].driver.GetComponent<Button>().interactable = false;
             }
-        }        
+        }
     }
 
     public void DisplayDriverInRecruitPanel(Transform recruitPanel)

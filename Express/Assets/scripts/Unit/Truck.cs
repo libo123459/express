@@ -30,6 +30,8 @@ public class Truck : MonoBehaviour {
     public Vector3 StartPos;
 
     public Text text;
+
+    TruckManage tManage;
     public void ClearAll()
     {
         _destination.Clear();
@@ -39,8 +41,12 @@ public class Truck : MonoBehaviour {
     }
 	// Use this for initialization
 	void Start () {
+        tManage = GameObject.Find("Manage").GetComponent<TruckManage>();
         StartPos = this.transform.position;
-        text = this.transform.GetChild(0).GetComponent<Text>();        
+        text = this.transform.GetChild(0).GetComponent<Text>();
+        Button btn = this.GetComponent<Button>();
+        btn.onClick.AddListener(tManage.openChangePanel);
+        btn.onClick.AddListener(()=>tManage.pressTruck(this));
 	}
 	
 	// Update is called once per frame
