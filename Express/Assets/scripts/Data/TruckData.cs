@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TruckData : MonoBehaviour {
     public List<Truck> truckList = new List<Truck>();
-    public string[][] Array;
+    public static string[][] Array;
     // Use this for initialization
     private void Awake()
     {
@@ -24,7 +24,7 @@ public class TruckData : MonoBehaviour {
         }
     }
 
-    public int GetWidth(int nRow)
+    public static int GetWidth(int nRow)
     {
         //if (Array.Length <= 0 || nRow >= Array.Length)
         //   return "";
@@ -32,22 +32,22 @@ public class TruckData : MonoBehaviour {
         return int.Parse(Array[nRow][1]);
     }
 
-    public int GetHeight(int nRow)
+    public static int GetHeight(int nRow)
     {
         return int.Parse(Array[nRow][2]);
     }
 
-    public int GetConsume(int nRow)
+    public static int GetConsume(int nRow)
     {
         return int.Parse(Array[nRow][3]);
     }
 
-    public int GetPrice(int nRow)
+    public static int GetPrice(int nRow)
     {
         return int.Parse(Array[nRow][4]);
     }
 
-    public int GetSkillId(int nRow)
+    public static int GetSkillId(int nRow)
     {
         return int.Parse(Array[nRow][5]);
     }

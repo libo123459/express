@@ -16,6 +16,8 @@ public class Truck : MonoBehaviour {
     public int column;
     public int ID;///truck种类序列号
     public int price;
+    public int skillID;
+
     public int orderNum;
     public int blockNum;
     public int remain;
@@ -38,8 +40,7 @@ public class Truck : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         StartPos = this.transform.position;
-        text = this.transform.GetChild(0).GetComponent<Text>();
-        
+        text = this.transform.GetChild(0).GetComponent<Text>();        
 	}
 	
 	// Update is called once per frame
