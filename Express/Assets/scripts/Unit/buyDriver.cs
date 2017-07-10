@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class buyDriver : MonoBehaviour {
     DriverManage dManage;
+    public int id;
 	// Use this for initialization
 	void Start () {
         dManage = GameObject.Find("Manage").GetComponent<DriverManage>();

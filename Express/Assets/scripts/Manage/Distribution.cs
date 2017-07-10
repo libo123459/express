@@ -21,7 +21,7 @@ public class Distribution : MonoBehaviour {
     public static float totalCredit;
     public static float totalProfit;
 
-    public int MaxCredit = 10000;
+    public int MaxCredit = 100;
 
     CardsData cData;
 	EventData eData;
@@ -113,7 +113,13 @@ public class Distribution : MonoBehaviour {
                 if (TruckManage.trucksList[i].state == "dist")
                 {
                     Truck _truck = TruckManage.trucksList[i];
-                    TruckMove(_truck);
+                    if (_truck.ID == 10)
+                    {
+                        TruckManage.TruckSkill(_truck);
+                    }
+                    else {
+                        TruckMove(_truck);
+                    }
                     
                     for (int j = 0; j < _truck.timeCast.Count; j++) ////开始对第一个订单倒计时
                     {
@@ -271,7 +277,7 @@ public class Distribution : MonoBehaviour {
 
         displayDestPanel();
 
-        totalCredit = MaxCredit;///初始信誉
+        totalCredit = 100;//MaxCredit;///初始信誉
         text_credit.text = "信誉" + totalCredit.ToString();
         text_profit.text = "金币" + totalProfit.ToString();
     }

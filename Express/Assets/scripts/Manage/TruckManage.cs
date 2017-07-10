@@ -45,14 +45,14 @@ public class TruckManage : MonoBehaviour {
             for (int i = 2; i < 11; i++)//前11个车
             {
                 GameObject _truckInshop = Instantiate(truck_display_inshop, shopPanel.GetChild(0).transform);
-                _truckInshop.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = TruckData.GetName(i);
+                _truckInshop.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = TruckData.GetName(i) + " " + TruckData.GetPrice(i);
             }
         }        
     }
 
     public void buyTheTruck(GameObject butBtn)
     {
-        int ID = butBtn.transform.GetSiblingIndex() + 1;
+        int ID = butBtn.transform.GetSiblingIndex() + 2;
         truckInGarage tIng = Instantiate(truck_display_ingarage,gridInGarage);
         tIng.id = ID;
         //GetTruckFromGarage(0);
@@ -71,28 +71,31 @@ public class TruckManage : MonoBehaviour {
 
     public static void TruckSkill(Truck _truck)
     {
+        
         int index = _truck.ID;
-        if (index >= 6)
+        print(_truck.ID);
+        if (index > 6)
         {
             switch (index)
             {
-                case 6:
+                case 7:
                     Skill01(_truck);
                     break;
-                case 7:
+                case 8:
                     Skill02(_truck);
                     break;
-                case 8:
+                case 9:
                     Skill03(_truck);
                     break;
-                case 9:
+                case 10:
                     Skill04(_truck);
+                    
                     break;
             }
         }
     }
 
-    static void Skill01(Truck _truck)
+    static void Skill01(Truck _truck) //10回合后油耗加倍
     {
         if (_truck.state == "dist")
         {
@@ -115,7 +118,7 @@ public class TruckManage : MonoBehaviour {
 
     }
 
-    static void Skill04(Truck _truck)
+    static void Skill04(Truck _truck)//跃迁
     {
         if (_truck.state == "dist")
         {
@@ -124,7 +127,23 @@ public class TruckManage : MonoBehaviour {
             {
                 if (_truck.stopTime == 0)
                 {
-                    _truck.remain--;
+                    _truck.remain -= 2;
+                    float unitShift = 0;
+                    unitShift = 1300.0f / (float)_truck.TotalTimecast;
+                    float xPos = _truck.transform.localPosition.x + (unitShift * 2);
+                    float yPos = _truck.transform.localPosition.y;
+                    _truck.transform.localPosition = new Vector3(xPos, yPos, 0);
+                }
+                else
+                {
+                    _truck.stopTime -= 2;
+                }
+            }
+            if (move >50 && move <=90)
+            {
+                if (_truck.stopTime == 0)
+                {
+                    _truck.remain -= 1;
                     float unitShift = 0;
                     unitShift = 1300.0f / (float)_truck.TotalTimecast;
                     float xPos = _truck.transform.localPosition.x + unitShift;
@@ -133,16 +152,12 @@ public class TruckManage : MonoBehaviour {
                 }
                 else
                 {
-                    _truck.stopTime--;
+                    _truck.stopTime -= 1;
                 }
             }
-            if (move <= 10)
-            {
-                _truck.stopTime += 1;
-            }
+            print("move" + move.ToString());
         }
     }
-    
 
     public void openChangePanel()
     {

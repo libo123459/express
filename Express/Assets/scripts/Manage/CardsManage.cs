@@ -109,7 +109,7 @@ public class CardsManage : MonoBehaviour {
         mycard._item = _itemData.ItemsList[Random.Range(0, _itemData.ItemsList.Count)];//临时 那个物件
         int blockNum = mycard._item.transform.childCount;
         mycard._item.consume = Random.Range(1, 5);//油耗
-        mycard.profit = blockNum * mycard.timeCast;///收益
+        mycard.profit = blockNum * mycard.timeCast * 5;///收益
         mycard.credit = 1;//信誉
        
         

@@ -18,29 +18,26 @@ public class DriverManage : MonoBehaviour {
     private List<int> driver_id = new List<int>();
     private static Text text_currentDriver;
 
-    void InstanceDriver()///从司机数据库中实例出可用的司机
+    void InstanceDriver()///初始开始的司机
     {
+        driver_id.Clear();
         for (int i = 0; i < _driverNum; i++)
         {
-            CreateDriverIndex();            
+            CreateDriverIndex(1,6);            
         }
         for (int i = 0; i < _driverNum; i++)
         {
             int index = driver_id[i];
             Driver myDriver = Instantiate(_driver, DriverList.transform);
             myDriver.id = index;
-            myDriver.name = DriverData.GetName(index);
-            myDriver.price = DriverData.GetPrice(index);
-            myDriver.salary = DriverData.GetSalary(index);
-            myDriver.skillID = DriverData.GetSkillID(index);
+            GiveTheDriverPara(myDriver);
             actived_drivers.Add(myDriver);
         }
     }
-    void CreateDriverIndex()
+    void CreateDriverIndex(int start,int end)
     {
-        
         int SameNum = 0;
-        int n = Random.Range(6,10);
+        int n = Random.Range(start,end);
         if (driver_id.Count == 0)
         {
             driver_id.Add(n);
@@ -59,7 +56,7 @@ public class DriverManage : MonoBehaviour {
                 driver_id.Add(n);
             }
             else {
-                CreateDriverIndex();
+                CreateDriverIndex(start,end);
             }
         }        
     }
@@ -77,7 +74,7 @@ public class DriverManage : MonoBehaviour {
         }
     }
 
-    public void confirmTheDriver(Driver theDriver)
+    public void confirmTheDriver(Driver theDriver)//选择司机
     {
         DriverList.SetActive(false);
         opened = false;
@@ -85,17 +82,17 @@ public class DriverManage : MonoBehaviour {
         SendDriverToTruck(theDriver);
     }
 
-    public static void displayTheDriverName(Driver theDriver)
+    public static void displayTheDriverName(Driver theDriver)//当前司机名字
     {
         text_currentDriver.text = theDriver.name;
     }
 
-    public static void clearTheDriverName()
+    public static void clearTheDriverName()//清除
     {
         text_currentDriver.text = null;
     }
 
-    public void SendDriverToTruck(Driver theDriver)
+    public void SendDriverToTruck(Driver theDriver)///司机数据传到卡车上
     {
         TruckManage.trucksList[AssembleManage.currentTruck].driver = theDriver;
         theDriver.truck = TruckManage.trucksList[AssembleManage.currentTruck];
@@ -113,39 +110,51 @@ public class DriverManage : MonoBehaviour {
         }
     }
 
-    public void DisplayDriverInRecruitPanel(Transform recruitPanel)
+    public void DisplayDriverInRecruitPanel(Transform recruitPanel) //招聘市场司机列表
     {
-        if (recruitPanel.GetChild(0).transform.childCount == 0)
+        driver_id.Clear();        
+
+        if (recruitPanel.GetChild(0).transform.childCount < 3)
         {
-            for (int i = 0; i < 3; i++)
+            int n = 3 - recruitPanel.GetChild(0).transform.childCount;
+            for (int i = 0; i < n; i++)
             {
-                GameObject _driverInRecruit = Instantiate(driver_display_inrecruit, recruitPanel.GetChild(0).transform);
-            }
-        }
-        for (int i = 0; i < recruitPanel.transform.childCount; i++)
-        {
-            GameObject _driverInRecuit = recruitPanel.GetChild(0).GetChild(i).gameObject;
-            int same = 0;
-            for (int j = 0; j < actived_drivers.Count; j++)
-            {
-                
-                if (_driverInRecuit.transform.GetSiblingIndex() + 1 == actived_drivers[j].id)
-                {
-                    same = 0;
-                }
-                else {
-                    same++;
-                }
+                CreateRecuritDriverIndex(1, 10);
             }
 
-            if (same == 0)
+            for (int i = 0; i < driver_id.Count; i++)
             {
-                _driverInRecuit.transform.GetChild(1).GetComponent<Button>().interactable = true;
+                GameObject _driverInRecruit = Instantiate(driver_display_inrecruit, recruitPanel.GetChild(0).transform);
+                
+                buyDriver bdri = _driverInRecruit.GetComponent<buyDriver>();
+                bdri.id = driver_id[i];
+                _driverInRecruit.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = DriverData.GetName(bdri.id) 
+                    + " " + DriverData.GetPrice(bdri.id);
+                print(driver_id[i]);
             }
-            else
+        }
+        driver_id.Clear();
+    }
+
+    void CreateRecuritDriverIndex(int start, int end)
+    {
+        int SameNum = 0;
+        int n = Random.Range(start, end);
+        for (int i = 0; i < actived_drivers.Count; i++)
+        {
+            if (n == actived_drivers[i].id)
             {
-                _driverInRecuit.transform.GetChild(1).GetComponent<Button>().interactable = false;
+                SameNum++;
+                break;
             }
+        }
+        if (SameNum == 0)
+        {
+            driver_id.Add(n);
+        }
+        else
+        {
+            CreateRecuritDriverIndex(start, end);
         }
     }
 
@@ -153,9 +162,11 @@ public class DriverManage : MonoBehaviour {
     {
         Driver mydriver = Instantiate(_driver);
         mydriver.transform.SetParent(DriverList.transform);
-        mydriver.id = butBtn.transform.GetSiblingIndex() + 1;
+        mydriver.id = butBtn.GetComponent<buyDriver>().id;
         GiveTheDriverPara(mydriver);
+        actived_drivers.Add(mydriver);
         Distribution.totalProfit -= _driver.price;
+        Destroy(butBtn.gameObject);
     }
 
     void GiveTheDriverPara(Driver _driver)
