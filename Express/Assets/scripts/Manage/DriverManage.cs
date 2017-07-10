@@ -100,12 +100,14 @@ public class DriverManage : MonoBehaviour {
         for (int i = 0; i < actived_drivers.Count; i++)
         {
             actived_drivers[i].GetComponent<Button>().interactable = true;
+            actived_drivers[i].used = false;
         }
         for (int i = 0; i < TruckManage.trucksList.Count; i++)
         {
             if (TruckManage.trucksList[i].driver != null)
             {
                 TruckManage.trucksList[i].driver.GetComponent<Button>().interactable = false;
+                TruckManage.trucksList[i].driver.used = true;
             }
         }
     }
@@ -143,6 +145,14 @@ public class DriverManage : MonoBehaviour {
         for (int i = 0; i < actived_drivers.Count; i++)
         {
             if (n == actived_drivers[i].id)
+            {
+                SameNum++;
+                break;
+            }
+        }
+        for (int i = 0; i < driver_id.Count; i++)
+        {
+            if (n == driver_id[i])
             {
                 SameNum++;
                 break;

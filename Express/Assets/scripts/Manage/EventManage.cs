@@ -93,14 +93,14 @@ public class EventManage : MonoBehaviour {
             case 2:
                 mycard.CountDown = 6;
                 mycard.destination.text = mycard.name + "CountDown" 
-                    + (mycard.CountDown + 1).ToString() + "\n" + "7回合内拒单损失4点信用";
+                    + (mycard.CountDown + 1).ToString() + "\n" + "7回合内拒单损失信用+2";
                 doEvent01_0();
 				
                 break;
             case 3:
                 mycard.CountDown = 4;
                 mycard.destination.text = mycard.name + "CountDown"
-                    + (mycard.CountDown + 1).ToString() + "\n" + "5回合内据单不损失信用";
+                    + (mycard.CountDown + 1).ToString() + "\n" + "5回合内据单损失信用-2";
                 doEvent01_1();
 				
                 break;

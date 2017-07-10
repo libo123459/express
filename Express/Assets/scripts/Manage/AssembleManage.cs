@@ -10,10 +10,12 @@ public class AssembleManage : MonoBehaviour {
     public Slot _slot;
     public static int currentTruck;
     public Button changeDriver;
+    DriverManage dManage;
     
 	// Use this for initialization
 	void Start () {
-        
+
+        dManage = this.GetComponent<DriverManage>();
         currentTruck = 0;
         /*for (int i = 0; i < 12; i++)
         {
@@ -39,7 +41,9 @@ public class AssembleManage : MonoBehaviour {
         else {
             DriverManage.clearTheDriverName();
         }
+        
         checkTruckSkill8();
+
     }
 
     void creatCapicity(Truck _truck)

@@ -6,6 +6,7 @@ public class CardsData : MonoBehaviour {
     public List<Card> CardsList = new List<Card>();
     
     public string[][] Array;
+    ItemData _itemData;
     private void Awake()
     {
         
@@ -37,9 +38,15 @@ public class CardsData : MonoBehaviour {
     {
         return Array[nRow][2];
     }
+
+    public Item GetItem(int nRow)
+    {
+        int index = int.Parse(Array[nRow][3]);
+        return _itemData.ItemsList[index];
+    }
     // Use this for initialization
     void Start () {
-               
+        _itemData = this.GetComponent<ItemData>();
     }
 	
 	// Update is called once per frame

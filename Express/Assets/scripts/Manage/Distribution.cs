@@ -21,7 +21,7 @@ public class Distribution : MonoBehaviour {
     public static float totalCredit;
     public static float totalProfit;
 
-    public int MaxCredit = 100;
+    public int MaxCredit = 10;
 
     CardsData cData;
 	EventData eData;
@@ -76,8 +76,7 @@ public class Distribution : MonoBehaviour {
             if (i < 1)
             {
                 float Posx = ((float)_truck.timeCast[i] / (float)_truck.TotalTimecast) * 1300;
-                dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(Posx,0);
-                
+                dest.GetComponent<RectTransform>().anchoredPosition = new Vector2(Posx,0);                
             }
             else {
                 float a = 0;
@@ -129,7 +128,7 @@ public class Distribution : MonoBehaviour {
                             
                             CreditLast(_truck);
                             ProfitAtLast(_truck);
-                            TruckConsume(_truck);
+                            //TruckConsume(_truck);
                             break;
                         }
                         else {
@@ -157,9 +156,9 @@ public class Distribution : MonoBehaviour {
 		{
 			profit = profit + _truck.profit[i];
 		}
-		
+        Driver driver = _truck.driver;
         _profit.text = "收益金额：" + profit.ToString() 
-            +"\n" + "汽油消耗" + consume.ToString()
+            +"\n" + "汽油和人工消耗" + consume.ToString()
             + "\n" + "总计收益" + (profit - consume).ToString()
             + "\n" + "信誉度：" + credit.ToString();
 
@@ -233,7 +232,7 @@ public class Distribution : MonoBehaviour {
     
     void TruckConsume (Truck _truck)
     {
-        consume = _truck.TotalTimecast * _truck.consume;        
+        consume = _truck.TotalTimecast * _truck.consume + _truck.driver.salary;
     }
 
 	void CountDown()
@@ -277,7 +276,7 @@ public class Distribution : MonoBehaviour {
 
         displayDestPanel();
 
-        totalCredit = 100;//MaxCredit;///初始信誉
+        totalCredit = 10;//MaxCredit;///初始信誉
         text_credit.text = "信誉" + totalCredit.ToString();
         text_profit.text = "金币" + totalProfit.ToString();
     }

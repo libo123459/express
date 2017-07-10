@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class CardsManage : MonoBehaviour {
     public Card _card;
+    public Card_event _eCard;
     
     public Transform grid;
 
@@ -12,8 +13,15 @@ public class CardsManage : MonoBehaviour {
     public GameObject gameoverPanel;
     public Text _event;
     public Text _useMoney;
+    public Text remainCardText;
+    public Transform NormalPool;
+    public Transform EventPool;
 
 	public int punish = 2;
+
+    List<Card> normalList = new List<Card>();
+    List<Card_event> eventList = new List<Card_event>();
+    List<Card> dropList = new List<Card>();
 
     CardsData _cardData;
     EventData _eData;
@@ -22,10 +30,14 @@ public class CardsManage : MonoBehaviour {
     OrderManage oManage;
     EventManage eManage;
 
+    int RemainCard = 60;
+    int RemainNormalCard = 50;
+    int RemainEventCard = 10;
     int coe_die = 1;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
         _cardData = this.GetComponent<CardsData>();
         _eData = this.GetComponent<EventData>();
         _itemData = this.GetComponent<ItemData>();
@@ -34,6 +46,25 @@ public class CardsManage : MonoBehaviour {
         eManage = this.GetComponent<EventManage>();
         RefreshTask();
 	}
+
+    void InitiCardPool()
+    {
+        for (int i = 0; i < RemainNormalCard; i++)
+        {
+            Card mycard = Instantiate(_card,NormalPool);
+            normalList.Add(mycard);
+        }
+        for (int i = 0; i < RemainEventCard; i++)
+        {
+            Card_event mycard = Instantiate(_eCard,EventPool);
+            eventList.Add(mycard);
+        }
+    }
+
+    void moveToDropPool(Card _card)
+    {
+        dropList.Add(_card);
+    }
 
     void RefreshTask()
     {
@@ -75,7 +106,11 @@ public class CardsManage : MonoBehaviour {
     {
         if (grid.childCount < 6) ////6为临时测试用，需要改成卡池上线的变量
         {
-            SelectCardType();
+            if (RemainCard > 0)
+            {
+                RemainCard--;
+                SelectCardType();
+            }            
         }
 
         RefreshID();
@@ -83,8 +118,8 @@ public class CardsManage : MonoBehaviour {
 
     void SelectCardType()
     {
-        int chance = Random.Range(0,100);
-        if (chance >= 30)
+        int chance = Random.Range(0,RemainCard + 1);
+        if (chance < RemainNormalCard)
         {
 			Card_normal();
         }
@@ -100,7 +135,7 @@ public class CardsManage : MonoBehaviour {
         mycard.transform.SetParent(grid.transform);
 
         _cardData.CardsList.Add(mycard);
-
+        
         int random = Random.Range(1,_cardData.Array.Length);//从文件获取
         mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();        
         mycard.timeCast = Random.Range(4,7);//耗时
@@ -109,15 +144,45 @@ public class CardsManage : MonoBehaviour {
         mycard._item = _itemData.ItemsList[Random.Range(0, _itemData.ItemsList.Count)];//临时 那个物件
         int blockNum = mycard._item.transform.childCount;
         mycard._item.consume = Random.Range(1, 5);//油耗
-        mycard.profit = blockNum * mycard.timeCast * 5;///收益
-        mycard.credit = 1;//信誉
-       
-        
+        mycard.profit = blockNum * mycard.timeCast * 10;///收益
+        mycard.credit = 1;//信誉       
         //mycard.destination.text = _cardData.destinations[Random.Range(0, _cardData.destinations.Count)];
 
         Item myitem = Instantiate(mycard._item);
         myitem.transform.SetParent(mycard.transform);
         myitem.transform.localPosition = -myitem.CenterPos;
+        myitem.transform.localScale = new Vector3(1, 1, 1);
+    }
+
+    void GiveTheCardItem(Card _card)
+    {
+        int random = Random.Range(1, 100);//从文件获取
+        if (random < 25)
+        {
+            _card._item = _itemData.ItemsList[0];
+        }
+        if (random >= 25 && random < 50)
+        {
+            _card._item = _itemData.ItemsList[Random.Range(1,3)];
+        }
+        if (random >= 50 && random < 75)
+        {
+            _card._item = _itemData.ItemsList[Random.Range(3, 10)];
+        }
+        if (random >= 75 && random < 100)
+        {
+            _card._item = _itemData.ItemsList[Random.Range(10, 23)];
+        }
+        
+        int blockNum = _card._item.transform.childCount;
+        _card._item.consume = Random.Range(1, 5);//油耗
+        _card.profit = blockNum * _card.timeCast * 10;///收益
+        _card.credit = 1;//信誉       
+        //mycard.destination.text = _cardData.destinations[Random.Range(0, _cardData.destinations.Count)];
+
+        Item myitem = Instantiate(_card._item);
+        myitem.transform.SetParent(_card.transform);
+        myitem.transform.localPosition = myitem.CenterPos;
         myitem.transform.localScale = new Vector3(1, 1, 1);
     }
 
@@ -142,6 +207,7 @@ public class CardsManage : MonoBehaviour {
 
     public void cancelTheCard(Card _card)///退订卡片
     {
+        RemainCard++;
         if (Distribution.totalCredit - punish - eManage.punish_inc - eManage.punish_dec <= 0)
         {
             GameOver();
@@ -238,7 +304,7 @@ public class CardsManage : MonoBehaviour {
     
 	// Update is called once per frame
 	void Update () {
-		
+        remainCardText.text = "剩余卡牌" + RemainCard.ToString();
 	}
    
 }
