@@ -14,10 +14,13 @@ public class Item : MonoBehaviour {
     public new Collider2D collider = null;
 
     // Use this for initialization
-    void Start ()
+    private void Awake()
     {
         StartPos = this.transform.position;
         BlockNum = this.transform.childCount;
+    }
+    void Start ()
+    {
         for (int i = 0; i < this.transform.childCount; i++)
         {
             GameObject block = this.transform.GetChild(i).gameObject;

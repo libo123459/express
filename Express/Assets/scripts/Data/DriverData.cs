@@ -31,9 +31,7 @@ public class DriverData : MonoBehaviour {
 
     public static string GetName(int nRow)
     {
-        //if (Array.Length <= 0 || nRow >= Array.Length)
-        //   return "";
-        print(Array[nRow][1]);
+        
         return Array[nRow][1];
     }
 

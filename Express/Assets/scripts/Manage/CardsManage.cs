@@ -106,11 +106,8 @@ public class CardsManage : MonoBehaviour {
     {
         if (grid.childCount < 6) ////6为临时测试用，需要改成卡池上线的变量
         {
-            if (RemainCard > 0)
-            {
-                RemainCard--;
-                SelectCardType();
-            }            
+            
+            SelectCardType();
         }
 
         RefreshID();
@@ -124,8 +121,8 @@ public class CardsManage : MonoBehaviour {
 			Card_normal();
         }
         else {
-            Card_event();///
-            //Card_normal();
+            //Card_event();///
+            Card_normal();
         }
     }
     
@@ -138,20 +135,20 @@ public class CardsManage : MonoBehaviour {
         
         int random = Random.Range(1,_cardData.Array.Length);//从文件获取
         mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();        
-        mycard.timeCast = Random.Range(4,7);//耗时
-        mycard.destination.text = _cardData.GetDestination(random) + "耗时" + mycard.timeCast;
+        mycard.timeCast = Random.Range(1,4);//耗时
+        mycard.destination.text = "Time. " + mycard.timeCast;
 		      
-        mycard._item = _itemData.ItemsList[Random.Range(0, _itemData.ItemsList.Count)];//临时 那个物件
-        int blockNum = mycard._item.transform.childCount;
-        mycard._item.consume = Random.Range(1, 5);//油耗
-        mycard.profit = blockNum * mycard.timeCast * 10;///收益
-        mycard.credit = 1;//信誉       
-        //mycard.destination.text = _cardData.destinations[Random.Range(0, _cardData.destinations.Count)];
-
-        Item myitem = Instantiate(mycard._item);
+        Item theitem = _itemData.ItemsList[Random.Range(0, _itemData.ItemsList.Count)];//临时 那个物件
+        Item myitem = Instantiate(theitem);        
         myitem.transform.SetParent(mycard.transform);
-        myitem.transform.localPosition = -myitem.CenterPos;
-        myitem.transform.localScale = new Vector3(1, 1, 1);
+        myitem.transform.localPosition = -myitem.CenterPos * 0.5f;
+        myitem.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        mycard._item = myitem;
+        
+        mycard._item.consume = 0;// Random.Range(1, 5);//油耗
+        mycard.profit = 5;///收益
+        mycard.credit =1; //信誉 
+        //mycard.destination.text = _cardData.destinations[Random.Range(0, _cardData.destinations.Count)];       
     }
 
     void GiveTheCardItem(Card _card)
@@ -197,7 +194,6 @@ public class CardsManage : MonoBehaviour {
         string name = _eData.namelist[myindex];
 
         _event.text = "事件：" + name;
-
     }
 
     public void confirmEvent()
@@ -208,13 +204,18 @@ public class CardsManage : MonoBehaviour {
     public void cancelTheCard(Card _card)///退订卡片
     {
         RemainCard++;
-        if (Distribution.totalCredit - punish - eManage.punish_inc - eManage.punish_dec <= 0)
+        
+        punish = 1;
+        
+       /* if (Distribution.totalCredit + punish - eManage.punish_inc - eManage.punish_dec < 0)
         {
             GameOver();
         }
-        else {
-            Distribution.totalCredit = Distribution.totalCredit - punish - eManage.punish_inc - eManage.punish_dec;
-            dManage.text_credit.text = Distribution.totalCredit.ToString();            
+        else */{
+            Distribution.totalCredit = Distribution.totalCredit + punish - eManage.punish_inc - eManage.punish_dec;
+            Distribution.totalProfit -= _card.timeCast;
+            dManage.text_credit.text = "信誉" + Distribution.totalCredit.ToString();
+            dManage.text_profit.text = "金币" + Distribution.totalProfit.ToString();
         }
         DestoryTheCard(_card);
     }

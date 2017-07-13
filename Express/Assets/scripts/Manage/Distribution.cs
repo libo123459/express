@@ -104,46 +104,51 @@ public class Distribution : MonoBehaviour {
 
     public void NextRound()
     {
-        if (cData.CardsList.Count < 6)///6为临时
+        if (cData.CardsList.Count == 6)///6为临时
         {
-			
-			for (int i = 0; i < TruckManage.trucksList.Count; i++)
+            totalCredit -= 2;
+            text_credit.text = "信誉" + totalCredit.ToString();
+            print(totalCredit.ToString());            
+        }
+        for (int i = 0; i < TruckManage.trucksList.Count; i++)
+        {
+            if (TruckManage.trucksList[i].state == "dist")
             {
-                if (TruckManage.trucksList[i].state == "dist")
+                Truck _truck = TruckManage.trucksList[i];
+                if (_truck.ID == 10)
                 {
-                    Truck _truck = TruckManage.trucksList[i];
-                    if (_truck.ID == 10)
+                    TruckManage.TruckSkill(_truck);
+                }
+                else
+                {
+                    TruckMove(_truck);
+                }
+
+                for (int j = 0; j < _truck.timeCast.Count; j++) ////开始对第一个订单倒计时
+                {
+                    if (_truck.remain == 0)
                     {
-                        TruckManage.TruckSkill(_truck);
+                        _truck.state = "finished";
+
+                        CreditLast(_truck);
+                        ProfitAtLast(_truck);
+                        
+                        break;
                     }
-                    else {
-                        TruckMove(_truck);
-                    }
-                    
-                    for (int j = 0; j < _truck.timeCast.Count; j++) ////开始对第一个订单倒计时
+                    else
                     {
-                        if (_truck.remain == 0)
+                        if (_truck.timeCast[j] != 0) ///如果为0，则开始第二个
                         {
-                            _truck.state = "finished";
-                            
-                            CreditLast(_truck);
-                            ProfitAtLast(_truck);
-                            //TruckConsume(_truck);
+                            _truck.timeCast[j]--;
+
                             break;
                         }
-                        else {
-                            if (_truck.timeCast[j] != 0) ///如果为0，则开始第二个
-                            {
-                                _truck.timeCast[j]--;
-
-                                break;
-                            }
-                        }                                              
-                    }                    
-                }                
+                    }
+                }
             }
-			CountDown();
-        }        
+        }
+        CountDown();
+        
     }
 
 	public void ProfitAtLast(Truck _truck)
@@ -173,11 +178,7 @@ public class Distribution : MonoBehaviour {
         {
             credit += _truck.credit[i];
         }
-        if (_truck.orderNum >= 3)
-        {
-            credit += 1;
-        }
-
+        
         if (credit + totalCredit > MaxCredit)
         {
             totalCredit = MaxCredit;
@@ -232,7 +233,7 @@ public class Distribution : MonoBehaviour {
     
     void TruckConsume (Truck _truck)
     {
-        consume = _truck.TotalTimecast * _truck.consume + _truck.driver.salary;
+        consume = _truck.consume * _truck.TotalTimecast + _truck.driver.salary;///工资加油耗
     }
 
 	void CountDown()

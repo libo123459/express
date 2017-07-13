@@ -56,22 +56,20 @@ public class TruckManage : MonoBehaviour {
         truckInGarage tIng = Instantiate(truck_display_ingarage,gridInGarage);
         tIng.id = ID;
         //GetTruckFromGarage(0);
-        Distribution.totalProfit -= TruckData.GetPrice(ID);
-        
+        Distribution.totalProfit -= TruckData.GetPrice(ID);        
     }    
 
     void GiveTheTruckPara(Truck _truck,int id)
     {
         _truck.row = TruckData.GetWidth(id);
         _truck.column = TruckData.GetHeight(id);
-        _truck.consume = TruckData.GetConsume(id);
+        _truck.consume = 1;//TruckData.GetConsume(id);
         _truck.price = TruckData.GetPrice(id);
         _truck.skillID = TruckData.GetSkillId(id);
     }
 
     public static void TruckSkill(Truck _truck)
-    {
-        
+    {        
         int index = _truck.ID;
         print(_truck.ID);
         if (index > 6)

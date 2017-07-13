@@ -43,7 +43,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     
     public void OnBeginDrag(PointerEventData eventData)
     {
-        
+        this.transform.localScale = new Vector3(1,1,1);
     }
         
     public void OnDrag(PointerEventData eventData)
@@ -60,7 +60,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             _orderManage.AddTheOrder(_card);            
         }
         else {
-            this.transform.localPosition = -_card._item.CenterPos;
+            this.transform.localPosition = -_card._item.CenterPos * 0.5f;
+            this.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             _orderManage.CancelOrder(_card.ID);
         }
     }
