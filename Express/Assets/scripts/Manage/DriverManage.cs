@@ -183,7 +183,7 @@ public class DriverManage : MonoBehaviour {
     {
         _driver.name = DriverData.GetName(_driver.id);
         _driver.price = DriverData.GetPrice(_driver.id);
-        _driver.salary = 3;// DriverData.GetSalary(_driver.id);
+        _driver.salary = 2;// DriverData.GetSalary(_driver.id);
         _driver.skillID = DriverData.GetSkillID(_driver.id);
     }
 

@@ -146,7 +146,7 @@ public class CardsManage : MonoBehaviour {
         mycard._item = myitem;
         
         mycard._item.consume = 0;// Random.Range(1, 5);//油耗
-        mycard.profit = 5;///收益
+        mycard.profit = 4;///收益
         mycard.credit =1; //信誉 
         //mycard.destination.text = _cardData.destinations[Random.Range(0, _cardData.destinations.Count)];       
     }
@@ -213,7 +213,7 @@ public class CardsManage : MonoBehaviour {
         }
         else */{
             Distribution.totalCredit = Distribution.totalCredit + punish - eManage.punish_inc - eManage.punish_dec;
-            Distribution.totalProfit -= _card.timeCast;
+            Distribution.totalProfit -= (_card.timeCast + 2);
             dManage.text_credit.text = "信誉" + Distribution.totalCredit.ToString();
             dManage.text_profit.text = "金币" + Distribution.totalProfit.ToString();
         }
