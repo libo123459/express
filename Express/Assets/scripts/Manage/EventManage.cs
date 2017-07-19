@@ -93,14 +93,14 @@ public class EventManage : MonoBehaviour {
             case 2:
                 mycard.CountDown = 6;
                 mycard.destination.text = mycard.name + "CountDown" 
-                    + (mycard.CountDown + 1).ToString() + "\n" + "7回合内拒单损失信用+2";
+                    + (mycard.CountDown + 1).ToString() + "\n" + "7回合内外送信用加1";
                 doEvent01_0();
 				
                 break;
             case 3:
                 mycard.CountDown = 4;
                 mycard.destination.text = mycard.name + "CountDown"
-                    + (mycard.CountDown + 1).ToString() + "\n" + "5回合内据单损失信用-2";
+                    + (mycard.CountDown + 1).ToString() + "\n" + "5回合内外包费用加1";
                 doEvent01_1();
 				
                 break;
@@ -111,7 +111,7 @@ public class EventManage : MonoBehaviour {
 
     void doEvent01_0()///信用严打
     {
-		punish_inc = 2;
+		punish_inc = 1;
     }
 
 	public void undoEvent01(int index)///恢复
@@ -129,7 +129,7 @@ public class EventManage : MonoBehaviour {
 
     void doEvent01_1()///这货不能送
     {
-        punish_dec = -2; ;
+        punish_dec = 1; ;
     }
 		
     public void Event_02(int index)///时间类型——使用卡

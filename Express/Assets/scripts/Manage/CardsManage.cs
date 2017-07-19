@@ -115,8 +115,8 @@ public class CardsManage : MonoBehaviour {
 
     void SelectCardType()
     {
-        int chance = Random.Range(0,RemainCard + 1);
-        if (chance < RemainNormalCard)
+        int chance = Random.Range(0,101);
+        if (chance < 51)
         {
 			Card_normal();
         }
@@ -205,15 +205,15 @@ public class CardsManage : MonoBehaviour {
     {
         RemainCard++;
         
-        punish = 1;
+        punish = 2;
         
        /* if (Distribution.totalCredit + punish - eManage.punish_inc - eManage.punish_dec < 0)
         {
             GameOver();
         }
         else */{
-            Distribution.totalCredit = Distribution.totalCredit + punish - eManage.punish_inc - eManage.punish_dec;
-            Distribution.totalProfit -= (_card.timeCast + 2);
+            Distribution.totalCredit = Distribution.totalCredit + punish + eManage.punish_inc;
+            Distribution.totalProfit -= _card.timeCast + 1 + eManage.punish_dec;
             dManage.text_credit.text = "信誉" + Distribution.totalCredit.ToString();
             dManage.text_profit.text = "金币" + Distribution.totalProfit.ToString();
         }
