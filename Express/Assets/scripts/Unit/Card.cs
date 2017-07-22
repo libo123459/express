@@ -8,8 +8,10 @@ public class Card : MonoBehaviour {
     public int ID;
     public int timeCast;
     public int profit;
-    public int credit;    
-    
+    public int credit;
+
+    public string state;
+
     public Text destination;
     public Item _item;
     public Button _cancel;
