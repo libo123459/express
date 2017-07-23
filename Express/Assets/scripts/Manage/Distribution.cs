@@ -9,6 +9,7 @@ public class Distribution : MonoBehaviour {
     public GameObject destination;
     public GameObject ProfitPanel;
     public BtnStation Station;
+    public Button nextRound;
 
     public Text _profit;
     public Text text_credit;
@@ -22,6 +23,7 @@ public class Distribution : MonoBehaviour {
     public static float totalProfit;
 
     public int MaxCredit = 10;
+    public int dice;
 
     CardsData cData;
 	EventData eData;
@@ -52,6 +54,11 @@ public class Distribution : MonoBehaviour {
         }
         
         displaySpot(_truck);
+        if (dice == 0)
+        {
+            dice = Random.Range(1, 4);
+        }
+        
     }
 
     void displayDestPanel() //目的地panel的实例化
@@ -102,53 +109,48 @@ public class Distribution : MonoBehaviour {
         }       
     }
 
+    
+
     public void NextRound()
     {
-        if (cData.CardsList.Count == 6)///6为临时
+        /*if (cData.CardsList.Count == 6)///6为临时
         {
             totalCredit -= 2;
             text_credit.text = "信誉" + totalCredit.ToString();
             print(totalCredit.ToString());            
         }
-        for (int i = 0; i < TruckManage.trucksList.Count; i++)
+        */
+        if (cData.CardsList.Count < 6)
         {
-            if (TruckManage.trucksList[i].state == "dist")
+            
+            for (int i = 0; i < TruckManage.trucksList.Count; i++)
             {
-                Truck _truck = TruckManage.trucksList[i];
-                if (_truck.ID == 10)
+                if (TruckManage.trucksList[i].state == "dist")
                 {
-                    TruckManage.TruckSkill(_truck);
-                }
-                else
-                {
-                    TruckMove(_truck);
-                }
+                    Truck _truck = TruckManage.trucksList[i];
 
-                for (int j = 0; j < _truck.timeCast.Count; j++) ////开始对第一个订单倒计时
-                {
-                    if (_truck.remain == 0)
+                    /*if (_truck.ID == 10)
                     {
-                        _truck.state = "finished";
-
-                        CreditLast(_truck);
-                        ProfitAtLast(_truck);
-                        
-                        break;
+                        TruckManage.TruckSkill(_truck);
                     }
                     else
                     {
-                        if (_truck.timeCast[j] != 0) ///如果为0，则开始第二个
+                        TruckMove(_truck);
+                    }*/
+                    TruckMove(_truck,dice);///下一回合数随机
+                    if (_truck.remain == 0)
                         {
-                            _truck.timeCast[j]--;
+                            _truck.state = "finished";
 
-                            break;
+                            CreditLast(_truck);
+                            ProfitAtLast(_truck);
                         }
-                    }
+                    
                 }
             }
-        }
-        CountDown();
-        
+            CountDown();
+            dice = Random.Range(1, 4);
+        }        
     }
 
 	public void ProfitAtLast(Truck _truck)
@@ -178,7 +180,10 @@ public class Distribution : MonoBehaviour {
         {
             credit += _truck.credit[i];
         }
-        
+        if (_truck.orderNum >= 3)
+        {
+            credit += 1;
+        }
         if (credit + totalCredit > MaxCredit)
         {
             totalCredit = MaxCredit;
@@ -192,20 +197,33 @@ public class Distribution : MonoBehaviour {
         
     }
 
-    void TruckMove(Truck _truck)
+    void TruckMove(Truck _truck,int _dice)
     {
-        if (_truck.stopTime == 0)
+        float unitShift = 0;
+        unitShift = 1300.0f / (float)_truck.TotalTimecast;
+        
+        if (_truck.stopTime >= _dice)
         {
-			_truck.remain--;
-			float unitShift = 0;
-            unitShift = 1300.0f / (float)_truck.TotalTimecast;
-            float xPos = _truck.transform.localPosition.x + unitShift;
-            float yPos = _truck.transform.localPosition.y;
-            _truck.transform.localPosition = new Vector3(xPos, yPos, 0);
+            _truck.stopTime -= _dice;
         }
         else {
-            _truck.stopTime--;
-        }
+            int n = _dice - _truck.stopTime;
+            if (_truck.remain >= n)
+            {
+                _truck.remain -= n;
+                float xPos = _truck.transform.localPosition.x + unitShift * n;
+                float yPos = _truck.transform.localPosition.y;
+                _truck.transform.localPosition = new Vector3(xPos, yPos, 0);
+            }
+            else
+            {
+                
+                float xPos = _truck.transform.localPosition.x + unitShift * _truck.remain; ;
+                float yPos = _truck.transform.localPosition.y;
+                _truck.transform.localPosition = new Vector3(xPos, yPos, 0);
+                _truck.remain = 0;
+            }
+        }        
     }
 
     public void TruckMoveToStation()
@@ -284,5 +302,6 @@ public class Distribution : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        nextRound.transform.GetChild(0).GetComponent<Text>().text = dice.ToString();
     }
 }

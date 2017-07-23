@@ -31,7 +31,7 @@ public class CardsManage : MonoBehaviour {
     EventManage eManage;
 
     int RemainCard = 60;
-    int RemainNormalCard = 50;
+    int RemainNormalCard = 60;
     int RemainEventCard = 10;
     int coe_die = 1;
 
@@ -61,15 +61,16 @@ public class CardsManage : MonoBehaviour {
             mycard.credit = 1; //信誉 
             mycard.destination.text = "Time. " + mycard.timeCast;
 
-            Item theitem = _itemData.ItemsList[Random.Range(0, _itemData.ItemsList.Count)];
+            /* theitem = _itemData.ItemsList[Random.Range(0, _itemData.ItemsList.Count)];
             Item myitem = Instantiate(theitem);
             myitem.transform.SetParent(mycard.transform);
             myitem.transform.localPosition = -myitem.CenterPos * 0.5f;
             myitem.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
             mycard._item = myitem;
-            mycard._item.consume = 0;// Random.Range(1, 5);//油耗            
+            mycard._item.consume = 0;// Random.Range(1, 5);//油耗    */        
             mycard.state = "inPool";
+            GiveTheCardItem(mycard);
             normalList.Add(mycard);
         }
     }
@@ -154,7 +155,7 @@ public class CardsManage : MonoBehaviour {
 
     void GiveTheCardItem(Card _card)
     {
-        int random = Random.Range(1, 100);//从文件获取
+        int random = Random.Range(1, 101);//从文件获取
         if (random < 25)
         {
             _card._item = _itemData.ItemsList[0];
@@ -167,21 +168,21 @@ public class CardsManage : MonoBehaviour {
         {
             _card._item = _itemData.ItemsList[Random.Range(3, 10)];
         }
-        if (random >= 75 && random < 100)
+        if (random >= 75 && random < 101)
         {
-            _card._item = _itemData.ItemsList[Random.Range(10, 23)];
+            _card._item = _itemData.ItemsList[Random.Range(10, _itemData.ItemsList.Count)];
         }
         
         int blockNum = _card._item.transform.childCount;
-        _card._item.consume = Random.Range(1, 5);//油耗
-        _card.profit = blockNum * _card.timeCast * 10;///收益
+        _card._item.consume = 1;//油耗
+        _card.profit = 4;///收益
         _card.credit = 1;//信誉       
         //mycard.destination.text = _cardData.destinations[Random.Range(0, _cardData.destinations.Count)];
 
         Item myitem = Instantiate(_card._item);
         myitem.transform.SetParent(_card.transform);
-        myitem.transform.localPosition = myitem.CenterPos;
-        myitem.transform.localScale = new Vector3(1, 1, 1);
+        myitem.transform.localPosition = -myitem.CenterPos * 0.5f;
+        myitem.transform.localScale = new Vector3(1, 1, 1) * 0.5f;
     }
 
     void Card_event()//事件卡
@@ -205,18 +206,18 @@ public class CardsManage : MonoBehaviour {
     public void cancelTheCard(Card _card)///退订卡片
     {
         RemainCard++;
-        
+
         punish = 2;
-        
-       /* if (Distribution.totalCredit + punish - eManage.punish_inc - eManage.punish_dec < 0)
+
+        if (Distribution.totalCredit + punish - eManage.punish_inc - eManage.punish_dec < 0)
         {
             GameOver();
         }
-        else */{
-            Distribution.totalCredit = Distribution.totalCredit + punish + eManage.punish_inc;
-            Distribution.totalProfit -= _card.timeCast + 1 + eManage.punish_dec;
+        else {
+            Distribution.totalCredit = Distribution.totalCredit - punish + eManage.punish_inc + eManage.punish_dec;
+            // Distribution.totalProfit -= _card.timeCast + 1 ;
             dManage.text_credit.text = "信誉" + Distribution.totalCredit.ToString();
-            dManage.text_profit.text = "金币" + Distribution.totalProfit.ToString();
+            // dManage.text_profit.text = "金币" + Distribution.totalProfit.ToString();
         }
         moveToNormalPool(_card);        
     }
@@ -297,16 +298,13 @@ public class CardsManage : MonoBehaviour {
 				diffNum.Add(namelist_copy[i]);
 			}
 		}
-		//print("sameNum count" + sameNum.Count);
-		//print("namelist count" + namelist_copy.Count);
-		//print("diffNum count" + diffNum.Count);
 		int n = Random.Range(0,diffNum.Count);
 		return diffNum[n];
 	}
     
 	// Update is called once per frame
 	void Update () {
-        remainCardText.text = "剩余卡牌" + RemainCard.ToString();
+        remainCardText.text = "剩余卡牌" + normalList.Count.ToString();
 	}
 
     /*int itemIndex = Random.Range(1,101);
