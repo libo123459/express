@@ -38,6 +38,7 @@ public class CardsManage : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        
         _cardData = this.GetComponent<CardsData>();
         _eData = this.GetComponent<EventData>();
         _itemData = this.GetComponent<ItemData>();
@@ -57,7 +58,7 @@ public class CardsManage : MonoBehaviour {
             int random = Random.Range(1, _cardData.Array.Length);//从文件获取
             mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();
             mycard.timeCast = Random.Range(1, 4);//耗时
-            mycard.profit = 4;///收益
+            mycard.profit = 5;///收益
             mycard.credit = 1; //信誉 
             mycard.destination.text = "Time. " + mycard.timeCast;
 
@@ -150,6 +151,7 @@ public class CardsManage : MonoBehaviour {
             _card.transform.SetParent(grid);
             _cardData.CardsList.Add(_card);
             normalList.RemoveAt(normalList.Count - 1);
+            
         }        
     }
 
@@ -174,9 +176,7 @@ public class CardsManage : MonoBehaviour {
         }
         
         int blockNum = _card._item.transform.childCount;
-        _card._item.consume = 1;//油耗
-        _card.profit = 4;///收益
-        _card.credit = 1;//信誉       
+        _card._item.consume = 1;//油耗         
         //mycard.destination.text = _cardData.destinations[Random.Range(0, _cardData.destinations.Count)];
 
         Item myitem = Instantiate(_card._item);
@@ -206,8 +206,6 @@ public class CardsManage : MonoBehaviour {
     public void cancelTheCard(Card _card)///退订卡片
     {
         RemainCard++;
-
-        punish = 2;
 
         if (Distribution.totalCredit + punish - eManage.punish_inc - eManage.punish_dec < 0)
         {

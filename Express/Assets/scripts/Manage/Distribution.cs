@@ -53,12 +53,7 @@ public class Distribution : MonoBehaviour {
             DriverManage.DriverSkill(_truck.driver);
         }
         
-        displaySpot(_truck);
-        if (dice == 0)
-        {
-            dice = Random.Range(1, 4);
-        }
-        
+        displaySpot(_truck);       
     }
 
     void displayDestPanel() //目的地panel的实例化
@@ -107,9 +102,7 @@ public class Distribution : MonoBehaviour {
             
             DestroyImmediate(destPanelList[truckNum].transform.GetChild(1).gameObject);
         }       
-    }
-
-    
+    }    
 
     public void NextRound()
     {
@@ -122,7 +115,8 @@ public class Distribution : MonoBehaviour {
         */
         if (cData.CardsList.Count < 6)
         {
-            
+            totalCredit -= 1;
+            text_credit.text = "信誉" + totalCredit.ToString();
             for (int i = 0; i < TruckManage.trucksList.Count; i++)
             {
                 if (TruckManage.trucksList[i].state == "dist")
@@ -182,7 +176,7 @@ public class Distribution : MonoBehaviour {
         }
         if (_truck.orderNum >= 3)
         {
-            credit += 1;
+            credit += 0;
         }
         if (credit + totalCredit > MaxCredit)
         {
@@ -286,7 +280,10 @@ public class Distribution : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        
+        if (dice == 0)
+        {
+            dice = Random.Range(1, 4);
+        }
         oManage = GameObject.Find("Manage").GetComponent<OrderManage>();
         cData = GameObject.Find("Manage").GetComponent<CardsData>();
         dManage = GameObject.Find("Manage").GetComponent<DriverManage>();
