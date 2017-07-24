@@ -18,7 +18,7 @@ public class TruckManage : MonoBehaviour {
     public int preTruckNum;
 
     TruckData tData;
-    int truckNumMax = 3;
+    public static int truckNumMax = 3;
 
 	// Use this for initialization
 	void Start ()
@@ -35,7 +35,11 @@ public class TruckManage : MonoBehaviour {
             GiveTheTruckPara(mytruck,mytruck.ID);
             trucksList.Add(mytruck);
         }
-        print("trucknum" + trucksList.Count);
+
+        trucksList[1].active = false;
+        trucksList[1].gameObject.SetActive(false);
+        trucksList[2].active = false;
+        trucksList[2].gameObject.SetActive(false);
 	}
 
     public void DisplayTruckInShopPanel(Transform shopPanel)

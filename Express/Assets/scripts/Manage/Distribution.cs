@@ -8,12 +8,14 @@ public class Distribution : MonoBehaviour {
     public Transform destPanel;
     public GameObject destination;
     public GameObject ProfitPanel;
+    public GameObject notEnough;
     public BtnStation Station;
     public Button nextRound;
 
     public Text _profit;
     public Text text_credit;
     public Text text_profit;
+    public Text finishedOrder;
 
     public List<GameObject> destPanelList = new List<GameObject>();
 
@@ -33,8 +35,36 @@ public class Distribution : MonoBehaviour {
 	CardsManage cManage;
     
     int consume;
-    int timeCast;    
-    
+    int timeCast;
+    public static int level = 1;
+    int finished = 0;
+
+    void levelUp(Truck _truck)
+    {
+        finished += _truck.orderNum;
+        if (finished >= 10)
+        {
+            if (level == 1)
+            {
+                level += 1;
+                TruckManage.trucksList[1].active = true;
+                TruckManage.trucksList[1].gameObject.SetActive(true);
+                destPanelList[1].SetActive(true);
+            }
+        }
+        if (finished >= 30)
+        {
+            if (level == 2)
+            {
+                level += 1;
+                TruckManage.trucksList[2].active = true;
+                TruckManage.trucksList[2].gameObject.SetActive(true);
+                destPanelList[2].SetActive(true);
+            }
+        }
+        finishedOrder.text = "完成订单" + finished.ToString();
+    }
+
     public void distribution(int truckNum)//配送界面
     {
         Truck _truck = TruckManage.trucksList[truckNum];//获取车辆
@@ -48,10 +78,10 @@ public class Distribution : MonoBehaviour {
         else {
             _truck.state = "dist";
         }
-        if (_truck.driver != null)
+       /* if (_truck.driver != null)
         {
             DriverManage.DriverSkill(_truck.driver);
-        }
+        }*/
         
         displaySpot(_truck);       
     }
@@ -65,8 +95,10 @@ public class Distribution : MonoBehaviour {
             dPanel.transform.localPosition = new Vector3(-130, 200 * i, 0);
             _station.GetComponent<RectTransform>().anchoredPosition = new Vector3(0,0,0);
             _station.truckNum = i;
-            destPanelList.Add(dPanel);
+            destPanelList.Add(dPanel);            
         }
+        destPanelList[1].SetActive(false);
+        destPanelList[2].SetActive(false);
     }
 
     void displaySpot(Truck _truck)
@@ -102,49 +134,101 @@ public class Distribution : MonoBehaviour {
             
             DestroyImmediate(destPanelList[truckNum].transform.GetChild(1).gameObject);
         }       
-    }    
+    }
 
     public void NextRound()
     {
-        /*if (cData.CardsList.Count == 6)///6为临时
-        {
-            totalCredit -= 2;
-            text_credit.text = "信誉" + totalCredit.ToString();
-            print(totalCredit.ToString());            
-        }
-        */
         if (cData.CardsList.Count < 6)
         {
-            totalCredit -= 1;
-            text_credit.text = "信誉" + totalCredit.ToString();
-            for (int i = 0; i < TruckManage.trucksList.Count; i++)
+            if (level <= 6 - cData.CardsList.Count)
             {
-                if (TruckManage.trucksList[i].state == "dist")
+                
+                for (int i = 0; i < TruckManage.trucksList.Count; i++)
                 {
-                    Truck _truck = TruckManage.trucksList[i];
+                    if (TruckManage.trucksList[i].state == "dist")
+                    {
+                        Truck _truck = TruckManage.trucksList[i];
 
-                    /*if (_truck.ID == 10)
-                    {
-                        TruckManage.TruckSkill(_truck);
-                    }
-                    else
-                    {
-                        TruckMove(_truck);
-                    }*/
-                    TruckMove(_truck,dice);///下一回合数随机
-                    if (_truck.remain == 0)
+
+                        TruckMove(_truck, dice);///下一回合数随机
+                        if (_truck.remain == 0)
                         {
                             _truck.state = "finished";
 
                             CreditLast(_truck);
                             ProfitAtLast(_truck);
                         }
-                    
+
+                    }
                 }
+                CountDown();
+                if (level == 1)
+                {
+                    dice = Random.Range(3, 5);
+                }
+                if (level == 2)
+                {
+                    dice = Random.Range(2, 5);
+                }
+                if (level == 3)
+                {
+                    dice = Random.Range(1, 5);
+                }
+                cManage.AddTheCard(level);
             }
-            CountDown();
-            dice = Random.Range(1, 4);
+            else {
+                int n = 6 - cData.CardsList.Count;
+                notEnough.SetActive(true);
+                notEnough.transform.GetChild(0).GetComponent<Text>().text = "卡池剩余位置不足"
+                    + "\n" + "是否消耗 " + ((level - n) * 2).ToString() +" 点信誉来进行下一回合";
+            }            
         }        
+    }
+
+    public void DeductCre()///剩余位置不够抽卡时,扣信誉
+    {
+        int n = 6 - cData.CardsList.Count;
+
+        totalCredit -= (level - n)* 2;
+
+        for (int i = 0; i < TruckManage.trucksList.Count; i++)
+        {
+            if (TruckManage.trucksList[i].state == "dist")
+            {
+                Truck _truck = TruckManage.trucksList[i];
+
+
+                TruckMove(_truck, dice);///下一回合数随机
+                if (_truck.remain == 0)
+                {
+                    _truck.state = "finished";
+
+                    CreditLast(_truck);
+                    ProfitAtLast(_truck);
+                }
+
+            }
+        }
+        CountDown();
+        if (level == 1)
+        {
+            dice = Random.Range(3, 5);
+        }
+        if (level == 2)
+        {
+            dice = Random.Range(2, 5);
+        }
+        if (level == 3)
+        {
+            dice = Random.Range(1, 5);
+        }
+        cManage.AddTheCard(n);
+        CloseNotEnough();
+    }
+
+    public void CloseNotEnough()
+    {
+        notEnough.SetActive(false);
     }
 
 	public void ProfitAtLast(Truck _truck)
@@ -157,7 +241,7 @@ public class Distribution : MonoBehaviour {
 		{
 			profit = profit + _truck.profit[i];
 		}
-        Driver driver = _truck.driver;
+        //Driver driver = _truck.driver;
         _profit.text = "收益金额：" + profit.ToString() 
             +"\n" + "汽油和人工消耗" + consume.ToString()
             + "\n" + "总计收益" + (profit - consume).ToString()
@@ -166,6 +250,8 @@ public class Distribution : MonoBehaviour {
         totalProfit = totalProfit + profit - consume;
 
         text_profit.text = "金币" + totalProfit.ToString();
+
+        levelUp(_truck);
     }
 
     public void CreditLast(Truck _truck)
@@ -245,7 +331,7 @@ public class Distribution : MonoBehaviour {
     
     void TruckConsume (Truck _truck)
     {
-        consume = _truck.consume * _truck.TotalTimecast + _truck.driver.salary;///工资加油耗
+        consume = _truck.consume * _truck.TotalTimecast;// + _truck.driver.salary;///工资加油耗
     }
 
 	void CountDown()
@@ -282,11 +368,11 @@ public class Distribution : MonoBehaviour {
     void Start () {
         if (dice == 0)
         {
-            dice = Random.Range(1, 4);
+            dice = Random.Range(3, 5);
         }
         oManage = GameObject.Find("Manage").GetComponent<OrderManage>();
         cData = GameObject.Find("Manage").GetComponent<CardsData>();
-        dManage = GameObject.Find("Manage").GetComponent<DriverManage>();
+       // dManage = GameObject.Find("Manage").GetComponent<DriverManage>();
 		cManage = GameObject.Find("Manage").GetComponent<CardsManage>();
 		eManage = GameObject.Find("Manage").GetComponent<EventManage>();
 

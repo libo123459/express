@@ -57,9 +57,25 @@ public class CardsManage : MonoBehaviour {
 
             int random = Random.Range(1, _cardData.Array.Length);//从文件获取
             mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();
-            mycard.timeCast = Random.Range(1, 4);//耗时
+            
+            if (i < 14)
+            {
+                mycard.timeCast = 2;
+            }
+            if (i >= 14 && i < 29)
+            {
+                mycard.timeCast = 3;
+            }
+            if (i >= 29 && i < 44)
+            {
+                mycard.timeCast = 4;
+            }
+            if (i >= 44 && i < RemainNormalCard)
+            {
+                mycard.timeCast = 5;
+            }
             mycard.profit = 5;///收益
-            mycard.credit = 1; //信誉 
+            mycard.credit = 1; //信誉
             mycard.destination.text = "Time. " + mycard.timeCast;
 
             /* theitem = _itemData.ItemsList[Random.Range(0, _itemData.ItemsList.Count)];
@@ -119,13 +135,17 @@ public class CardsManage : MonoBehaviour {
         }
     }
 
-    public void AddTheCard()   //抽卡
+    public void AddTheCard(int level)   //抽卡
     {
-        if (grid.childCount < 6) ////6为临时测试用，需要改成卡池上线的变量
-        {
-            
-            SelectCardType();
-        }
+        for (int i = 0; i < level; i++)
+            {
+                if (grid.childCount < 6) ////6为临时测试用，需要改成卡池上线的变量
+                {
+
+                    SelectCardType();
+                }
+            }
+               
 
         RefreshID();
     }
@@ -147,11 +167,11 @@ public class CardsManage : MonoBehaviour {
     {
         if (normalList.Count > 0)
         {
-            Card _card = normalList[normalList.Count - 1];
+            int index = Random.Range(0, normalList.Count);
+            Card _card = normalList[index];
             _card.transform.SetParent(grid);
             _cardData.CardsList.Add(_card);
-            normalList.RemoveAt(normalList.Count - 1);
-            
+            normalList.RemoveAt(index);            
         }        
     }
 

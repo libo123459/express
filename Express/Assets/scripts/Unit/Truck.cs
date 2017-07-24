@@ -24,6 +24,7 @@ public class Truck : MonoBehaviour {
     public int stopTime;
     public int TotalTimecast;
     public string state;
+    public bool active = false;
 
     public Driver driver;
 
