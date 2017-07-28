@@ -24,6 +24,7 @@ public class CardsData : MonoBehaviour {
         {
             Array[_i] = lineArray[_i].Split(',');
         }
+        
     }
     
     public string GetDestination(int nRow)

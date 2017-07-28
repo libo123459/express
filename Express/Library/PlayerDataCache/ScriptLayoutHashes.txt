@@ -1,4 +1,4 @@
-WindowsStandalone
+Android
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Draggable_order
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ShopManage
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Card_task
@@ -121,14 +121,14 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.Spa
 cb25c988d7e68004a6ae52de7d3eea17 Assembly-CSharp.dll:.TruckManage
 6d3ceab10d674add243b1cc8d6f800b6 Assembly-CSharp.dll:.TruckData
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ReadData
-1f2b24b13bf3e32ca43c6937953306aa Assembly-CSharp.dll:.Card
+4506b386fcbacaa6a4fc94461ccfd146 Assembly-CSharp.dll:.Card
 19f3c8d4b7d7f0851986c406e215b874 Assembly-CSharp.dll:.DriverManage
 0c0620a5d4dbdad52d7dc1c4c8b3d4e3 Assembly-CSharp.dll:.Driver
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Slot
-86136712f114a804a577a5961a12ec7f Assembly-CSharp.dll:.Truck
+7a16d1b868061d61fe2b4bc3b545493b Assembly-CSharp.dll:.Truck
 f266a453cd4bfbe81533762a3e3589f4 DOTween.dll:DG.Tweening.Core.DOTweenComponent
 0b269eddb7d77b913f99ea770bf1912a DOTween.dll:DG.Tweening.Core.DOTweenSettings
-79ae98fc307fa494343dbb62c5fea20d Assembly-CSharp.dll:.Card_event
+179585a66d4e39f6d3e508998d20011d Assembly-CSharp.dll:.Card_event
 0e59d79fb04c096d4313268248c42c3e Assembly-CSharp.dll:.ItemData
 12d6782b7d8ee8871efa6b05b931f49e Assembly-CSharp.dll:.CardsData
 80652dd1d41ee95f9859a067955498af Assembly-CSharp.dll:.BtnStation
@@ -147,7 +147,7 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 3f32f08a64daf40b09ed864d96fe3840 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransform
 73843688b51256aed059f049c540bca8 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformChild
 528ea1fd7c01796fc60c4e2f172ea229 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
-8df085a4cbabff90a456a8bf12f7b311 Assembly-CSharp.dll:.CardsManage
+d6ca3e2622507af6953ffbff8386016f Assembly-CSharp.dll:.CardsManage
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.PlayModeRunnerCallback
 5f2ad81aa8994e8fbe25d1e57afe6773 UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.PlaymodeTestsController
 64eb32cc721b1cc68a91ed57461e188c UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.RemoteTestResultSender
@@ -165,6 +165,6 @@ d1b0e1dcf7d2c8f13049a389972bda13 Assembly-CSharp.dll:.Block
 8dfb90365a6eb649a27518802414554a Assembly-CSharp.dll:.DriverData
 3a6c36b4d403c4d4142c6e67732c782f Assembly-CSharp.dll:DG.Tweening.DOTweenAnimation
 9d1e138111d33aad3c62dab4e71ae0e6 Assembly-CSharp.dll:.truckInGarage
-0ee3c777d5f85c35ffd13a8b61f4360d Assembly-CSharp.dll:.Distribution
+78e59d30dec07b077e423559e161538a Assembly-CSharp.dll:.Distribution
 405d2b143470fda0a01eaf46e62f9cae Assembly-CSharp.dll:.BTN_truckChoose
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.State

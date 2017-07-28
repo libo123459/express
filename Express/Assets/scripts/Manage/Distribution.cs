@@ -235,19 +235,15 @@ public class Distribution : MonoBehaviour {
     {
         ProfitPanel.SetActive(true);
 
-        TruckConsume(_truck);
+        //TruckConsume(_truck);
 
-        for (int i = 0;i<_truck.profit.Count;i++)
-		{
-			profit = profit + _truck.profit[i];
-		}
+        int n = _truck.orderNum;
+        profit += (n * (n - 1)) / 2;
         //Driver driver = _truck.driver;
-        _profit.text = "收益金额：" + profit.ToString() 
-            +"\n" + "汽油和人工消耗" + consume.ToString()
-            + "\n" + "总计收益" + (profit - consume).ToString()
+        _profit.text = "收益金额：" + profit.ToString()           
             + "\n" + "信誉度：" + credit.ToString();
 
-        totalProfit = totalProfit + profit - consume;
+        totalProfit = totalProfit + profit;
 
         text_profit.text = "金币" + totalProfit.ToString();
 
