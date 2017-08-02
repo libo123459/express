@@ -7,7 +7,7 @@ public class Truck : MonoBehaviour {
     
     public List<string> _destination = new List<string>();
     public List<int> timeCast = new List<int>();
-   
+    public List<int> skillList = new List<int>();
     public List<float> profit = new List<float>();
     public List<float> credit = new List<float>();
 

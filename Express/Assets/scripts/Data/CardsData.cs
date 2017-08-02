@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class CardsData : MonoBehaviour {
     public List<Card> CardsList = new List<Card>();
-    
+
     public string[][] Array;
+    //public List<string> row = new List<string>();
+    public List<List<string>> column = new List<List<string>>();
     ItemData _itemData;
     private void Awake()
     {
-        
-        //读取csv二进制文件  
+         //读取csv二进制文件  
         TextAsset binAsset = Resources.Load("CardData", typeof(TextAsset)) as TextAsset;
 
         //读取每一行的内容  
@@ -24,26 +25,41 @@ public class CardsData : MonoBehaviour {
         {
             Array[_i] = lineArray[_i].Split(',');
         }
-        
+        for (int i = 0; i < lineArray.Length; i++)
+        {
+            List<string> row = new List<string>();
+            for (int j = 0; j < Array[i].Length; j++)
+            {
+                row.Add(Array[i][j]);
+            }
+            column.Add(row);
+        }
+        print(column.Count);
+        print(column[1].Count);
     }
     
     public string GetDestination(int nRow)
     {
-        if (Array.Length <= 0 || nRow >= Array.Length)
-            return "";
+        //if (Array.Length <= 0 || nRow >= Array.Length)
+          //  return "";
 
-        return Array[nRow][1];
+        return column[nRow][1];
     }
 
     public string GetTimeCast(int nRow)
     {
-        return Array[nRow][2];
+        return column[nRow][2];
     }
 
     public Item GetItem(int nRow)
     {
-        int index = int.Parse(Array[nRow][3]);
+        int index = int.Parse(column[nRow][3]);
         return _itemData.ItemsList[index];
+    }
+    public int GetSkillID(int nRow)
+    {
+        int index = int.Parse(column[nRow][4]);
+        return index;
     }
     // Use this for initialization
     void Start () {

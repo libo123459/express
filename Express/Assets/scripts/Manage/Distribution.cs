@@ -24,7 +24,7 @@ public class Distribution : MonoBehaviour {
     public static float totalCredit;
     public static float totalProfit;
 
-    public int MaxCredit = 10;
+    public static int MaxCredit = 10;
     public int dice;
 
     CardsData cData;
@@ -256,7 +256,7 @@ public class Distribution : MonoBehaviour {
         {
             credit += _truck.credit[i];
         }
-        if (_truck.orderNum >= 3)
+        if (_truck.orderNum >= 3) //3个以上
         {
             credit += 0;
         }

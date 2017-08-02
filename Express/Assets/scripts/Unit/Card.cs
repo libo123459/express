@@ -9,6 +9,8 @@ public class Card : MonoBehaviour {
     public int timeCast;
     public int profit;
     public int credit;
+    public int skillID;
+    public int count = 0;
 
     public string state;
 

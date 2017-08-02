@@ -17,6 +17,7 @@ public class OrderManage : MonoBehaviour {
             myorder.ID = _card.ID;
             myorder.profit = _card.profit;
             myorder.credit = _card.credit;
+            myorder.skillID = _card.skillID;
             myorder.blockNum = _card._item.BlockNum;
             myorder.InitOrder();
             ShowDestination(myorder, _card);
@@ -33,6 +34,7 @@ public class OrderManage : MonoBehaviour {
             
             _truck.profit.Add(OrdersList[i].profit);
             _truck.credit.Add(OrdersList[i].credit);
+            _truck.credit.Add(OrdersList[i].skillID);
             _truck.remain = _truck.remain + _truck.timeCast[i];///车辆剩余回合数
             _truck.TotalTimecast = _truck.remain;
             _truck.blockNum += OrdersList[i].blockNum;

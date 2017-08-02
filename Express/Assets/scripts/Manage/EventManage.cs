@@ -169,7 +169,7 @@ public class EventManage : MonoBehaviour {
 	public void doEvent02_0()///信用锦旗
 	{
 		float n = Distribution.totalCredit + 5;
-		if(n >= dManage.MaxCredit)
+		if(n >= Distribution.MaxCredit)
 		{
             Distribution.totalCredit = 10;
 		} else {
