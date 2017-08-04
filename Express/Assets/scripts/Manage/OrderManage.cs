@@ -34,7 +34,7 @@ public class OrderManage : MonoBehaviour {
             
             _truck.profit.Add(OrdersList[i].profit);
             _truck.credit.Add(OrdersList[i].credit);
-            _truck.credit.Add(OrdersList[i].skillID);
+            _truck.skillList.Add(OrdersList[i].skillID);
             _truck.remain = _truck.remain + _truck.timeCast[i];///车辆剩余回合数
             _truck.TotalTimecast = _truck.remain;
             _truck.blockNum += OrdersList[i].blockNum;
@@ -64,7 +64,7 @@ public class OrderManage : MonoBehaviour {
 
     public void ShowDestination(Order theorder, Card _card)
     {
-        theorder.destination.text = _card.destination.text;
+        theorder.destination.text = _card.TimeCast.text;
 
         theorder.timeCast.text = "time:" + _card.timeCast.ToString();
         theorder._timecast = _card.timeCast;

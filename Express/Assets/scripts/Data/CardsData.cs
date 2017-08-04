@@ -61,6 +61,11 @@ public class CardsData : MonoBehaviour {
         int index = int.Parse(column[nRow][4]);
         return index;
     }
+
+    public string GetSkillDes(int nRow)
+    {
+        return column[nRow][5];
+    }
     // Use this for initialization
     void Start () {
         _itemData = this.GetComponent<ItemData>();

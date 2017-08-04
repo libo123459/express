@@ -14,7 +14,8 @@ public class Card : MonoBehaviour {
 
     public string state;
 
-    public Text destination;
+    public Text TimeCast;
+    public Text Description;
     public Item _item;
     public Button _cancel;
 
@@ -29,12 +30,11 @@ public class Card : MonoBehaviour {
     void Awake () {
         _cancel = this.transform.Find("cancel").GetComponent<Button>();
         cManage = GameObject.Find("Manage").GetComponent<CardsManage>();
-		destination = this.transform.GetChild(0).GetComponent<Text>();
+		
         _cancel.onClick.AddListener(() => cManage.cancelTheCard(this));
     }
-	
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update () {
 		
 	}
 }

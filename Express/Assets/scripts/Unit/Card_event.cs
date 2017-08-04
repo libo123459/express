@@ -22,7 +22,7 @@ public class Card_event : Card {
 		use.onClick.AddListener(()=> cManage.DestoryTheCard(this));
 
 
-		destination = this.transform.GetChild(0).GetComponent<Text>();
+		TimeCast = this.transform.GetChild(0).GetComponent<Text>();
 		_cancel = this.transform.Find("cancel").GetComponent<Button>();
 		_cancel.onClick.AddListener(() => cManage.cancelTheCard(this));
 

@@ -52,8 +52,10 @@ public class CardsManage : MonoBehaviour {
             Card mycard = Instantiate(_card,NormalPool);            
 
             int random = Random.Range(1, _cardData.Array.Length);
-            mycard.destination = mycard.transform.GetChild(0).GetComponent<Text>();
-            
+            mycard.TimeCast = mycard.transform.GetChild(0).GetComponent<Text>();
+            mycard.Description = mycard.transform.Find("description").GetComponent<Text>();
+            mycard.ID = random;
+            mycard.skillID = _cardData.GetSkillID(mycard.ID);
             if (i < 14)
             {
                 mycard.timeCast = 2;
@@ -70,11 +72,18 @@ public class CardsManage : MonoBehaviour {
             {
                 mycard.timeCast = 5;
             }
-            mycard.ID = random;
-            mycard.skillID = _cardData.GetSkillID(mycard.ID);
+            if (mycard.skillID == 13)
+            {
+                mycard.timeCast = 10;
+            }
+            if (mycard.skillID == 14)
+            {
+                mycard.timeCast = 60;
+            }
             mycard.profit = 5;///收益
             mycard.credit = 1; //信誉
-            mycard.destination.text = "Time. " + mycard.timeCast;
+            mycard.TimeCast.text = "Time. " + mycard.timeCast;
+            mycard.Description.text = _cardData.GetSkillDes(mycard.ID);
             mycard.state = "inPool";
             GiveTheCardItem(mycard);
             normalList.Add(mycard);
@@ -346,14 +355,12 @@ public class CardsManage : MonoBehaviour {
                 case 11:
                     skill_11(_truck);
                     break;
-                case 12:
-                    skill_12(_truck);
+
+                case 15:
+                    skill_15(_truck);
                     break;
-                case 13:
-                    skill_13(_truck);
-                    break;
-                case 14:
-                    skill_14(_truck);
+                case 16:
+                    skill_16(_truck);
                     break;
 
             }
@@ -375,7 +382,7 @@ public class CardsManage : MonoBehaviour {
     }//不增加
     void skill_3(Truck _truck)
     {
-        if (_truck.state == "dist")
+        if (_truck.state == "start")
         {
             if (_truck.orderNum > 1)
             {
@@ -385,7 +392,7 @@ public class CardsManage : MonoBehaviour {
     }//与其他货物一起增加1回合
     void skill_4(Truck _truck)
     {
-        if (_truck.state == "dist")
+        if (_truck.state == "start")
         {
             if (_truck.orderNum > 1)
             {
@@ -396,7 +403,7 @@ public class CardsManage : MonoBehaviour {
     }//减少1
     void skill_5(Truck _truck)
     {
-        if (_truck.state == "dist")
+        if (_truck.state == "start")
         {
             if (_truck.orderNum == 1)
             {
@@ -406,7 +413,7 @@ public class CardsManage : MonoBehaviour {
     }//单独增加1回合
     void skill_6(Truck _truck)
     {
-        if (_truck.state == "dist")
+        if (_truck.state == "start")
         {
             if (_truck.orderNum == 1)
             {
@@ -425,49 +432,48 @@ public class CardsManage : MonoBehaviour {
     }//增加10点业务，减少5信用
     void skill_8(Truck _truck)
     {
-
-    }//运输期间DICE最大/最小（还没做）
+        if (_truck.state == "dist" || _truck.state == "start")
+        {
+            dManage.diceState = "Max";
+        }
+    }//运输期间DICE最大
     void skill_9(Truck _truck)
+    {
+        if (_truck.state == "dist" || _truck.state == "start")
+        {
+            dManage.diceState = "Min";
+        }
+    }//运输期间DICE最小
+    void skill_10(Truck _truck)
     {
         if (_truck.state == "finished")
         {
-            if (_truck.orderNum > 5)
+            if (_truck.TotalTimecast > 5)
             {
                 Distribution.credit -= 5;
             }
         }
     }//超过5回合，减少5信用
-    void skill_10(Truck _truck)
-    {
-        if (_truck.state == "finished")
-        {
-            Distribution.profit *= 2;
-        }
-    }//业务翻倍
     void skill_11(Truck _truck)
     {
-
-    }//
-    void skill_12(Truck _truck)
-    {
-
-    }//
-    void skill_13(Truck _truck)
-    {
-
-    }//
-    void skill_14(Truck _truck)
-    {
         if (_truck.state == "finished")
         {
-            Distribution.totalCredit = Distribution.MaxCredit;
+            Distribution.profit += Distribution.profit;
         }
-    }//信用最大值
+    }//业务翻倍
+    
     void skill_15(Truck _truck)
     {
         if (_truck.state == "finished")
         {
-            Distribution.totalCredit = 1;
+            Distribution.credit = Distribution.MaxCredit - Distribution.totalCredit;
+        }
+    }//信用最大值
+    void skill_16(Truck _truck)
+    {
+        if (_truck.state == "finished")
+        {
+            Distribution.credit = -Distribution.totalCredit + 1;
         }
     }//信用值1点
 
@@ -475,9 +481,9 @@ public class CardsManage : MonoBehaviour {
     {
         for (int i = 0; i < _cardData.CardsList.Count; i++)
         {
-            if(_cardData.CardsList[i].skillID >= 11 && _cardData.CardsList[i].skillID <= 13)
+            if(_cardData.CardsList[i].skillID >= 12 && _cardData.CardsList[i].skillID <= 14)
             {
-                if (_cardData.CardsList[i].skillID == 11)
+                if (_cardData.CardsList[i].skillID == 12)
                 {
                     if (_cardData.CardsList[i].count < 3)
                     {
@@ -485,14 +491,14 @@ public class CardsManage : MonoBehaviour {
                         _cardData.CardsList[i].count += 1;
                     }                    
                 }
-                if (_cardData.CardsList[i].skillID == 12)
+                if (_cardData.CardsList[i].skillID == 13)
                 {
                     if (_cardData.CardsList[i].timeCast > 1)
                     {
                         _cardData.CardsList[i].timeCast -= 1;
                     }                    
                 }
-                if (_cardData.CardsList[i].skillID == 13)
+                if (_cardData.CardsList[i].skillID == 14)
                 {
                     for (int j = 0; j < TruckManage.trucksList.Count; j++)
                     {
@@ -503,6 +509,7 @@ public class CardsManage : MonoBehaviour {
                     }
                 }
             }
+            _cardData.CardsList[i].TimeCast.text = "Time." + _cardData.CardsList[i].timeCast.ToString();
         }
     }
     

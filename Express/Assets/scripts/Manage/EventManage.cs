@@ -92,14 +92,14 @@ public class EventManage : MonoBehaviour {
         {
             case 2:
                 mycard.CountDown = 6;
-                mycard.destination.text = mycard.name + "CountDown" 
+                mycard.TimeCast.text = mycard.name + "CountDown" 
                     + (mycard.CountDown + 1).ToString() + "\n" + "7回合内外送信用加1";
                 doEvent01_0();
 				
                 break;
             case 3:
                 mycard.CountDown = 4;
-                mycard.destination.text = mycard.name + "CountDown"
+                mycard.TimeCast.text = mycard.name + "CountDown"
                     + (mycard.CountDown + 1).ToString() + "\n" + "5回合内外包费用加1";
                 doEvent01_1();
 				
@@ -138,15 +138,15 @@ public class EventManage : MonoBehaviour {
 		mycard.transform.SetParent(grid.transform);
 		mycard.eventID = index;
 		mycard.name = _eData.namelist[index];
-        mycard.destination.text = mycard.name;
+        mycard.TimeCast.text = mycard.name;
         mycard._cancel.gameObject.SetActive(false);
         switch (index)
         {
             case 4:
-                mycard.destination.text = mycard.name + "\n" + "恢复5点信用值";
+                mycard.TimeCast.text = mycard.name + "\n" + "恢复5点信用值";
                 break;
             case 5:
-                mycard.destination.text = mycard.name + "\n" + "选择一名司机立即返回并结算配送奖励";
+                mycard.TimeCast.text = mycard.name + "\n" + "选择一名司机立即返回并结算配送奖励";
                 break;
         }
 
@@ -205,7 +205,7 @@ public class EventManage : MonoBehaviour {
 		Truck _truck = TruckManage.trucksList[truckNum];
 		
 		//_truck.state = "finished";
-		dManage.CreditLast(_truck);
+		
         dManage.ProfitAtLast(_truck);
         dManage.ClearDest(_truck.ID);
         _truck.transform.position = _truck.StartPos;
@@ -234,12 +234,12 @@ public class EventManage : MonoBehaviour {
 		{
 		case 6:
 			mycard.CountDown = 4;
-                mycard.destination.text = mycard.name 
+                mycard.TimeCast.text = mycard.name 
                     + "CountDown" + (mycard.CountDown + 1).ToString() + "\n" + "5回合后所有配送中车辆增加一回合";
                 break;
 		case 7:
 			mycard.CountDown = 6;
-                mycard.destination.text = mycard.name 
+                mycard.TimeCast.text = mycard.name 
                     + "CountDown" + (mycard.CountDown + 1).ToString() + "\n"+ "7回合后执行“购物狂欢节";
                 break;
 		}
@@ -292,7 +292,7 @@ public class EventManage : MonoBehaviour {
         mycard.transform.SetParent(grid.transform);
         mycard.eventID = index;
         mycard.name = _eData.namelist[index];
-        mycard.destination.text = mycard.name;
+        mycard.TimeCast.text = mycard.name;
         mycard._cancel.gameObject.SetActive(false);
         switch (index)
         {
