@@ -5,21 +5,24 @@ using UnityEngine;
 public class CardsData : MonoBehaviour {
     public List<Card> CardsList = new List<Card>();
 
-    public string[][] Array;
+    //public string[][] Array;
     //public List<string> row = new List<string>();
     public List<List<string>> column = new List<List<string>>();
     ItemData _itemData;
     private void Awake()
     {
-         //读取csv二进制文件  
-        TextAsset binAsset = Resources.Load("CardData", typeof(TextAsset)) as TextAsset;
+        LoadCardDataFile(0);
+    }
 
+    public void LoadCardDataFile(int level)
+    {
+        column.Clear();
+        //读取csv二进制文件  
+        TextAsset binAsset = Resources.Load("CardData" + level.ToString(), typeof(TextAsset)) as TextAsset;
         //读取每一行的内容  
         string[] lineArray = binAsset.text.Split("\r"[0]);
-
         //创建二维数组  
-        Array = new string[lineArray.Length][];
-
+        string[][] Array = new string[lineArray.Length][];
         //把csv中的数据储存在二位数组中  
         for (int _i = 0; _i < lineArray.Length; _i++)
         {
@@ -34,8 +37,6 @@ public class CardsData : MonoBehaviour {
             }
             column.Add(row);
         }
-        print(column.Count);
-        print(column[1].Count);
     }
     
     public string GetDestination(int nRow)

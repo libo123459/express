@@ -18,7 +18,13 @@ public class Manage : MonoBehaviour {
     TruckManage tManage;
 
     int money;
-    
+
+    public void OpenLevel()
+    {
+
+    }
+
+
     public void Distribute()
     {
         cManage.CancelTheSendedCard();//将装配上的物件从卡池中消除

@@ -51,7 +51,7 @@ public class CardsManage : MonoBehaviour {
         {
             Card mycard = Instantiate(_card,NormalPool);            
 
-            int random = Random.Range(1, _cardData.Array.Length);
+            int random = Random.Range(1, _cardData.column.Count);
             mycard.TimeCast = mycard.transform.GetChild(0).GetComponent<Text>();
             mycard.Description = mycard.transform.Find("description").GetComponent<Text>();
             mycard.ID = random;
@@ -432,16 +432,18 @@ public class CardsManage : MonoBehaviour {
     }//增加10点业务，减少5信用
     void skill_8(Truck _truck)
     {
-        if (_truck.state == "dist" || _truck.state == "start")
+        if (_truck.state == "dist" || _truck.state == "start" || _truck.state == "assemble")
         {
             dManage.diceState = "Max";
+            dManage.dice = dManage.diceMax-1;
         }
     }//运输期间DICE最大
     void skill_9(Truck _truck)
     {
-        if (_truck.state == "dist" || _truck.state == "start")
+        if (_truck.state == "dist" || _truck.state == "start" || _truck.state == "assemble")
         {
             dManage.diceState = "Min";
+            dManage.dice = 4 - Distribution.level;
         }
     }//运输期间DICE最小
     void skill_10(Truck _truck)
@@ -497,20 +499,24 @@ public class CardsManage : MonoBehaviour {
                     {
                         _cardData.CardsList[i].timeCast -= 1;
                     }                    
-                }
-                if (_cardData.CardsList[i].skillID == 14)
-                {
-                    for (int j = 0; j < TruckManage.trucksList.Count; j++)
-                    {
-                        if (TruckManage.trucksList[i].state == "finished")
-                        {
-                            _cardData.CardsList[i].timeCast -= TruckManage.trucksList[i].orderNum;
-                        }
-                    }
-                }
+                }                
             }
             _cardData.CardsList[i].TimeCast.text = "Time." + _cardData.CardsList[i].timeCast.ToString();
         }
+    }
+    public void Card14(Truck _truck)
+    {
+        for (int i = 0; i < _cardData.CardsList.Count; i++)
+        {
+            if (_cardData.CardsList[i].skillID == 14)
+            {
+                if (_truck.state == "finished")
+                    {
+                        _cardData.CardsList[i].timeCast -= _truck.orderNum;
+                    }
+                
+            }
+        }        
     }
     
     // Update is called once per frame

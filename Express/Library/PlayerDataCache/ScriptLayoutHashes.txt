@@ -17,6 +17,7 @@ ff05dcdf90651c3d98a9cad3df5e471e UnityEngine.Timeline.dll:UnityEngine.Timeline.C
 c24a21b131bfa67be1162db2cba4b52b UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
 02f839d181204acd75814ea66877ff71 Assembly-CSharp.dll:.Draggable
 7f238bbce225b6cfb0c2124078a57161 Assembly-CSharp.dll:.EventData
+dab7e09307bd35d3a28c33a1873342fa Assembly-CSharp.dll:.Level
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.MacroManage
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.UI.dll:UnityEngine.EventSystems.BaseInput
@@ -96,7 +97,7 @@ ff05dcdf90651c3d98a9cad3df5e471e UnityEngine.Timeline.dll:UnityEngine.Timeline.C
 5667fb372c2b292ccdec2a31aaac98fa UnityEngine.Timeline.dll:UnityEngine.Timeline.GroupTrack
 5667fb372c2b292ccdec2a31aaac98fa UnityEngine.Timeline.dll:UnityEngine.Timeline.PlayableTrack
 c24a21b131bfa67be1162db2cba4b52b UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
-cf9977e8345054c55c4b605e058d37dd Assembly-CSharp.dll:.Order
+1959e8da54417ece9e5d7a463aee06c2 Assembly-CSharp.dll:.Order
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
 60b2bb652410a5867a5ab9a01cd38461 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkDiscovery
@@ -121,14 +122,14 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.Spa
 cb25c988d7e68004a6ae52de7d3eea17 Assembly-CSharp.dll:.TruckManage
 6d3ceab10d674add243b1cc8d6f800b6 Assembly-CSharp.dll:.TruckData
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ReadData
-4506b386fcbacaa6a4fc94461ccfd146 Assembly-CSharp.dll:.Card
+de9646730c382d04e1037f9b4ec71288 Assembly-CSharp.dll:.Card
 19f3c8d4b7d7f0851986c406e215b874 Assembly-CSharp.dll:.DriverManage
 0c0620a5d4dbdad52d7dc1c4c8b3d4e3 Assembly-CSharp.dll:.Driver
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.Slot
-7a16d1b868061d61fe2b4bc3b545493b Assembly-CSharp.dll:.Truck
+585b8af84c1430be8b295518a974e29a Assembly-CSharp.dll:.Truck
 f266a453cd4bfbe81533762a3e3589f4 DOTween.dll:DG.Tweening.Core.DOTweenComponent
 0b269eddb7d77b913f99ea770bf1912a DOTween.dll:DG.Tweening.Core.DOTweenSettings
-179585a66d4e39f6d3e508998d20011d Assembly-CSharp.dll:.Card_event
+034d7b189a0520887af246a388e1e233 Assembly-CSharp.dll:.Card_event
 0e59d79fb04c096d4313268248c42c3e Assembly-CSharp.dll:.ItemData
 12d6782b7d8ee8871efa6b05b931f49e Assembly-CSharp.dll:.CardsData
 80652dd1d41ee95f9859a067955498af Assembly-CSharp.dll:.BtnStation
@@ -165,6 +166,6 @@ d1b0e1dcf7d2c8f13049a389972bda13 Assembly-CSharp.dll:.Block
 8dfb90365a6eb649a27518802414554a Assembly-CSharp.dll:.DriverData
 3a6c36b4d403c4d4142c6e67732c782f Assembly-CSharp.dll:DG.Tweening.DOTweenAnimation
 9d1e138111d33aad3c62dab4e71ae0e6 Assembly-CSharp.dll:.truckInGarage
-78e59d30dec07b077e423559e161538a Assembly-CSharp.dll:.Distribution
+998bcfb9643343f401f42a55e43ea002 Assembly-CSharp.dll:.Distribution
 405d2b143470fda0a01eaf46e62f9cae Assembly-CSharp.dll:.BTN_truckChoose
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.State

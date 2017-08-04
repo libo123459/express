@@ -137,8 +137,35 @@ public class Distribution : MonoBehaviour {
         }       
     }
 
+    string GetDiceState()
+    {
+        int n = 0;
+        for (int i = 0; i < TruckManage.trucksList.Count; i++)
+        {
+            Truck _truck = TruckManage.trucksList[i];
+            for (int j = 0; j < _truck.skillList.Count; j++)
+            {
+                if (_truck.skillList[j] != 8 && _truck.skillList[j] != 9)
+                {
+                    continue;
+                }
+                else {
+                    n++;
+                }
+            }
+        }
+        if (n == 0)
+        {
+            return "normal";
+        }
+        else {
+            return "unnormal";
+        }
+    }
+
     void GainTheDice()
     {
+        diceState = GetDiceState();
         if (diceState == "normal")
         {
             if (level == 1)
@@ -156,17 +183,9 @@ public class Distribution : MonoBehaviour {
                 diceMax = 5;
                 diceMin = 1;
             }
+            dice = Random.Range(diceMin,diceMax);
         }
-        if (diceState == "Max")
-        {
-            diceMax = 5;
-            diceMin = diceMin - 1;
-        }
-        if (diceState == "Min")
-        {
-            diceMin = 4 - level;
-            diceMax = diceMin + 1;
-        }
+        
     }
 
     public void NextRound()
@@ -185,14 +204,15 @@ public class Distribution : MonoBehaviour {
                         TruckMove(_truck, dice);///下一回合数随机
                         if (_truck.remain == 0)
                         {
-                            _truck.state = "finished";                           
+                            _truck.state = "finished";
+                            cManage.Card14(_truck);
                             ProfitAtLast(_truck);
                         }
                     }
                 }
                 CountDown();
                 GainTheDice();                
-                dice = Random.Range(diceMin, diceMax) + dice_coe;
+                
                 cManage.AddTheCard(level);
                 cManage.CardPorpty();
             }
@@ -355,10 +375,7 @@ public class Distribution : MonoBehaviour {
     // Use this for initialization
     void Start () {
         diceState = "normal";
-        if (dice == 0)
-        {
-           dice = Random.Range(3,5);
-        }
+        GainTheDice();
         oManage = GameObject.Find("Manage").GetComponent<OrderManage>();
         cData = GameObject.Find("Manage").GetComponent<CardsData>();
        // dManage = GameObject.Find("Manage").GetComponent<DriverManage>();

@@ -17,11 +17,7 @@ public class AssembleManage : MonoBehaviour {
 
         dManage = this.GetComponent<DriverManage>();
         currentTruck = 0;
-        /*for (int i = 0; i < 12; i++)
-        {
-            Slot slot = Instantiate(_slot, _slotPanel);
-            slotList.Add(slot);
-        }*/
+        
         Assemble(0);
     }
 
