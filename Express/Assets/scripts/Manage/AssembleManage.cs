@@ -10,12 +10,12 @@ public class AssembleManage : MonoBehaviour {
     public Slot _slot;
     public static int currentTruck;
     public Button changeDriver;
-    DriverManage dManage;
+
     
 	// Use this for initialization
 	void Start () {
 
-        dManage = this.GetComponent<DriverManage>();
+        
         currentTruck = 0;
         
         Assemble(0);

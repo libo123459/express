@@ -11,6 +11,7 @@ public class Card : MonoBehaviour {
     public int credit;
     public int skillID;
     public int count = 0;
+    public int stageID;
 
     public string state;
 

@@ -30,8 +30,6 @@ public class CardsManage : MonoBehaviour {
     OrderManage oManage;
 
     int RemainCard = 60;
-    int RemainNormalCard = 60;
-    int RemainEventCard = 10;
     int coe_die = 1;
 
 	// Use this for initialization
@@ -43,35 +41,27 @@ public class CardsManage : MonoBehaviour {
         oManage = this.GetComponent<OrderManage>();
         InitiCardPool();
         RefreshTask();
+        RemainCard = normalList.Count;
 	}
-
     void InitiCardPool()
     {
-        for (int i = 0; i < RemainNormalCard; i++)
+        int stageNum = _cardData.GetStageID(_cardData.column.Count - 1);///列表最后一个card的阶段数，总阶段数
+        List<List<Card>> _totalList = new List<List<Card>>();
+        for (int i = 1; i <= stageNum; i++)///每个阶段一个LIST，放到一个总LIST中
         {
-            Card mycard = Instantiate(_card,NormalPool);            
-
-            int random = Random.Range(1, _cardData.column.Count);
+            List<Card> _cards = new List<Card>();
+            _totalList.Add(_cards);
+        }
+        for (int j = 1; j < _cardData.column.Count; j++)
+        {
+            Card mycard = Instantiate(_card, NormalPool);
             mycard.TimeCast = mycard.transform.GetChild(0).GetComponent<Text>();
             mycard.Description = mycard.transform.Find("description").GetComponent<Text>();
-            mycard.ID = random;
-            mycard.skillID = _cardData.GetSkillID(mycard.ID);
-            if (i < 14)
-            {
-                mycard.timeCast = 2;
-            }
-            if (i >= 14 && i < 29)
-            {
-                mycard.timeCast = 3;
-            }
-            if (i >= 29 && i < 44)
-            {
-                mycard.timeCast = 4;
-            }
-            if (i >= 44 && i < RemainNormalCard)
-            {
-                mycard.timeCast = 5;
-            }
+            mycard.ID = j;
+            mycard.skillID = _cardData.GetSkillID(j);
+            mycard.timeCast = _cardData.GetTimeCast(j);
+            mycard._item = _cardData.GetItem(j);
+            mycard.stageID = _cardData.GetStageID(j);
             if (mycard.skillID == 13)
             {
                 mycard.timeCast = 10;
@@ -80,13 +70,29 @@ public class CardsManage : MonoBehaviour {
             {
                 mycard.timeCast = 60;
             }
-            mycard.profit = 5;///收益
-            mycard.credit = 1; //信誉
             mycard.TimeCast.text = "Time. " + mycard.timeCast;
             mycard.Description.text = _cardData.GetSkillDes(mycard.ID);
-            mycard.state = "inPool";
-            GiveTheCardItem(mycard);
-            normalList.Add(mycard);
+
+            int blockNum = mycard._item.transform.childCount;
+
+            Item myitem = Instantiate(mycard._item);
+            myitem.transform.SetParent(mycard.transform);
+            myitem.transform.localPosition = -myitem.CenterPos * 0.5f;
+            myitem.transform.localScale = new Vector3(1, 1, 1) * 0.5f;
+
+            _totalList[mycard.stageID - 1].Add(mycard);
+        }
+        
+        for (int i = 0; i < _totalList.Count; i++)
+        {
+            int count = _totalList[i].Count;
+            for (int j = 0; j < count; j++)
+            {                
+                int n = Random.Range(0, _totalList[i].Count);
+                normalList.Add(_totalList[i][n]);
+                _totalList[i].RemoveAt(n);
+                print("1");
+            }
         }
     }
 
@@ -170,36 +176,6 @@ public class CardsManage : MonoBehaviour {
             _cardData.CardsList.Add(_card);
             normalList.RemoveAt(index);            
         }        
-    }
-
-    void GiveTheCardItem(Card _card)
-    {
-        int random = Random.Range(1, 101);//从文件获取
-        if (random < 25)
-        {
-            _card._item = _itemData.ItemsList[0];
-        }
-        if (random >= 25 && random < 50)
-        {
-            _card._item = _itemData.ItemsList[Random.Range(1,3)];
-        }
-        if (random >= 50 && random < 75)
-        {
-            _card._item = _itemData.ItemsList[Random.Range(3, 10)];
-        }
-        if (random >= 75 && random < 101)
-        {
-            _card._item = _itemData.ItemsList[Random.Range(10, _itemData.ItemsList.Count)];
-        }
-        
-        int blockNum = _card._item.transform.childCount;
-        _card._item.consume = 1;//油耗         
-        //mycard.destination.text = _cardData.destinations[Random.Range(0, _cardData.destinations.Count)];
-
-        Item myitem = Instantiate(_card._item);
-        myitem.transform.SetParent(_card.transform);
-        myitem.transform.localPosition = -myitem.CenterPos * 0.5f;
-        myitem.transform.localScale = new Vector3(1, 1, 1) * 0.5f;
     }
 
     /*void Card_event()//事件卡
@@ -511,10 +487,10 @@ public class CardsManage : MonoBehaviour {
             if (_cardData.CardsList[i].skillID == 14)
             {
                 if (_truck.state == "finished")
-                    {
-                        _cardData.CardsList[i].timeCast -= _truck.orderNum;
-                    }
-                
+                {
+                    _cardData.CardsList[i].timeCast -= _truck.orderNum;
+                    
+                }                
             }
         }        
     }

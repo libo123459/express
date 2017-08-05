@@ -12,6 +12,8 @@ public class CardsData : MonoBehaviour {
     private void Awake()
     {
         LoadCardDataFile(0);
+        _itemData = this.GetComponent<ItemData>();
+     
     }
 
     public void LoadCardDataFile(int level)
@@ -47,14 +49,15 @@ public class CardsData : MonoBehaviour {
         return column[nRow][1];
     }
 
-    public string GetTimeCast(int nRow)
+    public int GetTimeCast(int nRow)
     {
-        return column[nRow][2];
+        return int.Parse(column[nRow][2]);
     }
 
     public Item GetItem(int nRow)
     {
         int index = int.Parse(column[nRow][3]);
+       
         return _itemData.ItemsList[index];
     }
     public int GetSkillID(int nRow)
@@ -67,9 +70,14 @@ public class CardsData : MonoBehaviour {
     {
         return column[nRow][5];
     }
+
+    public int GetStageID(int nRow)
+    {
+        return int.Parse(column[nRow][6]);
+    }
     // Use this for initialization
     void Start () {
-        _itemData = this.GetComponent<ItemData>();
+       
     }
 	
 	// Update is called once per frame
