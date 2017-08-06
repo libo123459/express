@@ -56,24 +56,26 @@ public class CardsData : MonoBehaviour {
 
     public Item GetItem(int nRow)
     {
-        int index = int.Parse(column[nRow][3]);
-       
-        return _itemData.ItemsList[index];
+        int blockNum = int.Parse(column[nRow][3]);
+        int itemindex = int.Parse(column[nRow][4]);
+        return _itemData.ItemsList[blockNum-1][itemindex-1];
     }
     public int GetSkillID(int nRow)
     {
-        int index = int.Parse(column[nRow][4]);
+       
+        int index = int.Parse(column[nRow][6]);
+        
         return index;
     }
 
     public string GetSkillDes(int nRow)
     {
-        return column[nRow][5];
+        return column[nRow][7];
     }
 
     public int GetStageID(int nRow)
     {
-        return int.Parse(column[nRow][6]);
+        return int.Parse(column[nRow][5]);
     }
     // Use this for initialization
     void Start () {

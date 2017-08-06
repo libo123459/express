@@ -59,6 +59,7 @@ public class CardsManage : MonoBehaviour {
             mycard.Description = mycard.transform.Find("description").GetComponent<Text>();
             mycard.ID = j;
             mycard.skillID = _cardData.GetSkillID(j);
+            
             mycard.timeCast = _cardData.GetTimeCast(j);
             mycard._item = _cardData.GetItem(j);
             mycard.stageID = _cardData.GetStageID(j);
