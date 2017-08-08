@@ -34,7 +34,7 @@ public class Distribution : MonoBehaviour {
     CardsData cData;
 	EventData eData;
     OrderManage oManage;
-    DriverManage dManage;
+    
 	EventManage eManage;
 	CardsManage cManage;
     
@@ -168,21 +168,9 @@ public class Distribution : MonoBehaviour {
         diceState = GetDiceState();
         if (diceState == "normal")
         {
-            if (level == 1)
-            {
-                diceMax = 5;
-                diceMin = 3;
-            }
-            if (level == 2)
-            {
-                diceMax = 5;
-                diceMin = 2;
-            }
-            if (level == 3)
-            {
-                diceMax = 5;
-                diceMin = 1;
-            }
+            diceMax = TruckData.GetDiceMax(1,level)+1;
+            diceMin = TruckData.GetDiceMin(1,level);
+            
             dice = Random.Range(diceMin,diceMax);
         }
         

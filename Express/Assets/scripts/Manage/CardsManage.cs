@@ -92,7 +92,6 @@ public class CardsManage : MonoBehaviour {
                 int n = Random.Range(0, _totalList[i].Count);
                 normalList.Add(_totalList[i][n]);
                 _totalList[i].RemoveAt(n);
-                print("1");
             }
         }
     }

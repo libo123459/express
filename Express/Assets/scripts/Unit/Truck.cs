@@ -26,8 +26,6 @@ public class Truck : MonoBehaviour {
     public string state;
     public bool active = false;
 
-    public Driver driver;
-
     public Vector3 StartPos;
 
     public Text text;
@@ -45,9 +43,6 @@ public class Truck : MonoBehaviour {
         tManage = GameObject.Find("Manage").GetComponent<TruckManage>();
         StartPos = this.transform.position;
         text = this.transform.GetChild(0).GetComponent<Text>();
-        Button btn = this.GetComponent<Button>();
-        btn.onClick.AddListener(tManage.openChangePanel);
-        btn.onClick.AddListener(()=>tManage.pressTruck(this));
 	}
 	
 	// Update is called once per frame

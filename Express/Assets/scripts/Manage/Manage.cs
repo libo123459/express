@@ -13,7 +13,7 @@ public class Manage : MonoBehaviour {
 
     CardsManage cManage;
     Distribution dManage;
-    DriverManage driverManage;
+    
     AssembleManage aManage;
     TruckManage tManage;
 
@@ -62,7 +62,6 @@ public class Manage : MonoBehaviour {
     public void OpenShop()
     {
         shopPanel.SetActive(true);
-        tManage.DisplayTruckInShopPanel(shopPanel.transform);
     }
 
     public void CloseShop()
@@ -73,7 +72,6 @@ public class Manage : MonoBehaviour {
     public void OpenRecruit()
     {
         recruitPanel.SetActive(true);
-        driverManage.DisplayDriverInRecruitPanel(recruitPanel.transform);
     }
 
     public void CloseRecruit()
@@ -87,7 +85,7 @@ public class Manage : MonoBehaviour {
         cManage = this.GetComponent<CardsManage>();
         aManage = this.GetComponent<AssembleManage>();
         dManage = this.GetComponent<Distribution>();
-        driverManage = this.GetComponent<DriverManage>();
+        
         tManage = this.GetComponent<TruckManage>();
 	}
 	

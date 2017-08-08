@@ -29,17 +29,9 @@ public class AssembleManage : MonoBehaviour {
         _slotPanel.GetComponent<GridLayoutGroup>().constraintCount = _truck.column;
 
         creatCapicity(_truck);
-        _truck.ClearAll(); ///清除truck上已有的订单       
-        if (_truck.driver != null)
-        {
-            DriverManage.displayTheDriverName(_truck.driver);
-        }
-        else {
-            DriverManage.clearTheDriverName();
-        }
+        _truck.ClearAll(); ///清除truck上已有的订单
         
         checkTruckSkill8();
-
     }
 
     void creatCapicity(Truck _truck)

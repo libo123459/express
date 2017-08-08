@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TruckData : MonoBehaviour {
-    List<List<string>> column = new List<List<string>>();
+    public static List<List<string>> column = new List<List<string>>();
     int teamNum = 10;
     //public List<Truck> truckList = new List<Truck>();
     
@@ -34,23 +34,23 @@ public class TruckData : MonoBehaviour {
     {
         return int.Parse(column[nRow][0]);
     }
-    public int GetWidth(int nRow, int truckNum)
+    public static int GetWidth(int nRow, int truckNum)
     {
         return int.Parse(column[nRow][truckNum]);
     }
-    public int GetHeight(int nRow, int truckNum)
+    public static int GetHeight(int nRow, int truckNum)
     {
         return int.Parse(column[nRow][truckNum + 3]);
     }
-    public int GetDiceMax(int nRow, int level)
+    public static int GetDiceMax(int nRow, int level)
     {
         return int.Parse(column[nRow][level + 6]);
     }
-    public int GetDiceMin(int nRow, int level)
+    public static int GetDiceMin(int nRow, int level)
     {
         return int.Parse(column[nRow][level + 9]);
     }
-    public int GetSkillID(int nRow)
+    public static int GetSkillID(int nRow)
     {
         return int.Parse(column[nRow][13]);
     }
