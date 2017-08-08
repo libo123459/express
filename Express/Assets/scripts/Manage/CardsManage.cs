@@ -72,7 +72,7 @@ public class CardsManage : MonoBehaviour {
                 mycard.timeCast = 60;
             }
             mycard.TimeCast.text = "Time. " + mycard.timeCast;
-            mycard.Description.text = _cardData.GetSkillDes(mycard.ID);
+            mycard.Description.text = _cardData.GetSkillDes(mycard.skillID);
 
             int blockNum = mycard._item.transform.childCount;
 

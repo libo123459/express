@@ -3,60 +3,57 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TruckData : MonoBehaviour {
-    public List<Truck> truckList = new List<Truck>();
-    public static string[][] Array;
-    // Use this for initialization
+    List<List<string>> column = new List<List<string>>();
+    int teamNum = 10;
+    //public List<Truck> truckList = new List<Truck>();
+    
     private void Awake()
     {
-        //读取csv二进制文件  
-        TextAsset binAsset = Resources.Load("TruckData", typeof(TextAsset)) as TextAsset;
-
+        TextAsset binAsset = Resources.Load("capacity", typeof(TextAsset)) as TextAsset;
         //读取每一行的内容  
         string[] lineArray = binAsset.text.Split("\r"[0]);
-
         //创建二维数组  
-        Array = new string[lineArray.Length][];
-
+        string[][] Array = new string[lineArray.Length][];
         //把csv中的数据储存在二位数组中  
         for (int _i = 0; _i < lineArray.Length; _i++)
         {
             Array[_i] = lineArray[_i].Split(',');
         }
+        for (int i = 0; i < lineArray.Length; i++)
+        {
+            List<string> row = new List<string>();
+            for (int j = 0; j < Array[i].Length; j++)
+            {
+                row.Add(Array[i][j]);
+            }
+            column.Add(row);
+        }
     }
 
-    public static int GetWidth(int nRow)
+    public int GetTruckID(int nRow)
     {
-        //if (Array.Length <= 0 || nRow >= Array.Length)
-        //   return "";
-        
-        return int.Parse(Array[nRow][1]);
+        return int.Parse(column[nRow][0]);
     }
-
-    public static int GetHeight(int nRow)
+    public int GetWidth(int nRow, int truckNum)
     {
-        return int.Parse(Array[nRow][2]);
+        return int.Parse(column[nRow][truckNum]);
     }
-
-    public static int GetConsume(int nRow)
+    public int GetHeight(int nRow, int truckNum)
     {
-        return int.Parse(Array[nRow][3]);
+        return int.Parse(column[nRow][truckNum + 3]);
     }
-
-    public static int GetPrice(int nRow)
+    public int GetDiceMax(int nRow, int level)
     {
-        return int.Parse(Array[nRow][4]);
+        return int.Parse(column[nRow][level + 6]);
     }
-
-    public static int GetSkillId(int nRow)
+    public int GetDiceMin(int nRow, int level)
     {
-        return int.Parse(Array[nRow][5]);
+        return int.Parse(column[nRow][level + 9]);
     }
-
-    public static string GetName(int nRow)
+    public int GetSkillID(int nRow)
     {
-        return Array[nRow][7];
+        return int.Parse(column[nRow][13]);
     }
-
     void Start () {
        
     }

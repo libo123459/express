@@ -49,7 +49,7 @@ public class TruckManage : MonoBehaviour {
             for (int i = 2; i < 11; i++)//前11个车
             {
                 GameObject _truckInshop = Instantiate(truck_display_inshop, shopPanel.GetChild(0).transform);
-                _truckInshop.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = TruckData.GetName(i) + " " + TruckData.GetPrice(i);
+                //_truckInshop.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = TruckData.GetName(i) + " " + TruckData.GetPrice(i);
             }
         }        
     }
@@ -60,16 +60,16 @@ public class TruckManage : MonoBehaviour {
         truckInGarage tIng = Instantiate(truck_display_ingarage,gridInGarage);
         tIng.id = ID;
         //GetTruckFromGarage(0);
-        Distribution.totalProfit -= TruckData.GetPrice(ID);        
+        //Distribution.totalProfit -= TruckData.GetPrice(ID);        
     }    
 
     void GiveTheTruckPara(Truck _truck,int id)
     {
-        _truck.row = TruckData.GetWidth(id);
-        _truck.column = TruckData.GetHeight(id);
-        _truck.consume = 1;//TruckData.GetConsume(id);
-        _truck.price = TruckData.GetPrice(id);
-        _truck.skillID = TruckData.GetSkillId(id);
+        _truck.row = 3;//TruckData.GetWidth(id);
+        _truck.column = 3;//TruckData.GetHeight(id);
+        //_truck.consume = 1;//TruckData.GetConsume(id);
+        //_truck.price = TruckData.GetPrice(id);
+       // _truck.skillID = TruckData.GetSkillId(id);
     }
 
     public static void TruckSkill(Truck _truck)
@@ -167,7 +167,7 @@ public class TruckManage : MonoBehaviour {
         for (int i = 0; i < gridInGarage.childCount; i++)
         {
             int id = gridInGarage.GetChild(i).GetComponent<truckInGarage>().id;
-            gridInGarage.GetChild(i).GetChild(0).GetComponent<Text>().text = TruckData.GetName(id);
+           // gridInGarage.GetChild(i).GetChild(0).GetComponent<Text>().text = TruckData.GetName(id);
         }        
     }
 
