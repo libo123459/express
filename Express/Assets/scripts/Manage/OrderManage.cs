@@ -23,6 +23,18 @@ public class OrderManage : MonoBehaviour {
             ShowDestination(myorder, _card);
             OrdersList.Add(myorder);
         }
+        if (_card.skillID == 8)
+        {
+            Distribution.diceMax = TruckData.GetDiceMax(1, Distribution.stage);
+            Distribution.dice = Distribution.diceMax;
+            print(Distribution.dice.ToString());
+        }
+        if (_card.skillID == 9)
+        {
+            Distribution.diceMin = TruckData.GetDiceMin(1, Distribution.stage);
+            Distribution.dice = Distribution.diceMin;
+            print(Distribution.dice.ToString());
+        }
     }
 
     public void SendOrderToTruck(Truck _truck)
@@ -83,6 +95,8 @@ public class OrderManage : MonoBehaviour {
             }
         }
         RefreshOrder();
+        Distribution.dice = Distribution.dicePre;
+
     }
 
     void RefreshOrder()

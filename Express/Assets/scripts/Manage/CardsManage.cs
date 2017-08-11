@@ -70,7 +70,7 @@ public class CardsManage : MonoBehaviour {
             {
                 mycard.timeCast = 60;
             }
-            mycard.TimeCast.text = "Time. " + mycard.timeCast;
+            mycard.TimeCast.text = "Time. " + mycard.timeCast + "ID" + mycard.ID;
             mycard.Description.text = _cardData.GetSkillDes(mycard.skillID);
 
             int blockNum = mycard._item.transform.childCount;
@@ -145,35 +145,22 @@ public class CardsManage : MonoBehaviour {
                 if (grid.childCount < 6) ////6为临时测试用，需要改成卡池上线的变量
                 {
 
-                    SelectCardType();
+                    Card_normal();
                 }
             }              
 
         RefreshID();
     }
 
-    void SelectCardType()
-    {
-        int chance = Random.Range(0,101);
-        if (chance < 51)
-        {
-			Card_normal();
-        }
-        else {
-            //Card_event();///
-            Card_normal();
-        }
-    }
-    
     public void Card_normal()///普通卡
     {
         if (normalList.Count > 0)
         {
-            int index = Random.Range(0, normalList.Count);
-            Card _card = normalList[index];
+            
+            Card _card = normalList[0];
             _card.transform.SetParent(grid);
             _cardData.CardsList.Add(_card);
-            normalList.RemoveAt(index);            
+            normalList.RemoveAt(0);            
         }        
     }
 
@@ -401,7 +388,6 @@ public class CardsManage : MonoBehaviour {
         if (_truck.state == "dist" || _truck.state == "start" || _truck.state == "assemble")
         {
             dManage.diceState = "Min";
-            dManage.dice = 4 - Distribution.stage;
         }
     }//运输期间DICE最小
     void skill_10(Truck _truck)

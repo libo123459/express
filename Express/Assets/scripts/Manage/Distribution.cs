@@ -25,12 +25,13 @@ public class Distribution : MonoBehaviour {
     public static float totalProfit;
 
     public static int MaxCredit = 10;
-    public int dice;
-    public int diceNext;
-    public int diceMaxNext;
-    public int diceMinNext;
-    public int diceMax;
-    public int diceMin;
+    public static int dice;
+    public static int dicePre;
+    public static int diceNext;
+    public static int diceMaxNext;
+    public static int diceMinNext;
+    public static int diceMax;
+    public static int diceMin;
     public string diceState = "normal";
     
     CardsData cData;	
@@ -113,7 +114,7 @@ public class Distribution : MonoBehaviour {
         }       
     }
 
-    string GetDiceState()
+    void GetDiceState()
     {
         int n = 0;
         for (int i = 0; i < TruckManage.trucksList.Count; i++)
@@ -132,17 +133,14 @@ public class Distribution : MonoBehaviour {
         }
         if (n == 0)
         {
-            return "normal";
-        }
-        else {
-            return "unnormal";
+            diceState = "normal";
         }
     }
 
     void GainTheDice()
     {
-        diceState = GetDiceState();
-       
+        GetDiceState();
+        
         switch (diceState)
         {
             case "normal":
@@ -167,7 +165,8 @@ public class Distribution : MonoBehaviour {
             case "Max":
                 if (diceNext == 0)
                 {
-                    dice = diceMax - 1;
+                    diceMax = TruckData.GetDiceMax(1, stage) + 1;
+                    dice = diceMax-1;
                 }
                 else
                 {
@@ -175,12 +174,14 @@ public class Distribution : MonoBehaviour {
                 }
                 if (TruckManage.teamID == 1)
                 {
-                    diceNext = diceMax - 1;
+                    diceMaxNext = TruckData.GetDiceMax(1, stage) + 1;
+                    diceNext = diceMaxNext-1;
                 }
                 break;
             case "Min":
                 if (diceNext == 0)
                 {
+                    diceMin = TruckData.GetDiceMin(1, stage);
                     dice = diceMin;
                 }
                 else
@@ -189,11 +190,12 @@ public class Distribution : MonoBehaviour {
                 }
                 if (TruckManage.teamID == 1)
                 {
-                    diceNext = diceMin;
+                    diceMinNext = TruckData.GetDiceMin(1, stage);
+                    diceNext = diceMinNext;
                 }
                 break;
-        }      
-
+        }
+        dicePre = dice;
         nextRound.transform.GetChild(0).GetComponent<Text>().text = dice.ToString() + "(" + diceNext.ToString() + ")";
     }
 
