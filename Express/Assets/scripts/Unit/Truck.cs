@@ -29,8 +29,7 @@ public class Truck : MonoBehaviour {
     public Vector3 StartPos;
 
     public Text text;
-
-    TruckManage tManage;
+    
     public void ClearAll()
     {
         _destination.Clear();
@@ -40,7 +39,7 @@ public class Truck : MonoBehaviour {
     }
 	// Use this for initialization
 	void Start () {
-        tManage = GameObject.Find("Manage").GetComponent<TruckManage>();
+        
         StartPos = this.transform.position;
         text = this.transform.GetChild(0).GetComponent<Text>();
 	}

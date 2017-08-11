@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TruckData : MonoBehaviour {
     public static List<List<string>> column = new List<List<string>>();
-    int teamNum = 10;
+   
     //public List<Truck> truckList = new List<Truck>();
     
     private void Awake()

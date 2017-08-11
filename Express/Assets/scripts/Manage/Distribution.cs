@@ -26,55 +26,31 @@ public class Distribution : MonoBehaviour {
 
     public static int MaxCredit = 10;
     public int dice;
-    public int dice_coe;
+    public int diceNext;
+    public int diceMaxNext;
+    public int diceMinNext;
     public int diceMax;
     public int diceMin;
     public string diceState = "normal";
-
-    CardsData cData;
-	EventData eData;
-    OrderManage oManage;
     
-	EventManage eManage;
+    CardsData cData;	
+    OrderManage oManage;
+    TruckManage tManage;    
 	CardsManage cManage;
     
-    int consume;
     int timeCast;
+    public static int coe_timeCast_Team1;
     public static int level = 1;
-    int finished = 0;
-
-    void levelUp(Truck _truck)
-    {
-        finished += _truck.orderNum;
-        if (finished >= 10)
-        {
-            if (level == 1)
-            {
-                level += 1;
-                TruckManage.trucksList[1].active = true;
-                TruckManage.trucksList[1].gameObject.SetActive(true);
-                destPanelList[1].SetActive(true);
-            }
-        }
-        if (finished >= 30)
-        {
-            if (level == 2)
-            {
-                level += 1;
-                TruckManage.trucksList[2].active = true;
-                TruckManage.trucksList[2].gameObject.SetActive(true);
-                destPanelList[2].SetActive(true);
-            }
-        }
-        finishedOrder.text = "完成订单" + finished.ToString();
-    }
-
+    public static int finished = 0;
+    public static int stage = 1;
+    
+    
     public void distribution(int truckNum)//配送界面
     {
         Truck _truck = TruckManage.trucksList[truckNum];//获取车辆
         oManage.SendOrderToTruck(_truck);
         oManage.OrdersList.Clear();
-
+        _truck.TotalTimecast += coe_timeCast_Team1;
         if (_truck.orderNum == 0) //检测车辆是否已经装配了物品
         {
             _truck.state = "empty";
@@ -166,23 +142,67 @@ public class Distribution : MonoBehaviour {
     void GainTheDice()
     {
         diceState = GetDiceState();
-        if (diceState == "normal")
+       
+        switch (diceState)
         {
-            diceMax = TruckData.GetDiceMax(1,level)+1;
-            diceMin = TruckData.GetDiceMin(1,level);
-            
-            dice = Random.Range(diceMin,diceMax);
-        }
-        
+            case "normal":
+                if (diceNext == 0)
+                {
+                    diceMax = TruckData.GetDiceMax(1, stage) + 1;
+                    diceMin = TruckData.GetDiceMin(1, stage);
+                    dice = Random.Range(diceMin, diceMax);
+                }
+                else
+                {
+                    dice = diceNext;
+                }
+
+                if (TruckManage.teamID == 1)
+                {
+                    diceMaxNext = TruckData.GetDiceMax(1, stage) + 1;
+                    diceMinNext = TruckData.GetDiceMin(1, stage);
+                    diceNext = Random.Range(diceMinNext, diceMaxNext);
+                }
+                break;
+            case "Max":
+                if (diceNext == 0)
+                {
+                    dice = diceMax - 1;
+                }
+                else
+                {
+                    dice = diceNext;
+                }
+                if (TruckManage.teamID == 1)
+                {
+                    diceNext = diceMax - 1;
+                }
+                break;
+            case "Min":
+                if (diceNext == 0)
+                {
+                    dice = diceMin;
+                }
+                else
+                {
+                    dice = diceNext;
+                }
+                if (TruckManage.teamID == 1)
+                {
+                    diceNext = diceMin;
+                }
+                break;
+        }      
+
+        nextRound.transform.GetChild(0).GetComponent<Text>().text = dice.ToString() + "(" + diceNext.ToString() + ")";
     }
 
     public void NextRound()
     {
         if (cData.CardsList.Count < 6)
         {
-            if (level <= 6 - cData.CardsList.Count)
-            {
-                
+            if (stage <= 6 - cData.CardsList.Count)
+            {                
                 for (int i = 0; i < TruckManage.trucksList.Count; i++)
                 {
                     if (TruckManage.trucksList[i].state == "dist" || TruckManage.trucksList[i].state == "start")
@@ -198,17 +218,15 @@ public class Distribution : MonoBehaviour {
                         }
                     }
                 }
-                CountDown();
                 GainTheDice();                
-                
-                cManage.AddTheCard(level);
+                cManage.AddTheCard(stage);
                 cManage.CardPorpty();
             }
             else {
                 int n = 6 - cData.CardsList.Count;
                 notEnough.SetActive(true);
                 notEnough.transform.GetChild(0).GetComponent<Text>().text = "卡池剩余位置不足"
-                    + "\n" + "是否消耗 " + ((level - n) * 2).ToString() +" 点信誉来进行下一回合";
+                    + "\n" + "是否消耗 " + ((stage - n) * 2).ToString() +" 点信誉来进行下一回合";
             }            
         }        
     }
@@ -217,7 +235,7 @@ public class Distribution : MonoBehaviour {
     {
         int n = 6 - cData.CardsList.Count;
 
-        totalCredit -= (level - n)* 2;
+        totalCredit -= (stage - n)* 2;
 
         for (int i = 0; i < TruckManage.trucksList.Count; i++)
         {
@@ -234,7 +252,6 @@ public class Distribution : MonoBehaviour {
                 }
             }
         }
-        CountDown();
         GainTheDice();
         cManage.AddTheCard(n);
         cManage.CardPorpty();
@@ -265,12 +282,11 @@ public class Distribution : MonoBehaviour {
         totalProfit = totalProfit + profit;
 
         _profit.text = "收益金额：" + profit.ToString()
-            + "\n" + "信誉度：" + credit.ToString();
-       // cManage.CardSkill(_truck);
+            + "\n" + "信誉度：" + credit.ToString();       
         text_credit.text = "信誉" + totalCredit.ToString();
         text_profit.text = "金币" + totalProfit.ToString();
-
-        levelUp(_truck);
+        tManage.TeamSkill(1);
+        //finishedOrder.text = "完成订单" + finished.ToString();
     }
 
     void TruckMove(Truck _truck,int _dice)
@@ -324,13 +340,8 @@ public class Distribution : MonoBehaviour {
         credit = 0;
         ProfitPanel.SetActive(false);
     }
-    
-    void TruckConsume (Truck _truck)
-    {
-        consume = _truck.consume * _truck.TotalTimecast;// + _truck.driver.salary;///工资加油耗
-    }
 
-	void CountDown()
+	/*void CountDown()
 	{
 		for(int i = 0;i < cData.CardsList.Count;i++)
 		{
@@ -357,7 +368,7 @@ public class Distribution : MonoBehaviour {
 				}
 			}
 		}
-	}
+	}*/
 
 
     // Use this for initialization
@@ -366,19 +377,17 @@ public class Distribution : MonoBehaviour {
         GainTheDice();
         oManage = GameObject.Find("Manage").GetComponent<OrderManage>();
         cData = GameObject.Find("Manage").GetComponent<CardsData>();
-       // dManage = GameObject.Find("Manage").GetComponent<DriverManage>();
 		cManage = GameObject.Find("Manage").GetComponent<CardsManage>();
-		eManage = GameObject.Find("Manage").GetComponent<EventManage>();
-
+        tManage = GameObject.Find("Manage").GetComponent<TruckManage>();
         displayDestPanel();
 
-        totalCredit = 10;//MaxCredit;///初始信誉
+        totalCredit = MaxCredit;///初始信誉
         text_credit.text = "信誉" + totalCredit.ToString();
         text_profit.text = "金币" + totalProfit.ToString();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        nextRound.transform.GetChild(0).GetComponent<Text>().text = dice.ToString();
+        
     }
 }

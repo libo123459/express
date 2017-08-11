@@ -15,7 +15,7 @@ public class Manage : MonoBehaviour {
     Distribution dManage;
     
     AssembleManage aManage;
-    TruckManage tManage;
+
 
     int money;
 
@@ -85,8 +85,6 @@ public class Manage : MonoBehaviour {
         cManage = this.GetComponent<CardsManage>();
         aManage = this.GetComponent<AssembleManage>();
         dManage = this.GetComponent<Distribution>();
-        
-        tManage = this.GetComponent<TruckManage>();
 	}
 	
 	// Update is called once per frame

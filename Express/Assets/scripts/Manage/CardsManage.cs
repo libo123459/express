@@ -25,7 +25,7 @@ public class CardsManage : MonoBehaviour {
 
     CardsData _cardData;
     EventData _eData;
-    ItemData _itemData;
+    
     Distribution dManage;
     OrderManage oManage;
 
@@ -35,8 +35,7 @@ public class CardsManage : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {        
-        _cardData = this.GetComponent<CardsData>();        
-        _itemData = this.GetComponent<ItemData>();
+        _cardData = this.GetComponent<CardsData>();  
         dManage = this.GetComponent<Distribution>();
         oManage = this.GetComponent<OrderManage>();
         InitiCardPool();
@@ -211,27 +210,11 @@ public class CardsManage : MonoBehaviour {
             // dManage.text_profit.text = "金币" + Distribution.totalProfit.ToString();
         }
         moveToNormalPool(_card);        
-    }
-
-    void useMoney()
-    {
-        gameoverPanel.SetActive(false);
-       
-        float n = Distribution.totalProfit - (coe_die * 100);
-        Distribution.totalProfit = n;
-        
-        dManage.text_profit.text = "金币" + Distribution.totalProfit.ToString();
-        Button btn = gameoverPanel.transform.GetChild(0).GetComponent<Button>();
-        btn.onClick.RemoveAllListeners();
-        coe_die = coe_die + 1;
-    }
+    }    
 
     void GameOver()
-    {
-        gameoverPanel.SetActive(true);
-        _useMoney.text = "使用" + (coe_die * 100).ToString() + "金币避免死亡";
-        Button btn = gameoverPanel.transform.GetChild(0).GetComponent<Button>();
-        btn.onClick.AddListener(useMoney);
+    {        
+        
     }
 
 	public void DestoryTheCard(Card _card)
@@ -410,8 +393,7 @@ public class CardsManage : MonoBehaviour {
     {
         if (_truck.state == "dist" || _truck.state == "start" || _truck.state == "assemble")
         {
-            dManage.diceState = "Max";
-            dManage.dice = dManage.diceMax-1;
+            dManage.diceState = "Max";            
         }
     }//运输期间DICE最大
     void skill_9(Truck _truck)
@@ -419,7 +401,7 @@ public class CardsManage : MonoBehaviour {
         if (_truck.state == "dist" || _truck.state == "start" || _truck.state == "assemble")
         {
             dManage.diceState = "Min";
-            dManage.dice = 4 - Distribution.level;
+            dManage.dice = 4 - Distribution.stage;
         }
     }//运输期间DICE最小
     void skill_10(Truck _truck)
