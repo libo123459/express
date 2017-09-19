@@ -10,11 +10,13 @@ public class Truck : MonoBehaviour {
     public List<int> skillList = new List<int>();
     public List<float> profit = new List<float>();
     public List<float> credit = new List<float>();
+    public List<int> IDs = new List<int>();
 
     public int consume;
     public int row;
     public int column;
     public int ID;///truck种类序列号
+    
     public int price;
     public int skillID;
 

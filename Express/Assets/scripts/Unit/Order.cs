@@ -8,7 +8,7 @@ public class Order : MonoBehaviour {
     public Text destination;
     public Text timeCast;
     public Text consume;
-
+    public int IDinPanel;
     public int _timecast;
     public int _consume;
     public int ID;

@@ -41,6 +41,7 @@ public class Distribution : MonoBehaviour {
     
     int timeCast;
     public static int coe_timeCast_Team1;
+    public static int coe_addCard;
     public static int level = 1;
     public static int finished = 0;
     public static int stage = 1;
@@ -201,9 +202,9 @@ public class Distribution : MonoBehaviour {
 
     public void NextRound()
     {
-        if (cData.CardsList.Count < 6)
+        if (cData.CardsList.Count < CardsManage.MaxCount)
         {
-            if (stage <= 6 - cData.CardsList.Count)
+            if (stage <= CardsManage.MaxCount - cData.CardsList.Count)
             {                
                 for (int i = 0; i < TruckManage.trucksList.Count; i++)
                 {
@@ -225,7 +226,7 @@ public class Distribution : MonoBehaviour {
                 cManage.CardPorpty();
             }
             else {
-                int n = 6 - cData.CardsList.Count;
+                int n = CardsManage.MaxCount - cData.CardsList.Count;
                 notEnough.SetActive(true);
                 notEnough.transform.GetChild(0).GetComponent<Text>().text = "卡池剩余位置不足"
                     + "\n" + "是否消耗 " + ((stage - n) * 2).ToString() +" 点信誉来进行下一回合";
@@ -235,7 +236,7 @@ public class Distribution : MonoBehaviour {
 
     public void DeductCre()///剩余位置不够抽卡时,扣信誉
     {
-        int n = 6 - cData.CardsList.Count;
+        int n = CardsManage.MaxCount - cData.CardsList.Count;
 
         totalCredit -= (stage - n)* 2;
 
@@ -287,7 +288,7 @@ public class Distribution : MonoBehaviour {
             + "\n" + "信誉度：" + credit.ToString();       
         text_credit.text = "信誉" + totalCredit.ToString();
         text_profit.text = "金币" + totalProfit.ToString();
-        tManage.TeamSkill(1);
+        tManage.TeamSkill(TruckManage.teamID);
         //finishedOrder.text = "完成订单" + finished.ToString();
     }
 
@@ -332,6 +333,7 @@ public class Distribution : MonoBehaviour {
                 _truck.state = "empty";
                 _truck.profit.Clear();
                 _truck.credit.Clear();
+                _truck.IDs.Clear();
                 _truck.skillList.Clear();
                 _truck.stopTime = 0;
             }

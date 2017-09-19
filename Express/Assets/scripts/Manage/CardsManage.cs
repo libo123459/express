@@ -18,10 +18,9 @@ public class CardsManage : MonoBehaviour {
     public Transform EventPool;
 
 	public int punish = 2;
+    public static int MaxCount;
 
     public List<Card> normalList = new List<Card>();
-
-    public List<Card> dropList = new List<Card>();
 
     CardsData _cardData;
     EventData _eData;
@@ -34,7 +33,8 @@ public class CardsManage : MonoBehaviour {
 
 	// Use this for initialization
 	void Start ()
-    {        
+    {
+        MaxCount = 6;
         _cardData = this.GetComponent<CardsData>();  
         dManage = this.GetComponent<Distribution>();
         oManage = this.GetComponent<OrderManage>();
@@ -70,7 +70,7 @@ public class CardsManage : MonoBehaviour {
             {
                 mycard.timeCast = 60;
             }
-            mycard.TimeCast.text = "Time. " + mycard.timeCast + "ID" + mycard.ID;
+            mycard.TimeCast.text = mycard.timeCast.ToString();
             mycard.Description.text = _cardData.GetSkillDes(mycard.skillID);
 
             int blockNum = mycard._item.transform.childCount;
@@ -99,12 +99,19 @@ public class CardsManage : MonoBehaviour {
     {
         _card.transform.SetParent(NormalPool);
         normalList.Insert(Random.Range(0,normalList.Count),_card);
+        print(_card.ID);
+        if (TruckManage.teamID == 2)
+        {
+            Card other = Instantiate(_card, NormalPool);
+            normalList.Insert(Random.Range(0, normalList.Count), other);
+            print(other.ID);
+        }
         _cardData.CardsList.Remove(_card);
     }
 
     void RefreshTask()
     {
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < MaxCount; i++)
         {
             Card_normal();
         }       
@@ -116,7 +123,7 @@ public class CardsManage : MonoBehaviour {
     {
         for (int i = 0; i < grid.transform.childCount; i++)         //刷新所有卡的序列号
         {
-            grid.transform.GetChild(i).GetComponent<Card>().ID = i;
+            grid.transform.GetChild(i).GetComponent<Card>().IDinPanel = i;
         }
     }
 
@@ -124,8 +131,9 @@ public class CardsManage : MonoBehaviour {
     {   
         for (int i = 0; i < oManage.OrdersList.Count; i++) //清除卡池中已装配的卡
         {
-            int index = oManage.OrdersList[i].ID;
-            _cardData.CardsList[index].Destroy();     
+            int index = oManage.OrdersList[i].IDinPanel;
+            print(index);
+            _cardData.CardsList[index].Destroy();
         }
 
         _cardData.CardsList.Clear();
@@ -133,7 +141,7 @@ public class CardsManage : MonoBehaviour {
         for (int i = 0; i < grid.transform.childCount; i++)//重新排列剩余卡
         {
             Card thecard = grid.transform.GetChild(i).GetComponent<Card>();
-            thecard.ID = i;
+            thecard.IDinPanel = i;
             _cardData.CardsList.Add(thecard);
         }
     }
@@ -142,7 +150,7 @@ public class CardsManage : MonoBehaviour {
     {
         for (int i = 0; i < level; i++)
             {
-                if (grid.childCount < 6) ////6为临时测试用，需要改成卡池上线的变量
+                if (grid.childCount < MaxCount) ////6为临时测试用，需要改成卡池上线的变量
                 {
 
                     Card_normal();
@@ -191,12 +199,17 @@ public class CardsManage : MonoBehaviour {
             GameOver();
         }
         else {
+            if (TruckManage.teamID == 2)
+            {
+                punish = 1;
+            }
             Distribution.totalCredit = Distribution.totalCredit - punish;
             // Distribution.totalProfit -= _card.timeCast + 1 ;
             dManage.text_credit.text = "信誉" + Distribution.totalCredit.ToString();
             // dManage.text_profit.text = "金币" + Distribution.totalProfit.ToString();
         }
-        moveToNormalPool(_card);        
+        moveToNormalPool(_card);
+        RefreshID();
     }    
 
     void GameOver()

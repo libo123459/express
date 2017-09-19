@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Card : MonoBehaviour {
     public int ID;
+    public int IDinPanel;
     public int timeCast;
     public int profit;
     public int credit;

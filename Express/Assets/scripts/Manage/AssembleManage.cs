@@ -9,9 +9,7 @@ public class AssembleManage : MonoBehaviour {
     public static List<Slot> slotList = new List<Slot>();
     public Slot _slot;
     public static int currentTruck;
-    public Button changeDriver;
-
-    
+       
 	// Use this for initialization
 	void Start () {
 
@@ -30,8 +28,6 @@ public class AssembleManage : MonoBehaviour {
 
         creatCapicity(_truck);
         _truck.ClearAll(); ///清除truck上已有的订单
-        
-        checkTruckSkill8();
     }
 
     void creatCapicity(Truck _truck)
@@ -42,18 +38,6 @@ public class AssembleManage : MonoBehaviour {
         {
             Slot slot = Instantiate(_slot, _slotPanel);
             slotList.Add(slot);
-        }
-    }
-
-    void checkTruckSkill8()
-    {
-        if (TruckManage.trucksList[AssembleManage.currentTruck].ID == 8)
-        {
-            changeDriver.GetComponent<Button>().interactable = false;
-        }
-        else
-        {
-            changeDriver.GetComponent<Button>().interactable = true;
         }
     }
         

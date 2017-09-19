@@ -13,8 +13,8 @@ public class OrderManage : MonoBehaviour {
         {
             Order myorder = Instantiate(_order);
             myorder.transform.SetParent(orderPanel.transform);
-            
             myorder.ID = _card.ID;
+            myorder.IDinPanel = _card.IDinPanel;
             myorder.profit = _card.profit;
             myorder.credit = _card.credit;
             myorder.skillID = _card.skillID;
@@ -43,7 +43,7 @@ public class OrderManage : MonoBehaviour {
         for (int i = 0; i < OrdersList.Count; i++)///////把已装配的订单数据传输到当前truck上
         {
             _truck.timeCast.Add(OrdersList[i]._timecast);
-            
+            _truck.IDs.Add(OrdersList[i].ID);
             _truck.profit.Add(OrdersList[i].profit);
             _truck.credit.Add(OrdersList[i].credit);
             _truck.skillList.Add(OrdersList[i].skillID);
@@ -59,7 +59,7 @@ public class OrderManage : MonoBehaviour {
         int sameNum = 0;
         for (int i = 0; i < OrdersList.Count; i++)
         {
-            if (thecard.ID == OrdersList[i].ID)
+            if (thecard.IDinPanel == OrdersList[i].IDinPanel)
             {                
                 sameNum++;
             }
@@ -89,7 +89,7 @@ public class OrderManage : MonoBehaviour {
     {
         for (int i = 0; i < OrdersList.Count; i++)
         {
-            if (OrdersList[i].ID == id)
+            if (OrdersList[i].IDinPanel == id)
             {
                 DestroyImmediate(OrdersList[i].gameObject);
             }
